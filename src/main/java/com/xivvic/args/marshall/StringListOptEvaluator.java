@@ -1,13 +1,14 @@
-package args.marshall;
+package com.xivvic.args.marshall;
 
-import static args.error.ErrorCode.MISSING_STRING_LIST;
+import static com.xivvic.args.error.ErrorCode.MISSING_STRING_LIST;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import args.error.ArgsException;
+import com.xivvic.args.error.ArgsException;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 

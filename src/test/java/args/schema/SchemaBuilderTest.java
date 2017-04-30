@@ -5,7 +5,9 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import args.error.ArgsException;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.schema.Schema;
+import com.xivvic.args.schema.SchemaBuilder;
 
 public class SchemaBuilderTest
 {

@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.xivvic.args.TestUtil;
-
-import args.error.ArgsException;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.marshall.IntegerOptEvaluator;
 
 public class IntegerOptEvaluatorTest
 {

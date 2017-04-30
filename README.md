@@ -16,11 +16,11 @@ throw an ArgsException error, then the instance can be used to access program ar
 name. Here is the simple usage example that does not use advanced the features.
 
 ```
-   public static void main(String[] com.xivvic.args)
+   public static void main(String[] args)
    {
       try
       {
-         Args        arg = new Args("s*,p#,v", com.xivvic.args);
+         Args        arg = new Args("s*,p#,v", args);
 
          String   server = arg.getValue("s");
          Integer    port = arg.getValue("p");

@@ -1,4 +1,4 @@
-package args.error;
+package com.xivvic.args.error;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,14 +1,14 @@
-package args.schema;
+package com.xivvic.args.schema;
 
 import java.util.Objects;
 
-public class ItemPredicateAnd<T>
+public class ItemPredicateOr<T>
 implements ItemPredicate<T>
 {
 	private final ItemPredicate<T> a;
 	private final ItemPredicate<T> b;
 
-	public ItemPredicateAnd(ItemPredicate<T> a, ItemPredicate<T> b)
+	public ItemPredicateOr(ItemPredicate<T> a, ItemPredicate<T> b)
 	{
 		this.a = Objects.requireNonNull(a);
 		this.b = Objects.requireNonNull(b);
@@ -20,6 +20,6 @@ implements ItemPredicate<T>
 	{
 		Objects.requireNonNull(item);
 
-		return a.test(item) && b.test(item);
+		return a.test(item) || b.test(item);
 	}
 }

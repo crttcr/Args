@@ -4,8 +4,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import args.error.ArgsException;
-import args.error.ErrorCode;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.error.ErrorCode;
 
 public class ArgsExceptionTest
 {

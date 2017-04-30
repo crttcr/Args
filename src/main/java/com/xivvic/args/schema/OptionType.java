@@ -1,4 +1,4 @@
-package args.schema;
+package com.xivvic.args.schema;
 
 public enum OptionType
 {

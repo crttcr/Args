@@ -10,7 +10,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import args.marshall.OptEvaluator;
+import com.xivvic.args.marshall.OptEvaluator;
+import com.xivvic.args.schema.Item;
+import com.xivvic.args.schema.OptionType;
+import com.xivvic.args.schema.Schema;
+import com.xivvic.args.schema.SchemaBuilder;
 
 public class SchemaBuilderShortFormTest
 {

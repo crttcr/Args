@@ -1,8 +1,9 @@
-package args.marshall;
+package com.xivvic.args.marshall;
 
 import java.util.Iterator;
 
-import args.error.ArgsException;
+import com.xivvic.args.error.ArgsException;
+
 import lombok.Getter;
 
 public class BooleanOptEvaluator extends OptEvaluatorBase<Boolean>

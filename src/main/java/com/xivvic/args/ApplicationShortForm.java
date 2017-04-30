@@ -1,8 +1,8 @@
 package com.xivvic.args;
 
-import args.error.ArgsException;
-import args.schema.Schema;
-import args.schema.SchemaBuilder;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.schema.Schema;
+import com.xivvic.args.schema.SchemaBuilder;
 
 /**
  * Example application to run the Args command line processor

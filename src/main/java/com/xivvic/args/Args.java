@@ -1,8 +1,8 @@
 package com.xivvic.args;
 
-import static args.error.ErrorCode.NO_SCHEMA;
-import static args.error.ErrorCode.NULL_ARGUMENT_ARRAY;
-import static args.error.ErrorCode.UNEXPECTED_OPTION;
+import static com.xivvic.args.error.ErrorCode.NO_SCHEMA;
+import static com.xivvic.args.error.ErrorCode.NULL_ARGUMENT_ARRAY;
+import static com.xivvic.args.error.ErrorCode.UNEXPECTED_OPTION;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,12 +12,13 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-import args.error.ArgsException;
-import args.error.ErrorCode;
-import args.marshall.OptEvaluator;
-import args.schema.Item;
-import args.schema.Schema;
-import args.schema.SchemaBuilder;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.error.ErrorCode;
+import com.xivvic.args.marshall.OptEvaluator;
+import com.xivvic.args.schema.Item;
+import com.xivvic.args.schema.Schema;
+import com.xivvic.args.schema.SchemaBuilder;
+
 
 /**
  * Argument and options command line processor inspired by

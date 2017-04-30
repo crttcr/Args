@@ -1,12 +1,13 @@
-package args.marshall;
+package com.xivvic.args.marshall;
 
-import static args.error.ErrorCode.INVALID_INTEGER;
-import static args.error.ErrorCode.MISSING_INTEGER;
+import static com.xivvic.args.error.ErrorCode.INVALID_INTEGER;
+import static com.xivvic.args.error.ErrorCode.MISSING_INTEGER;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import args.error.ArgsException;
+import com.xivvic.args.error.ArgsException;
+
 import lombok.Getter;
 
 public class IntegerOptEvaluator extends OptEvaluatorBase<Integer>

@@ -1,13 +1,16 @@
 package args.schema;
 
+
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
 import com.xivvic.args.Args;
 import com.xivvic.args.TestUtil;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.schema.Schema;
+import com.xivvic.args.schema.SchemaBuilder;
 
-import args.error.ArgsException;
 
 public class EnvironmentVariableTest
 {

@@ -8,8 +8,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import args.marshall.BooleanOptEvaluator;
-import args.marshall.OptEvaluator;
+import com.xivvic.args.marshall.BooleanOptEvaluator;
+import com.xivvic.args.marshall.OptEvaluator;
+import com.xivvic.args.schema.Item;
+import com.xivvic.args.schema.OptionType;
 
 public class ItemTest
 {

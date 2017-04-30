@@ -1,7 +1,8 @@
-package args.schema;
+package com.xivvic.args.schema;
 
-import args.error.ArgsException;
-import args.error.ErrorCode;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.error.ErrorCode;
+
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 

@@ -5,9 +5,11 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import args.error.ArgsException;
-import args.marshall.OptEvaluator;
-import args.marshall.StringOptEvaluator;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.marshall.OptEvaluator;
+import com.xivvic.args.marshall.StringOptEvaluator;
+import com.xivvic.args.schema.Item;
+import com.xivvic.args.schema.OptionType;
 
 public class ItemBuilderTest
 {

@@ -1,17 +1,18 @@
-package args.schema;
+package com.xivvic.args.schema;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-import args.error.ArgsException;
-import args.error.ErrorCode;
-import args.marshall.BooleanOptEvaluator;
-import args.marshall.DoubleOptEvaluator;
-import args.marshall.IntegerOptEvaluator;
-import args.marshall.OptEvaluator;
-import args.marshall.OptEvaluatorBase;
-import args.marshall.StringListOptEvaluator;
-import args.marshall.StringOptEvaluator;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.error.ErrorCode;
+import com.xivvic.args.marshall.BooleanOptEvaluator;
+import com.xivvic.args.marshall.DoubleOptEvaluator;
+import com.xivvic.args.marshall.IntegerOptEvaluator;
+import com.xivvic.args.marshall.OptEvaluator;
+import com.xivvic.args.marshall.OptEvaluatorBase;
+import com.xivvic.args.marshall.StringListOptEvaluator;
+import com.xivvic.args.marshall.StringOptEvaluator;
+
 import lombok.Getter;
 import lombok.ToString;
 

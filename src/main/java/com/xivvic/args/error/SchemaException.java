@@ -1,4 +1,4 @@
-package args.error;
+package com.xivvic.args.error;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

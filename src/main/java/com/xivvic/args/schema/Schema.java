@@ -1,4 +1,4 @@
-package args.schema;
+package com.xivvic.args.schema;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,7 +19,7 @@ public class Schema
 
 	private SortedMap<String, Item<?>> opts = new TreeMap<>();
 
-	Schema(String name, Map<String, Item<?>> defs )
+	public Schema(String name, Map<String, Item<?>> defs )
 	{
 		this.name = Objects.requireNonNull(name);
 		Objects.requireNonNull(defs);

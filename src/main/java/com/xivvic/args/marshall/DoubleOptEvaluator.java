@@ -1,12 +1,13 @@
-package args.marshall;
+package com.xivvic.args.marshall;
 
-import static args.error.ErrorCode.INVALID_DOUBLE;
-import static args.error.ErrorCode.MISSING_DOUBLE;
+import static com.xivvic.args.error.ErrorCode.INVALID_DOUBLE;
+import static com.xivvic.args.error.ErrorCode.MISSING_DOUBLE;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import args.error.ArgsException;
+import com.xivvic.args.error.ArgsException;
+
 import lombok.Getter;
 
 public class DoubleOptEvaluator extends OptEvaluatorBase<Double>

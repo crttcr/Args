@@ -1,10 +1,10 @@
-package args.marshall;
+package com.xivvic.args.marshall;
 
 import java.util.Iterator;
 import java.util.Objects;
 
-import args.error.ArgsException;
-import args.schema.OptionType;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.schema.OptionType;
 
 public abstract class OptEvaluatorBase<T>
 implements OptEvaluator<T>

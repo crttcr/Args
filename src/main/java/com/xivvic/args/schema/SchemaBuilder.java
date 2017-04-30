@@ -1,7 +1,8 @@
-package args.schema;
+package com.xivvic.args.schema;
 
-import static args.error.ErrorCode.INVALID_ARGUMENT_FORMAT;
-import static args.error.ErrorCode.NO_SCHEMA;
+
+import static com.xivvic.args.error.ErrorCode.INVALID_ARGUMENT_FORMAT;
+import static com.xivvic.args.error.ErrorCode.NO_SCHEMA;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +10,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import args.error.ArgsException;
-import args.error.CompositeException;
-import args.error.ErrorCode;
-import args.error.ErrorStrategy;
-import args.marshall.OptEvaluator;
-import args.marshall.OptEvaluatorBase;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.error.CompositeException;
+import com.xivvic.args.error.ErrorCode;
+import com.xivvic.args.error.ErrorStrategy;
+import com.xivvic.args.marshall.OptEvaluator;
+import com.xivvic.args.marshall.OptEvaluatorBase;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

@@ -1,4 +1,4 @@
-package args.error;
+package com.xivvic.args.error;
 
 // Error strategy determines how argument processing should handle errors.
 //

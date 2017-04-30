@@ -1,4 +1,4 @@
-package args.error;
+package com.xivvic.args.error;
 
 // NOTE: When adding a new ENUM, add an appropriate case to the switch // statement in the @{link errorText()} method.
 //

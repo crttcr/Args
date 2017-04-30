@@ -8,9 +8,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import args.error.ArgsException;
-import args.schema.Schema;
-import args.schema.SchemaBuilder;
+import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.schema.Schema;
+import com.xivvic.args.schema.SchemaBuilder;
 
 public class ArgsTest
 {

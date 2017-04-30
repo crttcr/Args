@@ -15,10 +15,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.xivvic.args.TestUtil;
-
-import args.marshall.IntegerOptEvaluator;
-import args.marshall.OptEvaluator;
-import args.marshall.StringOptEvaluator;
+import com.xivvic.args.marshall.IntegerOptEvaluator;
+import com.xivvic.args.marshall.OptEvaluator;
+import com.xivvic.args.marshall.StringOptEvaluator;
+import com.xivvic.args.schema.Item;
+import com.xivvic.args.schema.OptionType;
+import com.xivvic.args.schema.Schema;
 
 public class SchemaTest
 {
