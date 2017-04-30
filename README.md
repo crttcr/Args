@@ -50,7 +50,7 @@ Advanced features include long name options prefixed with -- in addition to shor
 prefixed with -, default values, validations, extracting values from environment
 variables, and descriptions that can be used to provide help text. An example 'long form'
 definition is shown below and described in more detail in 
-the Schema [README](src/main/java/com/xivvic/args/schema/Schema.java)
+the Schema [README](src/main/java/com/xivvic/args/schema/README.md)
 
 ```
 latitude.name=latitude
