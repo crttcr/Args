@@ -40,9 +40,29 @@ name. Here is the simple usage example that does not use advanced the features.
 
 None, other than adding the source or jar to your project.
 
+## Advanced Usage
+
+This library supports a second form of specifying the options that are available to a
+program, referred to as the 'long form.'  To use the long form, provide a string containing
+extended option definion properties, generally from a file, to the Args constructor.
+
+Advanced features include long name options prefixed with -- in addition to short options
+prefixed with -, default values, validations, extracting values from environment
+variables, and descriptions that can be used to provide help text.
+
+## Error Strategy
+This libary currently supports 3 error handling strategies:
+
+* FAIL_FAST: Fail as soon as an error is encountered
+* FAIL_SLOW: Fail after all processing is done, reporting all errors
+* WARN_AND_IGNORE: Provide a warning but let the program run despite the error
+
+The default strategy for Schema definition is FAIL_SLOW, and the default for argument
+processing is FAIL_FAST.
+
 ## Running the tests
 
-The tests that come with the library source can be run vi [JUnit](http://http://junit.org/junit4)
+The tests that come with the library source can be run via [JUnit](http://http://junit.org/junit4)
 
 ## Built With
 
@@ -60,4 +80,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-* Robert C. Martin for the Clean Code and chapter 14 in particular
+* Robert C. Martin for 
+[Clean Code](http://www.amazon.com/Clean-Code-Handbook-Software-Craftmanship/dp/0132350882")
+and chapter 14 in particular.
