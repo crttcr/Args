@@ -48,7 +48,16 @@ extended option definion properties, generally from a file, to the Args construc
 
 Advanced features include long name options prefixed with -- in addition to short options
 prefixed with -, default values, validations, extracting values from environment
-variables, and descriptions that can be used to provide help text.
+variables, and descriptions that can be used to provide help text. An example 'long form'
+definition is shown below and described in more detail in [the Schema README.md](com/xivvic/args/schema/README.md)
+
+```
+latitude.name=latitude
+latitude.description=Longitude coordinate
+latitude.type=DOUBLE
+latitude.default=100.04
+```
+
 
 ## Error Strategy
 This libary currently supports 3 error handling strategies:
