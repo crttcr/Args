@@ -4,7 +4,7 @@ This is yet another library for processing program arguments. Inspired by Robert
 [Clean Code](http://www.amazon.com/Clean-Code-Handbook-Software-Craftmanship/dp/0132350882"),
 chapter 14, this library keeps the simple **one-character \[+ optional modifier]** specification for cases
 where advanced capabilities are overkill. Additionally, by providing a more detailed specification,
-it's possible to provide descriptions, default values, environment variable lookup, and validatation
+it's possible to provide descriptions, default values, environment variable lookup, and validation
 to ensure programs are started in a consistent state.
 
 
@@ -44,7 +44,7 @@ None, other than adding the source or jar to your project.
 
 This library supports a second form of specifying the options that are available to a
 program, referred to as the 'long form.'  To use the long form, provide a string containing
-extended option definion properties, generally from a file, to the Args constructor.
+extended option definition properties, generally from a file, to the Args constructor.
 
 Advanced features include long name options prefixed with -- in addition to short options
 prefixed with -, default values, validations, extracting values from environment
