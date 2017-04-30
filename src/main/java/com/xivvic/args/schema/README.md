@@ -20,9 +20,9 @@ all that is required of your program with this approach is to pass in the defini
 string like this:
 
 ```
-public void main(String[] com.xivvic.args) 
+public void main(String[] args) 
 {
-   Args arg = new Args("~h*,p#,v,x", com.xivvic.args);
+   Args arg = new Args("~h*,p#,v,x", args);
    ...
 }
 ```
