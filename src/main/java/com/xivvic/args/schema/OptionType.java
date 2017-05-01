@@ -14,7 +14,7 @@ public enum OptionType
 	//
 	DATE,
 	TIME,
-	DIRECTORY,
+	PATH,
 	FILE,
 
 	;

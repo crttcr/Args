@@ -1,0 +1,5 @@
+## String option
+##
+serials.name=serials
+serials.description=List of serial numbers
+serials.type=STRING_LIST

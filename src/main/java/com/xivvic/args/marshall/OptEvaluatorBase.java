@@ -35,6 +35,10 @@ implements OptEvaluator<T>
 		case STRING_LIST:  return (OptEvaluator<T>) new StringListOptEvaluator();
 		case INTEGER:      return (OptEvaluator<T>) new IntegerOptEvaluator();
 		case DOUBLE:       return (OptEvaluator<T>) new DoubleOptEvaluator();
+		case DATE:         return (OptEvaluator<T>) new DateOptEvaluator();
+		case TIME:         return (OptEvaluator<T>) new TimeOptEvaluator();
+		case PATH:         return (OptEvaluator<T>) new PathOptEvaluator();
+		case FILE:         return (OptEvaluator<T>) new FileOptEvaluator();
 
 		default: throw new IllegalArgumentException("Not implemented: " + type);
 		}

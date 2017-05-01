@@ -6,12 +6,16 @@ import java.util.Map.Entry;
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.error.ErrorCode;
 import com.xivvic.args.marshall.BooleanOptEvaluator;
+import com.xivvic.args.marshall.DateOptEvaluator;
 import com.xivvic.args.marshall.DoubleOptEvaluator;
+import com.xivvic.args.marshall.FileOptEvaluator;
 import com.xivvic.args.marshall.IntegerOptEvaluator;
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.marshall.OptEvaluatorBase;
+import com.xivvic.args.marshall.PathOptEvaluator;
 import com.xivvic.args.marshall.StringListOptEvaluator;
 import com.xivvic.args.marshall.StringOptEvaluator;
+import com.xivvic.args.marshall.TimeOptEvaluator;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -22,10 +26,10 @@ public class Item<T>
 {
 	public final static String	NAME			= "name";
 	public final static String	TYPE			= "type";
-	public final static String	ENV_VAR		= "ev";
 	public final static String	DESCRIPTION	= "description";
 	public final static String	DEFAULT		= "dv";
 	public final static String	REQUIRED		= "required";
+	public final static String	ENV_VAR		= "ev";
 
 	private String					name;
 	private OptionType			type;
@@ -194,9 +198,21 @@ public class Item<T>
 			case STRING_LIST:
 				instance.eval = (OptEvaluator<T>) new StringListOptEvaluator();
 				break;
+			case DATE:
+				instance.eval = (OptEvaluator<T>) new DateOptEvaluator();
+				break;
+			case TIME:
+				instance.eval = (OptEvaluator<T>) new TimeOptEvaluator();
+				break;
+			case PATH:
+				instance.eval = (OptEvaluator<T>) new PathOptEvaluator();
+				break;
+			case FILE:
+				instance.eval = (OptEvaluator<T>) new FileOptEvaluator();
+				break;
 
 			default:
-				String msg = String.format("Unable to handle OptionType [%s] in builder", instance.type);
+				String msg = String.format("Unable to handle OptionType [%s] in item builder", instance.type);
 				throw new ArgsException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
 			}
 

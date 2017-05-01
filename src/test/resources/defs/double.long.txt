@@ -1,13 +1,6 @@
-## Double Options
+## Double Option
 ##
-latitude.name=latitude
-latitude.description=Longitude coordinate
-latitude.type=DOUBLE
-latitude.default=100.04
-
-
-longitude.name=longitude
-longitude.description=Longitude coordinate
-longitude.type=DOUBLE
-longitude.required=true
-longitude.default=10.5
+velocity.name=velocity
+velocity.description=Velocity expressed in meters/second
+velocity.type=DOUBLE
+velocity.dv=299792458

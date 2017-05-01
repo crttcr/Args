@@ -1,0 +1,5 @@
+## Double Option
+##
+max.name=max
+max.description=Maximum valid input value
+max.type=INTEGER

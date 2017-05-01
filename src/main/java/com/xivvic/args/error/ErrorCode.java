@@ -25,13 +25,22 @@ public enum ErrorCode
 	MISSING_STRING_LIST("Could not find string parameters for option %s."),
 	MISSING_INTEGER("Could not find integer parameter for option %s"),
 	MISSING_DOUBLE("Could not find double parameter for option %s"),
+	MISSING_DATE("Could not find date parameter for option %s"),
+	MISSING_TIME("Could not find time parameter for option %s"),
+	MISSING_PATH("Could not find path parameter for option %s"),
+	MISSING_FILE("Could not find file parameter for option %s"),
 	MISSING_ENVIRONMENT_VARIABLE("Environment variable [%s] does not have an established value to define option [%s]."),
 
 	INVALID_ARGUMENT_FORMAT("'%s' is not a valid argument format."),
 	INVALID_ARGUMENT_NAME("'%s' is not a valid argument name."),
 	INVALID_INTEGER("Argument -%s expects an integer, but was '%s'."),
 	INVALID_DOUBLE("Argument -%s expects a double, but was '%s'."),
+	INVALID_DATE("Argument -%s expects a date, but '%s' failed to parse."),
+	INVALID_TIME("Argument -%s expects a time, but '%s' failed to parse."),
+	INVALID_PATH("Argument -%s expects a path, but '%s' is not valid."),
+	INVALID_FILE("Argument -%s expects a file, but '%s' was empty."),
 	;
+
 
 	private String fmt;
 	ErrorCode(String fmt) {
@@ -53,12 +62,20 @@ public enum ErrorCode
 		case MISSING_STRING_LIST:
 		case MISSING_INTEGER:
 		case MISSING_DOUBLE:
+		case MISSING_DATE:
+		case MISSING_TIME:
+		case MISSING_PATH:
+		case MISSING_FILE:
 		case INVALID_ARGUMENT_NAME:
 		case INVALID_SCHEMA_ELEMENT:
 		case UNEXPECTED_OPTION:
 			return format(option);
 		case INVALID_INTEGER:
 		case INVALID_DOUBLE:
+		case INVALID_DATE:
+		case INVALID_TIME:
+		case INVALID_PATH:
+		case INVALID_FILE:
 			return format(option, param);
 		case INVALID_ARGUMENT_FORMAT:
 			return format(param);

@@ -1,0 +1,5 @@
+## PATH option
+##
+path.name=path
+path.description=The path to search
+path.type=PATH

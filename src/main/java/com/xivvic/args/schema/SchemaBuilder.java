@@ -143,7 +143,9 @@ public class SchemaBuilder
 
 		for (Entry<String, Map<String, String>> e : itemdata.entrySet())
 		{
-			applyBuilder(e.getKey(), e.getValue());
+			String k = e.getKey();
+			Map<String, String> v = e.getValue();
+			applyBuilder(k, v);
 		}
 	}
 
