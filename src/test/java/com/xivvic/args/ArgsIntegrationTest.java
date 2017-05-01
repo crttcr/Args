@@ -199,7 +199,7 @@ public class ArgsIntegrationTest
 		// Assert
 		//
 		assertNotNull(p);
-		assertEquals("/User/home", p.toAbsolutePath());
+		assertEquals("/User/home", p.toAbsolutePath().toString());
 	}
 
 	@Test

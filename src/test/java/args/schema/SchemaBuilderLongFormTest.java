@@ -30,7 +30,7 @@ public class SchemaBuilderLongFormTest
 	{
 		// Arrange
 		//
-		String defs = TestUtil.readFromTestResourceFile("double.long.txt");
+		String defs = TestUtil.readFromTestResourceFile("latitude.longitude.txt");
 
 		// Act
 		//
@@ -49,7 +49,7 @@ public class SchemaBuilderLongFormTest
 	{
 		// Arrange
 		//
-		String defs = TestUtil.readFromTestResourceFile("boolean.long.txt");
+		String defs = TestUtil.readFromTestResourceFile("verbose.quiet.txt");
 
 		// Act
 		//
