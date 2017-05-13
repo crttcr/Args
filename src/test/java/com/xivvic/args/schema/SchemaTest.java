@@ -1,4 +1,4 @@
-package args.schema;
+package com.xivvic.args.schema;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -18,9 +18,9 @@ import com.xivvic.args.TestUtil;
 import com.xivvic.args.marshall.IntegerOptEvaluator;
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.marshall.StringOptEvaluator;
-import com.xivvic.args.schema.Item;
 import com.xivvic.args.schema.OptionType;
 import com.xivvic.args.schema.Schema;
+import com.xivvic.args.schema.item.Item;
 
 public class SchemaTest
 {
@@ -34,7 +34,7 @@ public class SchemaTest
 		String name = "x";
 		Item<?> item = createItem(name, OptionType.STRING);
 		args.put(name, item);
-		subject = new Schema("TestSchema", args);
+		subject = new Schema(args);
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class SchemaTest
 		args.put(name, theItem);
 		ListIterator<String> it = TestUtil.getListIterator("49");
 		theItem.getEval().set(it);
-		subject = new Schema("TestSchema", args);
+		subject = new Schema(args);
 
 
 		// Act
@@ -98,8 +98,7 @@ public class SchemaTest
 		String name = "port";
 		Item<Integer> theItem = createRequiredIntegerItem(name);
 		args.put(name, theItem);
-		subject = new Schema("TestSchema", args);
-
+		subject = new Schema(args);
 
 		// Act
 		//

@@ -99,7 +99,7 @@ public class TestUtil
 
 		try
 		{
-			SchemaBuilder builder = new SchemaBuilder("test");
+			SchemaBuilder builder = new SchemaBuilder();
 			Schema schema = builder.build(s);
 			return schema;
 		}

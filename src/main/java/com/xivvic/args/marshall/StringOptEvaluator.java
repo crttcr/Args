@@ -1,6 +1,7 @@
 package com.xivvic.args.marshall;
 
 import static com.xivvic.args.error.ErrorCode.MISSING_STRING;
+import static com.xivvic.args.marshall.Cardinality.ONE;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -27,6 +28,12 @@ public class StringOptEvaluator extends OptEvaluatorBase<String>
 		{
 			throw new ArgsException(MISSING_STRING);
 		}
+	}
+
+	@Override
+	public Cardinality cardinality()
+	{
+		return ONE;
 	}
 
 	@Override

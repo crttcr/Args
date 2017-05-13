@@ -9,12 +9,12 @@ import lombok.EqualsAndHashCode;
 @SuppressWarnings("serial")
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class CompositeException
-extends ArgsException
+public class CompositeSchemaException
+extends SchemaException
 {
-	private final List<? extends ArgsException> exceptions;
+	private final List<SchemaException> exceptions;
 
-	public CompositeException(List<? extends ArgsException> exceptions)
+	public CompositeSchemaException(List<SchemaException> exceptions)
 	{
 		super(ErrorCode.COMPOSITE_ERROR);
 

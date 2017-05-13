@@ -15,4 +15,6 @@ public interface OptEvaluator<T>
 	// The bound value
 	//
 	T getValue();
+
+	Cardinality cardinality();
 }

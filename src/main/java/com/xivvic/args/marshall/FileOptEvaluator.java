@@ -2,6 +2,7 @@ package com.xivvic.args.marshall;
 
 import static com.xivvic.args.error.ErrorCode.INVALID_FILE;
 import static com.xivvic.args.error.ErrorCode.MISSING_FILE;
+import static com.xivvic.args.marshall.Cardinality.ONE;
 
 import java.io.File;
 import java.util.Iterator;
@@ -34,6 +35,12 @@ public class FileOptEvaluator extends OptEvaluatorBase<File>
 		{
 			throw new ArgsException(MISSING_FILE);
 		}
+	}
+
+	@Override
+	public Cardinality cardinality()
+	{
+		return ONE;
 	}
 
 	@Override

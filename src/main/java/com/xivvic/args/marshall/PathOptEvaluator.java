@@ -2,6 +2,7 @@ package com.xivvic.args.marshall;
 
 import static com.xivvic.args.error.ErrorCode.INVALID_PATH;
 import static com.xivvic.args.error.ErrorCode.MISSING_PATH;
+import static com.xivvic.args.marshall.Cardinality.ONE;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -36,6 +37,12 @@ public class PathOptEvaluator extends OptEvaluatorBase<Path>
 		{
 			throw new ArgsException(INVALID_PATH);
 		}
+	}
+
+	@Override
+	public Cardinality cardinality()
+	{
+		return ONE;
 	}
 
 	@Override

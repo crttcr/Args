@@ -15,9 +15,9 @@ import java.util.Set;
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.error.ErrorCode;
 import com.xivvic.args.marshall.OptEvaluator;
-import com.xivvic.args.schema.Item;
 import com.xivvic.args.schema.Schema;
 import com.xivvic.args.schema.SchemaBuilder;
+import com.xivvic.args.schema.item.Item;
 
 
 /**
@@ -57,7 +57,7 @@ public class Args
 			throw new ArgsException(NO_SCHEMA);
 		}
 
-		this.schema = new SchemaBuilder("No_name").build(defs);
+		this.schema = new SchemaBuilder().build(defs);
 		initialize(args);
 	}
 

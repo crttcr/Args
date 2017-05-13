@@ -3,6 +3,7 @@ package com.xivvic.args;
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.schema.Schema;
 import com.xivvic.args.schema.SchemaBuilder;
+import com.xivvic.args.util.FileUtil;
 
 /**
  * Example application to run the Args command line processor
@@ -17,7 +18,7 @@ public class ApplicationLongForm
 			String[] ersatzArgs = {"--path", "/tmp", "--file" , "out.txt", "--server", "localhost", "--port", "8080"};
 			args = args.length == 0 ? ersatzArgs : args;
 			String defs = getOptionDefinitions();
-			Schema schema = new SchemaBuilder("ApplicationLongForm").build(defs);
+			Schema schema = new SchemaBuilder().build(defs);
 			Args arg = new Args(schema, args);
 
 			String path = arg.getValue("path");
@@ -39,7 +40,7 @@ public class ApplicationLongForm
 	{
 		String path = "src/main/resources/argdefs";
 		String file = "Option.definitions.example.txt";
-		String defs = ArgUtil.readFromResourceFile(path, file);
+		String defs = FileUtil.readFromResourceFile(path, file);
 
 		return defs;
 	}

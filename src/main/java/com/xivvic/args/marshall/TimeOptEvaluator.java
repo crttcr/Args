@@ -2,6 +2,7 @@ package com.xivvic.args.marshall;
 
 import static com.xivvic.args.error.ErrorCode.INVALID_TIME;
 import static com.xivvic.args.error.ErrorCode.MISSING_TIME;
+import static com.xivvic.args.marshall.Cardinality.ONE;
 
 import java.time.LocalTime;
 import java.util.Iterator;
@@ -34,6 +35,12 @@ public class TimeOptEvaluator extends OptEvaluatorBase<LocalTime>
 		{
 			throw new ArgsException(INVALID_TIME);
 		}
+	}
+
+	@Override
+	public Cardinality cardinality()
+	{
+		return ONE;
 	}
 
 	@Override

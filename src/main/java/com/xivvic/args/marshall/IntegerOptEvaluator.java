@@ -2,6 +2,7 @@ package com.xivvic.args.marshall;
 
 import static com.xivvic.args.error.ErrorCode.INVALID_INTEGER;
 import static com.xivvic.args.error.ErrorCode.MISSING_INTEGER;
+import static com.xivvic.args.marshall.Cardinality.ONE;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -33,6 +34,12 @@ public class IntegerOptEvaluator extends OptEvaluatorBase<Integer>
 		{
 			throw new ArgsException(INVALID_INTEGER);
 		}
+	}
+
+	@Override
+	public Cardinality cardinality()
+	{
+		return ONE;
 	}
 
 	@Override

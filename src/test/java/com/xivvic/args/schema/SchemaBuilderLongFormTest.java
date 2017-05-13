@@ -1,4 +1,4 @@
-package args.schema;
+package com.xivvic.args.schema;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,10 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.xivvic.args.TestUtil;
-import com.xivvic.args.schema.Item;
 import com.xivvic.args.schema.OptionType;
 import com.xivvic.args.schema.Schema;
 import com.xivvic.args.schema.SchemaBuilder;
+import com.xivvic.args.schema.item.Item;
 
 public class SchemaBuilderLongFormTest
 {
@@ -22,7 +22,7 @@ public class SchemaBuilderLongFormTest
 	@Before
 	public void setUp() throws Exception
 	{
-		subject = new SchemaBuilder("TestSchemaBuidler");
+		subject = new SchemaBuilder();
 	}
 
 	@Test

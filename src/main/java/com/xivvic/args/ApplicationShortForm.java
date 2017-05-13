@@ -15,7 +15,7 @@ public class ApplicationShortForm
 		try
 		{
 			String[] defs = { "-d", "/tmp/foo", "-l", "-p", "8080" };
-			Schema schema = new SchemaBuilder("ApplicationLongForm").build("l,p#,d*");
+			Schema schema = new SchemaBuilder().build("l,p#,d*");
 			Args arg = new Args(schema, args.length == 0 ? defs : args);
 
 			String path = arg.getValue("d");

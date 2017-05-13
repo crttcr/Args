@@ -1,4 +1,4 @@
-package args.schema;
+package com.xivvic.args.schema;
 
 
 import static org.junit.Assert.assertNotNull;
@@ -21,7 +21,7 @@ public class EnvironmentVariableTest
 		//
 		String[] arguments = {"a", "b"};
 		String defs = TestUtil.readFromTestResourceFile("s.envvar.txt");
-		Schema schema = new SchemaBuilder("schema.name").build(defs);
+		Schema schema = new SchemaBuilder().build(defs);
 
 		// Act
 		//

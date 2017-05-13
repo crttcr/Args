@@ -2,6 +2,7 @@ package com.xivvic.args.marshall;
 
 import static com.xivvic.args.error.ErrorCode.INVALID_DATE;
 import static com.xivvic.args.error.ErrorCode.MISSING_DATE;
+import static com.xivvic.args.marshall.Cardinality.ONE;
 
 import java.time.LocalDate;
 import java.util.Iterator;
@@ -34,6 +35,12 @@ public class DateOptEvaluator extends OptEvaluatorBase<LocalDate>
 		{
 			throw new ArgsException(INVALID_DATE);
 		}
+	}
+
+	@Override
+	public Cardinality cardinality()
+	{
+		return ONE;
 	}
 
 	@Override

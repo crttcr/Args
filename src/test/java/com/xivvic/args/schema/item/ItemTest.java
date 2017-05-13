@@ -1,4 +1,4 @@
-package args.schema;
+package com.xivvic.args.schema.item;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import com.xivvic.args.marshall.BooleanOptEvaluator;
 import com.xivvic.args.marshall.OptEvaluator;
-import com.xivvic.args.schema.Item;
 import com.xivvic.args.schema.OptionType;
+import com.xivvic.args.schema.item.Item;
 
 public class ItemTest
 {

@@ -1,8 +1,8 @@
-package com.xivvic.args.schema;
+package com.xivvic.args.schema.item;
 
 import java.util.Objects;
 
-public class ItemPredicateHasEnvironmentVariable<T>
+public class ItemPredicateHasDefaultValue<T>
 implements ItemPredicate<T>
 {
 
@@ -10,7 +10,8 @@ implements ItemPredicate<T>
 	public boolean test(Item<T> item)
 	{
 		Objects.requireNonNull(item);
-		String s = item.getEv();
-		return s != null;
+		T t = item.getDv();
+
+		return t == null;
 	}
 }

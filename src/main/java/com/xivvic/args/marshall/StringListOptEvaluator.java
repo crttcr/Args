@@ -1,6 +1,7 @@
 package com.xivvic.args.marshall;
 
 import static com.xivvic.args.error.ErrorCode.MISSING_STRING_LIST;
+import static com.xivvic.args.marshall.Cardinality.MULTIPLE;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,6 +36,12 @@ public class StringListOptEvaluator extends OptEvaluatorBase<List<String>>
 		{
 			throw new ArgsException(MISSING_STRING_LIST);
 		}
+	}
+
+	@Override
+	public Cardinality cardinality()
+	{
+		return MULTIPLE;
 	}
 
 	@Override

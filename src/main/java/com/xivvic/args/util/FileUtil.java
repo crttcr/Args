@@ -1,4 +1,4 @@
-package com.xivvic.args;
+package com.xivvic.args.util;
 
 import static org.junit.Assert.fail;
 
@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class ArgUtil
+public class FileUtil
 {
 	public static String readFromResourceFile(String dir, String file)
 	{

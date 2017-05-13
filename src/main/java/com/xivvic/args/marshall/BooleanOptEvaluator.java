@@ -1,5 +1,7 @@
 package com.xivvic.args.marshall;
 
+import static com.xivvic.args.marshall.Cardinality.ZERO;
+
 import java.util.Iterator;
 
 import com.xivvic.args.error.ArgsException;
@@ -21,5 +23,11 @@ public class BooleanOptEvaluator extends OptEvaluatorBase<Boolean>
 	public String toString()
 	{
 		return "Boolean[called = " + count() + ", value = " + value + "]";
+	}
+
+	@Override
+	public Cardinality cardinality()
+	{
+		return ZERO;
 	}
 }

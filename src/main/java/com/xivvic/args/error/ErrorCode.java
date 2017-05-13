@@ -13,8 +13,9 @@ public enum ErrorCode
 	//
 	NO_SCHEMA("Argument processing requires a schema, but none was provided."),
 	EMPTY_SCHEMA("Argument processing requires a schema, however an empty one was provided."),
-	INVALID_SCHEMA_ELEMENT("Schema element not valid %s"),
-	MISSING_OPTION_NAME("Options staring with - or -- must be followed by a character, not blank"),
+	INVALID_SCHEMA_ELEMENT("Schema element [%s] not valid: [%s]."),
+	SCHEMA_MISSING_OPTION_NAME("Options require a name. One was not provided."),
+	SCHEMA_MISSING_OPTION_TYPE("Options require a type. One was not provided for %s"),
 
 
 	// Argument Processing Codes
@@ -30,6 +31,7 @@ public enum ErrorCode
 	MISSING_PATH("Could not find path parameter for option %s"),
 	MISSING_FILE("Could not find file parameter for option %s"),
 	MISSING_ENVIRONMENT_VARIABLE("Environment variable [%s] does not have an established value to define option [%s]."),
+	MISSING_OPTION_NAME("Options require a name. So staring with - or -- must be followed by a character, not blank"),
 
 	INVALID_ARGUMENT_FORMAT("'%s' is not a valid argument format."),
 	INVALID_ARGUMENT_NAME("'%s' is not a valid argument name."),
@@ -57,7 +59,9 @@ public enum ErrorCode
 		case NO_SCHEMA:
 		case NULL_ARGUMENT_ARRAY:
 		case MISSING_OPTION_NAME:
+		case SCHEMA_MISSING_OPTION_NAME:
 			return format();
+		case SCHEMA_MISSING_OPTION_TYPE:
 		case MISSING_STRING:
 		case MISSING_STRING_LIST:
 		case MISSING_INTEGER:
@@ -67,7 +71,6 @@ public enum ErrorCode
 		case MISSING_PATH:
 		case MISSING_FILE:
 		case INVALID_ARGUMENT_NAME:
-		case INVALID_SCHEMA_ELEMENT:
 		case UNEXPECTED_OPTION:
 			return format(option);
 		case INVALID_INTEGER:
@@ -76,6 +79,7 @@ public enum ErrorCode
 		case INVALID_TIME:
 		case INVALID_PATH:
 		case INVALID_FILE:
+		case INVALID_SCHEMA_ELEMENT:
 			return format(option, param);
 		case INVALID_ARGUMENT_FORMAT:
 			return format(param);

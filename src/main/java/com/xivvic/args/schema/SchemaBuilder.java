@@ -16,26 +16,24 @@ import com.xivvic.args.error.ErrorCode;
 import com.xivvic.args.error.ErrorStrategy;
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.marshall.OptEvaluatorBase;
+import com.xivvic.args.schema.item.Item;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SchemaBuilder
 {
-	public static final String			 DEFAULT_NAME					= "[Name not defined]";
 	public static final String			 EXTENDED_FORMAT_SEPARATOR	= "=";
 
 	private Map<String, Item<?>>		 opts								= new ConcurrentHashMap<>();
 	private Map<String, Map<String, String>> itemdata				= new ConcurrentHashMap<>();
 
-	private final String					 name;
 	private String							 def;
 	private ErrorStrategy             es = ErrorStrategy.FAIL_FAST;
 	private List<ArgsException>       errors;
 
-	public SchemaBuilder(String name)
+	public SchemaBuilder()
 	{
-		this.name = name == null ? DEFAULT_NAME : name;
 	}
 
 	public SchemaBuilder errorStrategy(ErrorStrategy es)
@@ -55,7 +53,7 @@ public class SchemaBuilder
 		this.def = def.trim();
 		createDefinitions();
 
-		return new Schema(name, opts);
+		return new Schema(opts);
 	}
 
 

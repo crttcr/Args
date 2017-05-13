@@ -5,23 +5,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.xivvic.args.schema.item.Item;
+import com.xivvic.args.schema.item.ItemPredicate;
+import com.xivvic.args.schema.item.ItemPredicateAnd;
+import com.xivvic.args.schema.item.ItemPredicateHasEnvironmentVariable;
+import com.xivvic.args.schema.item.ItemPredicateRequired;
+
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import lombok.Getter;
-
 public class Schema
 {
-	@Getter
-	private final String name;
-
 	private SortedMap<String, Item<?>> opts = new TreeMap<>();
 
-	public Schema(String name, Map<String, Item<?>> defs )
+	public Schema(Map<String, Item<?>> defs )
 	{
-		this.name = Objects.requireNonNull(name);
 		Objects.requireNonNull(defs);
 
 		Set<Entry<String, Item<?>>> entries = defs.entrySet();

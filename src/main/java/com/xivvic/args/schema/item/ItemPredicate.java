@@ -1,4 +1,4 @@
-package com.xivvic.args.schema;
+package com.xivvic.args.schema.item;
 
 import java.util.function.Predicate;
 

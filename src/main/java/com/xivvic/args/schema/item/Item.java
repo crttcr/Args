@@ -1,10 +1,10 @@
-package com.xivvic.args.schema;
+package com.xivvic.args.schema.item;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.error.ErrorCode;
+import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.marshall.BooleanOptEvaluator;
 import com.xivvic.args.marshall.DateOptEvaluator;
 import com.xivvic.args.marshall.DoubleOptEvaluator;
@@ -16,6 +16,7 @@ import com.xivvic.args.marshall.PathOptEvaluator;
 import com.xivvic.args.marshall.StringListOptEvaluator;
 import com.xivvic.args.marshall.StringOptEvaluator;
 import com.xivvic.args.marshall.TimeOptEvaluator;
+import com.xivvic.args.schema.OptionType;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -91,7 +92,7 @@ public class Item<T>
 		return rv;
 	}
 
-	public static <U> Builder<U> builder(Map<String, String> args) throws ArgsException
+	public static <U> Builder<U> builder(Map<String, String> args) throws SchemaException
 	{
 		Builder<U> rv = new Builder<>();
 
@@ -177,7 +178,7 @@ public class Item<T>
 		}
 
 		@SuppressWarnings("unchecked")
-		public Item<T> build() throws ArgsException
+		public Item<T> build() throws SchemaException
 		{
 			assertValid();
 
@@ -213,33 +214,33 @@ public class Item<T>
 
 			default:
 				String msg = String.format("Unable to handle OptionType [%s] in item builder", instance.type);
-				throw new ArgsException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
+				throw new SchemaException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
 			}
 
 			Item<T> result = instance;
 			return result;
 		}
 
-		private void assertValid() throws ArgsException
+		private void assertValid() throws SchemaException
 		{
 			if (instance.name == null)
 			{
 				String msg = String.format("Items require a valid name: [%s]", instance);
-				throw new ArgsException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
+				throw new SchemaException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
 			}
 			if (instance.type == null)
 			{
 				String msg = String.format("Items require a valid type: [%s]", instance);
-				throw new ArgsException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
+				throw new SchemaException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
 			}
 			if (instance.eval == null)
 			{
 				String msg = String.format("Items require a valid evaluator: [%s]", instance);
-				throw new ArgsException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
+				throw new SchemaException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
 			}
 		}
 
-		public static void callBuilderMethod(Item.Builder<?> builder, String field, String value) throws ArgsException
+		public static void callBuilderMethod(Item.Builder<?> builder, String field, String value) throws SchemaException
 		{
 			switch (field)
 			{
@@ -268,7 +269,7 @@ public class Item<T>
 				builder.required(required);
 				break;
 			default:
-				throw new ArgsException(ErrorCode.INVALID_ARGUMENT_FORMAT);
+				throw new SchemaException(ErrorCode.INVALID_ARGUMENT_FORMAT);
 			}
 		}
 	}

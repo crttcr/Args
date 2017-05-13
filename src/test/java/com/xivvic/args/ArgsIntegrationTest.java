@@ -16,8 +16,6 @@ import org.junit.experimental.categories.Category;
 import com.xivvic.args.schema.OptionType;
 import com.xivvic.args.schema.Schema;
 
-import args.IntegrationTest;
-
 /*
  * 	// Basic types
 	//

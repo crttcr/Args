@@ -1,7 +1,6 @@
-package args.schema;
+package com.xivvic.args.schema;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -10,20 +9,18 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.xivvic.args.error.ErrorStrategy;
 import com.xivvic.args.marshall.OptEvaluator;
-import com.xivvic.args.schema.Item;
-import com.xivvic.args.schema.OptionType;
-import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilder;
+import com.xivvic.args.schema.item.Item;
 
-public class SchemaBuilderShortFormTest
+public class ParserShortFormTest
 {
-	private SchemaBuilder subject;
+	private ParserShortForm subject;
 
 	@Before
 	public void setUp() throws Exception
 	{
-		subject = new SchemaBuilder("TestSchemaBuidler");
+		subject = new ParserShortForm(ErrorStrategy.FAIL_FAST);
 	}
 
 	@Test
@@ -35,7 +32,7 @@ public class SchemaBuilderShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(opt);
+		Schema schema = subject.parse(opt);
 		Item<Boolean> item = schema.getItem(opt);
 
 		// Assert
@@ -53,7 +50,7 @@ public class SchemaBuilderShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(fmt);
+		Schema schema = subject.parse(fmt);
 		Item<Boolean> item = schema.getItem(opt);
 
 		// Assert
@@ -71,7 +68,7 @@ public class SchemaBuilderShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(fmt);
+		Schema schema = subject.parse(fmt);
 		Item<Double> item = schema.getItem(opt);
 
 		// Assert
@@ -89,7 +86,7 @@ public class SchemaBuilderShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(fmt);
+		Schema schema = subject.parse(fmt);
 		Item<List<String>> item = schema.getItem(opt);
 
 		// Assert
@@ -107,7 +104,7 @@ public class SchemaBuilderShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(fmt);
+		Schema schema = subject.parse(fmt);
 		Item<Boolean> item = schema.getItem(opt);
 
 		// Assert
@@ -124,7 +121,7 @@ public class SchemaBuilderShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(fmt);
+		Schema schema = subject.parse(fmt);
 		Item<Boolean> i1 = schema.getItem("b");
 		Item<String>  i2 = schema.getItem("s");
 		Item<Integer> i3 = schema.getItem("i");
@@ -145,7 +142,7 @@ public class SchemaBuilderShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(fmt);
+		Schema schema = subject.parse(fmt);
 		Item<Boolean> i1 = schema.getItem("b");
 		Item<Boolean> i2 = schema.getItem("i");
 		Item<Boolean> i3 = schema.getItem("x");
@@ -165,7 +162,7 @@ public class SchemaBuilderShortFormTest
 	{
 		assertNotNull(item);
 		assertEquals(name, item.getName());
-		assertFalse(item.getRequired());
+		assertNull(item.getRequired());
 		assertNull(item.getDv());
 		assertEquals(type, item.getType());
 

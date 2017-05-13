@@ -1,4 +1,4 @@
-package args.marshall;
+package com.xivvic.args.marshall;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

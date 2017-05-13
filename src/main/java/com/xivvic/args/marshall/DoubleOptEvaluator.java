@@ -2,6 +2,7 @@ package com.xivvic.args.marshall;
 
 import static com.xivvic.args.error.ErrorCode.INVALID_DOUBLE;
 import static com.xivvic.args.error.ErrorCode.MISSING_DOUBLE;
+import static com.xivvic.args.marshall.Cardinality.ONE;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -33,6 +34,12 @@ public class DoubleOptEvaluator extends OptEvaluatorBase<Double>
 		{
 			throw new ArgsException(INVALID_DOUBLE);
 		}
+	}
+
+	@Override
+	public Cardinality cardinality()
+	{
+		return ONE;
 	}
 
 	@Override
