@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilder;
+import com.xivvic.args.schema.Text2Schema;
 
 public class ArgsTest
 {
@@ -37,7 +37,7 @@ public class ArgsTest
 	@Test(expected=ArgsException.class)
 	public void testConstructWithEmptySchema() throws Exception
 	{
-		Schema schema = new SchemaBuilder().build("");
+		Schema schema = new Text2Schema().createSchema("");
 		String[] args = {"-x", "radio"};
 		@SuppressWarnings("unused")
 		Args arg = new Args(schema, args);
@@ -46,7 +46,7 @@ public class ArgsTest
 	@Test(expected=ArgsException.class)
 	public void testConstructWithNullArgList() throws Exception
 	{
-		Schema schema = new SchemaBuilder().build("x");
+		Schema schema = new Text2Schema().createSchema("x");
 		@SuppressWarnings("unused")
 		Args arg = new Args(schema, null);
 	}
@@ -56,7 +56,7 @@ public class ArgsTest
 	{
 		// Arrange & Act
 		//
-		Schema schema = new SchemaBuilder().build("x");
+		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {};
 		Args arg = new Args(schema, args);
 
@@ -68,7 +68,7 @@ public class ArgsTest
 	@Test(expected=ArgsException.class)
 	public void testNakedDashThrows() throws Exception
 	{
-		Schema schema = new SchemaBuilder().build("x");
+		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {"-", "radio"};
 		new Args(schema, args);
 	}
@@ -78,7 +78,7 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		Schema schema = new SchemaBuilder().build("x");
+		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {"-x", "radio"};
 		Args arg = new Args(schema, args);
 
@@ -96,7 +96,7 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		Schema schema = new SchemaBuilder().build("x");
+		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {"radio"};
 		Args arg = new Args(schema, args);
 
@@ -114,7 +114,7 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		Schema schema = new SchemaBuilder().build("x*");
+		Schema schema = new Text2Schema().createSchema("x*");
 		String[] args = {"-x", "radio"};
 		Args arg = new Args(schema, args);
 
@@ -133,7 +133,7 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		Schema schema = new SchemaBuilder().build("x*,y#");
+		Schema schema = new Text2Schema().createSchema("x*,y#");
 		String[] args = {"-y", "239"};
 		Args arg = new Args(schema, args);
 
@@ -152,7 +152,7 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		Schema schema = new SchemaBuilder().build("x");
+		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {"radio"};
 		Args arg = new Args(schema, args);
 
@@ -170,7 +170,7 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		Schema schema = new SchemaBuilder().build("x");
+		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {"radio"};
 		Args arg = new Args(schema, args);
 
@@ -188,7 +188,7 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		Schema schema = new SchemaBuilder().build("x*,y#");
+		Schema schema = new Text2Schema().createSchema("x*,y#");
 		String[] args = {};
 		Args arg = new Args(schema, args);
 
@@ -206,7 +206,7 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		Schema schema = new SchemaBuilder().build("x*,y#");
+		Schema schema = new Text2Schema().createSchema("x*,y#");
 		String[] args = {"file.a"};
 		Args arg = new Args(schema, args);
 
@@ -224,7 +224,7 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		Schema schema = new SchemaBuilder().build("x*,y#");
+		Schema schema = new Text2Schema().createSchema("x*,y#");
 		String[] args = {};
 		Args arg = new Args(schema, args);
 
@@ -244,7 +244,7 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		Schema schema = new SchemaBuilder().build("x*,y#");
+		Schema schema = new Text2Schema().createSchema("x*,y#");
 		String[] args = {"file.a"};
 		Args arg = new Args(schema, args);
 

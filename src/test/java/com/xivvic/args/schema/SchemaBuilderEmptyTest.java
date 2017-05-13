@@ -7,23 +7,23 @@ import org.junit.Test;
 import com.xivvic.args.error.ErrorStrategy;
 import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilderRevised;
+import com.xivvic.args.schema.SchemaBuilder;
 
 public class SchemaBuilderEmptyTest
 {
-	private SchemaBuilderRevised subject;
+	private SchemaBuilder subject;
 
 	@Test(expected=SchemaException.class)
 	public void testBuildEmptyThrowsWhenFailFast() throws Exception
 	{
-		subject = new SchemaBuilderRevised(ErrorStrategy.FAIL_FAST);
+		subject = new SchemaBuilder(ErrorStrategy.FAIL_FAST);
 		subject.build();
 	}
 
 	@Test(expected=SchemaException.class)
 	public void testBuildEmptyThrowsWhenFailSlow() throws Exception
 	{
-		subject = new SchemaBuilderRevised(ErrorStrategy.FAIL_SLOW);
+		subject = new SchemaBuilder(ErrorStrategy.FAIL_SLOW);
 		subject.build();
 	}
 
@@ -32,7 +32,7 @@ public class SchemaBuilderEmptyTest
 	{
 		// Arrange
 		//
-		subject = new SchemaBuilderRevised(ErrorStrategy.WARN_AND_IGNORE);
+		subject = new SchemaBuilder(ErrorStrategy.WARN_AND_IGNORE);
 
 		// Act
 		//

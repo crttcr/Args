@@ -1,21 +1,25 @@
 package com.xivvic.args.schema;
 
+import static com.xivvic.args.error.ErrorCode.EMPTY_SCHEMA;
+import static com.xivvic.args.error.ErrorCode.INVALID_SCHEMA_ELEMENT;
+import static com.xivvic.args.error.ErrorCode.SCHEMA_MISSING_OPTION_NAME;
+import static com.xivvic.args.error.ErrorCode.SCHEMA_MISSING_OPTION_TYPE;
+import static com.xivvic.args.error.ErrorStrategy.FAIL_FAST;
+import static com.xivvic.args.error.ErrorStrategy.WARN_AND_IGNORE;
+import static com.xivvic.args.schema.item.Item.NAME;
+import static com.xivvic.args.schema.item.Item.TYPE;
 
-import static com.xivvic.args.error.ErrorCode.INVALID_ARGUMENT_FORMAT;
-import static com.xivvic.args.error.ErrorCode.NO_SCHEMA;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
-import com.xivvic.args.error.ArgsException;
-import com.xivvic.args.error.CompositeException;
+import com.xivvic.args.error.CompositeSchemaException;
 import com.xivvic.args.error.ErrorCode;
 import com.xivvic.args.error.ErrorStrategy;
-import com.xivvic.args.marshall.OptEvaluator;
-import com.xivvic.args.marshall.OptEvaluatorBase;
+import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.schema.item.Item;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,232 +27,113 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SchemaBuilder
 {
-	public static final String			 EXTENDED_FORMAT_SEPARATOR	= "=";
-
-	private Map<String, Item<?>>		 opts								= new ConcurrentHashMap<>();
-	private Map<String, Map<String, String>> itemdata				= new ConcurrentHashMap<>();
-
-	private String							 def;
-	private ErrorStrategy             es = ErrorStrategy.FAIL_FAST;
-	private List<ArgsException>       errors;
+	private Map<String, Item<?>>				  opts	  = new ConcurrentHashMap<>();
+	private ErrorStrategy						  es		  = FAIL_FAST;
+	private Map<String, SchemaException>	  errors   = new HashMap<>();
 
 	public SchemaBuilder()
 	{
+		this(FAIL_FAST);
 	}
 
-	public SchemaBuilder errorStrategy(ErrorStrategy es)
+	public SchemaBuilder(ErrorStrategy es)
 	{
 		this.es = es;
+	}
+
+	public SchemaBuilder def(Map<String, String> def) throws SchemaException
+	{
+		SchemaException ex = processDefinition(def);
+
+		if (ex == null)
+		{
+			return this;
+		}
+
+		if (es == FAIL_FAST)
+		{
+			throw ex;
+		}
+
+		String name = def == null || def.get(NAME) == null ? "UNDEFINED" : def.get(NAME);
+		errors.put(name, ex);
+
 		return this;
 	}
 
-	public Schema build(String def) throws ArgsException
+	private SchemaException processDefinition(Map<String, String> def)
 	{
-		if (def == null || def.trim().length() == 0)
+		if (def == null)
 		{
-			throw new ArgsException(NO_SCHEMA);
+			return new SchemaException(EMPTY_SCHEMA);
 		}
 
-		opts.clear();
-		this.def = def.trim();
-		createDefinitions();
+		String name = def.get(NAME);
+		String type = def.get(TYPE);
 
-		return new Schema(opts);
-	}
-
-
-	private void createDefinitions() throws ArgsException
-	{
-		if (isSimpleDefinition())
+		if (name == null)
 		{
-			buildItemsFromShortDefinition();
-		}
-		else
-		{
-			buildItemsFromExtendedDefinition();
-		}
-	}
-
-	private void buildItemsFromShortDefinition() throws ArgsException
-	{
-		char firstChar = def.charAt(0);
-		ErrorStrategy declaredStrategy = ErrorStrategy.strategyForCode(firstChar);
-
-		String shortDefs = def;
-		if (declaredStrategy != null)
-		{
-			es = declaredStrategy;
-			shortDefs = def.substring(1);
+			return new SchemaException(SCHEMA_MISSING_OPTION_NAME);
 		}
 
-		String[] defs = shortDefs.split(",");
-		for (String s : defs)
-		{
-			String t = s.trim();
-			if (t.length() == 0)
-			{
-				log.warn("Schema definition {} contains an empty element.", def);
-				continue;
-			}
-
-			Item<?> item = getObjectFromSimpleDefinition(s);
-			if (item == null)
-			{
-				return;
-			}
-
-			String option = item.getName();
-
-			opts.put(option, item);
-		}
-
-		if (errors != null)
-		{
-			throw new CompositeException(errors);
-		}
-	}
-
-	private void buildItemsFromExtendedDefinition() throws ArgsException
-	{
-		String[] lines = def.split("\n");
-		for (String line : lines)
-		{
-			line = line.trim();
-			if (line.length() == 0 || line.startsWith("#"))
-			{
-				continue;
-			}
-
-			if (!line.contains(EXTENDED_FORMAT_SEPARATOR))
-			{
-				log.warn("Schema definition line {} missing separator {}.", line, EXTENDED_FORMAT_SEPARATOR);
-				continue;
-			}
-			LongFormData form = LongFormData.processDefinitionLine(line);
-			String key = form.getKey();
-
-			Map<String, String> data = itemdata.get(key);
-			if (data == null)
-			{
-				data = new ConcurrentHashMap<>();
-				itemdata.put(key, data);
-			}
-
-			String field = form.getField();
-			String value = form.getValue();
-			data.put(field, value);
-		}
-
-		for (Entry<String, Map<String, String>> e : itemdata.entrySet())
-		{
-			String k = e.getKey();
-			Map<String, String> v = e.getValue();
-			applyBuilder(k, v);
-		}
-	}
-
-
-	private void applyBuilder(String key, Map<String, String> data) throws ArgsException
-	{
-		String typename = data.get(Item.TYPE);
-		if (typename == null)
-		{
-			String msg = "Cannot construct an option without specifying the type.";
-			throw new ArgsException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
-		}
-
-		OptionType type = OptionType.valueOf(typename.toUpperCase());
 		if (type == null)
 		{
-			String msg = String.format("The type name [%s] is not a valid type", typename);
-			throw new ArgsException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
+			return new SchemaException(SCHEMA_MISSING_OPTION_TYPE, name);
 		}
 
-		Item.Builder<?> builder = Item.builder(data);
-		Item<?> item = builder.build();
-		opts.put(key, item);
-	}
 
-	private Item<?> getObjectFromSimpleDefinition(String s) throws ArgsException
-	{
-		String t = s.trim();
-		int length = t.length();
-		if (length == 0)
+		OptionType optType = OptionType.valueOf(type.toUpperCase());
+		if (optType == null)
 		{
-			return null;
+			String msg = String.format("Unable to convert [%s] to an option type", optType);
+			return new SchemaException(INVALID_SCHEMA_ELEMENT, name, msg);
 		}
-
-		String  opt = t.substring(0, 1);
-		String rest = length > 1 ? t.substring(1) : null;
-		Item<?>  rv = null;
 
 		try
 		{
-			rv = processSimpleItem(opt, rest);
+			Item<?> item = Item.builder(def).build();
+			opts.put(name, item);
 		}
-		catch (ArgsException e)
+		catch (SchemaException e)
 		{
-			handleException(e);
+			return e;
 		}
 
-		return rv;
+		return null;
 	}
 
-	private boolean isSimpleDefinition()
+	public Schema build() throws SchemaException
 	{
-		return ! def.contains(EXTENDED_FORMAT_SEPARATOR);
-	}
-
-	private Item<?> processSimpleItem(String opt, String modifier) throws ArgsException
-	{
-		if (modifier == null)
+		if (opts.isEmpty() && es != WARN_AND_IGNORE)
 		{
-			OptEvaluator<Boolean> ev = OptEvaluatorBase.getEvaluatorForType(OptionType.BOOLEAN);
-			Item<Boolean> item = new Item<Boolean>(opt, OptionType.BOOLEAN, ev);
-			return item;
+			throw new SchemaException(ErrorCode.EMPTY_SCHEMA);
 		}
 
-		switch (modifier)
+		if (errors.isEmpty())
 		{
-		case "*":
-			OptEvaluator<String> stringEval = OptEvaluatorBase.getEvaluatorForType(OptionType.STRING);
-			Item<String> stringItem = new Item<String>(opt, OptionType.STRING, stringEval);
-			return stringItem;
-		case "#":
-			OptEvaluator<Integer> ev = OptEvaluatorBase.getEvaluatorForType(OptionType.INTEGER);
-			Item<Integer> iItem = new Item<Integer>(opt, OptionType.INTEGER, ev);
-			return iItem;
-		case "##":
-			OptEvaluator<Double> dv = OptEvaluatorBase.getEvaluatorForType(OptionType.DOUBLE);
-			Item<Double> dub = new Item<Double>(opt, OptionType.DOUBLE, dv);
-			return dub;
-		case "[*]":
-			OptEvaluator<List<String>> sleval = OptEvaluatorBase.getEvaluatorForType(OptionType.STRING_LIST);
-			Item<List<String>> slitem = new Item<List<String>>(opt, OptionType.STRING_LIST, sleval);
-			return slitem;
-		default:
-			throw new ArgsException(INVALID_ARGUMENT_FORMAT, opt, null);
+			return new Schema(opts);
 		}
 
-	}
-
-	private void handleException(ArgsException e) throws ArgsException
-	{
-		switch (es)
+		if (es == ErrorStrategy.WARN_AND_IGNORE)
 		{
-		case FAIL_FAST:
-			throw e;
-		case FAIL_SLOW:
-			errors = errors == null ? new ArrayList<>() : errors;
-			errors.add(e);
-		case WARN_AND_IGNORE:
-			String msg = String.format("Ignoring schema definition error:  %s", e.getMessage());
-			log.warn(msg);
-			break;
-		default:
-			String err = String.format("Program error: ErrorStrategy (%s) not supported. Continuing.", es);
-			log.warn(err);
-			break;
+			for (Entry<String, SchemaException> entry : errors.entrySet())
+			{
+				String name = entry.getKey();
+				String msg = String.format("Ignoring option [%s] becuase of exception [%s]", name, entry.getValue());
+				log.warn(msg);
+				opts.remove(name);
+			}
+
+			return new Schema(opts);
 		}
+
+		List<SchemaException> list = errors.entrySet()
+		.stream()
+		.sorted(Map.Entry.comparingByKey())
+		.map(e -> { return e.getValue(); })
+		.collect(Collectors.toList());
+
+		SchemaException ex = new CompositeSchemaException(list);
+		throw ex;
 	}
 }

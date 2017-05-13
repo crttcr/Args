@@ -10,13 +10,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.xivvic.args.TestUtil;
-import com.xivvic.args.schema.OptionType;
-import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilder;
 import com.xivvic.args.schema.item.Item;
 
 public class SchemaBuilderLongFormTest
 {
+	// FIXME.  SBLF no longer creates a schema, so the MAP<MAP> needs to be tested instead.
+
 	private SchemaBuilder subject;
 
 	@Before
@@ -34,7 +33,7 @@ public class SchemaBuilderLongFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(defs);
+		Schema schema = new Text2Schema().createSchema(defs);
 		Item<Double> latitude  = schema.getItem("latitude");
 		Item<Double> longitude = schema.getItem("longitude");
 
@@ -53,7 +52,7 @@ public class SchemaBuilderLongFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(defs);
+		Schema schema = new Text2Schema().createSchema(defs);
 		Item<Boolean> v = schema.getItem("verbose");
 		Item<Boolean> q = schema.getItem("quiet");
 
@@ -73,7 +72,7 @@ public class SchemaBuilderLongFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(defs);
+		Schema schema = new Text2Schema().createSchema(defs);
 		Item<Boolean> item = schema.getItem(name);
 
 		// Assert
@@ -90,7 +89,7 @@ public class SchemaBuilderLongFormTest
 
 		// Act
 		//
-		Schema schema = subject.build(defs);
+		Schema schema = new Text2Schema().createSchema(defs);
 		Item<Boolean> item = schema.getItem("b");
 
 		// Assert

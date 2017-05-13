@@ -33,7 +33,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class LongFormParser
-implements SchemaParser
 {
 	public static final String			 DEFAULT_NAME					= "[Name not defined]";
 	public static final String			 EXTENDED_FORMAT_SEPARATOR	= "=";
@@ -61,7 +60,6 @@ implements SchemaParser
 	// false if it does not (e.g. comment, empty line), and throw an
 	// exception if it is malformed.
 	//
-	@Override
 	public boolean parseLine(String line) throws ArgsException
 	{
 		if (line == null)
@@ -212,7 +210,6 @@ implements SchemaParser
 		}
 	}
 
-	@Override
 	public Schema getSchema() throws ArgsException
 	{
 		// TODO Auto-generated method stub

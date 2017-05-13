@@ -2,7 +2,7 @@ package com.xivvic.args;
 
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilder;
+import com.xivvic.args.schema.Text2Schema;
 
 /**
  * Example application to run the Args command line processor
@@ -15,11 +15,11 @@ public class ApplicationShortForm
 		try
 		{
 			String[] defs = { "-d", "/tmp/foo", "-l", "-p", "8080" };
-			Schema schema = new SchemaBuilder().build("l,p#,d*");
-			Args arg = new Args(schema, args.length == 0 ? defs : args);
+			Schema schema = new Text2Schema().createSchema("l,p#,d*");
+			Args      arg = new Args(schema, args.length == 0 ? defs : args);
 
-			String path = arg.getValue("d");
-			Integer port = arg.getValue("p");
+			String     path = arg.getValue("d");
+			Integer    port = arg.getValue("p");
 			Boolean logging = arg.getValue("l");
 
 			run(path, port, logging);
@@ -36,5 +36,4 @@ public class ApplicationShortForm
 		String msg = String.format(fmt, directory, port, logging ? "ENABLED" : "DISABLED");
 		System.out.printf(msg);
 	}
-
 }

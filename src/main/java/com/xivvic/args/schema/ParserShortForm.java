@@ -5,8 +5,7 @@ import static com.xivvic.args.error.ErrorCode.NO_SCHEMA;
 import static com.xivvic.args.error.ErrorStrategy.FAIL_FAST;
 import static com.xivvic.args.error.ErrorStrategy.WARN_AND_IGNORE;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,43 +18,36 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ParserShortForm
+extends SchemaParser
 {
-	private final ErrorStrategy         es;
-	private ErrorStrategy declaredStrategy;
-	private List<SchemaException>   errors;
-
 	public ParserShortForm()
 	{
-		this(FAIL_FAST);
+		super(FAIL_FAST);
 	}
 
 	public ParserShortForm(ErrorStrategy es)
 	{
-		this.es = es;
+		super(es);
 	}
 
-	public Schema parse(String spec) throws SchemaException
+	@Override
+	public Map<String, Map<String, String>> parse(String spec) throws SchemaException
 	{
 		if (spec == null || spec.trim().length() == 0)
 		{
 			if (es == WARN_AND_IGNORE)
 			{
-				return new SchemaBuilderRevised(es).build();
+				log.warn("Empty specification provided. Ignorning and returning empty result.");
+				return Collections.emptyMap();
 			}
 
 			SchemaException ex = new SchemaException(NO_SCHEMA);
 			handleException(ex);
 		}
 
-		SchemaBuilderRevised          builder = new SchemaBuilderRevised(declaredStrategy == null ? es : declaredStrategy);
 		Map<String, Map<String, String>> defs = createDefinitions(spec.trim());
 
-		for (Map<String, String> def : defs.values())
-		{
-			builder.def(def);
-		}
-
-		return builder.build();
+		return defs;
 	}
 
 	private Map<String, Map<String, String>> createDefinitions(String spec) throws SchemaException
@@ -113,6 +105,8 @@ public class ParserShortForm
 
 		rv.put(Item.NAME, opt);
 
+		// TODO: Consider additional types of arguments for simple processing.
+		//
 		switch (modifier)
 		{
 		case    "": rv.put(Item.TYPE,      OptionType.BOOLEAN.name()); break;
@@ -128,23 +122,4 @@ public class ParserShortForm
 		return rv;
 	}
 
-	private void handleException(SchemaException e) throws SchemaException
-	{
-		switch (es)
-		{
-		case FAIL_FAST:
-			throw e;
-		case FAIL_SLOW:
-			errors = errors == null ? new ArrayList<>() : errors;
-			errors.add(e);
-		case WARN_AND_IGNORE:
-			String msg = String.format("Ignoring schema definition error:  %s", e.getMessage());
-			log.warn(msg);
-			break;
-		default:
-			String err = String.format("Program error: ErrorStrategy (%s) not supported. Continuing.", es);
-			log.warn(err);
-			break;
-		}
-	}
 }

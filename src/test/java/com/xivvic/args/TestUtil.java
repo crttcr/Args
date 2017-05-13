@@ -14,7 +14,7 @@ import java.util.Objects;
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.schema.OptionType;
 import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilder;
+import com.xivvic.args.schema.Text2Schema;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -99,8 +99,8 @@ public class TestUtil
 
 		try
 		{
-			SchemaBuilder builder = new SchemaBuilder();
-			Schema schema = builder.build(s);
+			Text2Schema t2s = new Text2Schema();
+			Schema schema = t2s.createSchema(s);
 			return schema;
 		}
 		catch (ArgsException e)

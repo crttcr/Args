@@ -2,7 +2,7 @@ package com.xivvic.args;
 
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilder;
+import com.xivvic.args.schema.Text2Schema;
 import com.xivvic.args.util.FileUtil;
 
 /**
@@ -18,7 +18,7 @@ public class ApplicationLongForm
 			String[] ersatzArgs = {"--path", "/tmp", "--file" , "out.txt", "--server", "localhost", "--port", "8080"};
 			args = args.length == 0 ? ersatzArgs : args;
 			String defs = getOptionDefinitions();
-			Schema schema = new SchemaBuilder().build(defs);
+			Schema schema = new Text2Schema().createSchema(defs);
 			Args arg = new Args(schema, args);
 
 			String path = arg.getValue("path");

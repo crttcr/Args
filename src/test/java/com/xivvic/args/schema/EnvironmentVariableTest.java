@@ -8,8 +8,6 @@ import org.junit.Test;
 import com.xivvic.args.Args;
 import com.xivvic.args.TestUtil;
 import com.xivvic.args.error.ArgsException;
-import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilder;
 
 
 public class EnvironmentVariableTest
@@ -21,7 +19,7 @@ public class EnvironmentVariableTest
 		//
 		String[] arguments = {"a", "b"};
 		String defs = TestUtil.readFromTestResourceFile("s.envvar.txt");
-		Schema schema = new SchemaBuilder().build(defs);
+		Schema schema = new Text2Schema().createSchema(defs);
 
 		// Act
 		//

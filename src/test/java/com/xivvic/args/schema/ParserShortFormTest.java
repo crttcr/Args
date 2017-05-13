@@ -4,13 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.xivvic.args.error.ErrorStrategy;
-import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.item.Item;
 
 public class ParserShortFormTest
@@ -32,12 +31,12 @@ public class ParserShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.parse(opt);
-		Item<Boolean> item = schema.getItem(opt);
+		Map<String, Map<String, String>> parseResult = subject.parse(opt);
+		Map<String, String> def = parseResult.get(opt);
 
 		// Assert
 		//
-		assertSimpleItemForm(item, opt, OptionType.BOOLEAN);
+		assertSimpleItemForm(def, opt, OptionType.BOOLEAN);
 	}
 
 	@Test
@@ -50,12 +49,12 @@ public class ParserShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.parse(fmt);
-		Item<Boolean> item = schema.getItem(opt);
+		Map<String, Map<String, String>> parseResult = subject.parse(fmt);
+		Map<String, String> def = parseResult.get(opt);
 
 		// Assert
 		//
-		assertSimpleItemForm(item, opt, OptionType.STRING);
+		assertSimpleItemForm(def, opt, OptionType.STRING);
 	}
 
 	@Test
@@ -68,12 +67,12 @@ public class ParserShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.parse(fmt);
-		Item<Double> item = schema.getItem(opt);
+		Map<String, Map<String, String>> parseResult = subject.parse(fmt);
+		Map<String, String> def = parseResult.get(opt);
 
 		// Assert
 		//
-		assertSimpleItemForm(item, opt, OptionType.DOUBLE);
+		assertSimpleItemForm(def, opt, OptionType.DOUBLE);
 	}
 
 	@Test
@@ -86,12 +85,12 @@ public class ParserShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.parse(fmt);
-		Item<List<String>> item = schema.getItem(opt);
+		Map<String, Map<String, String>> parseResult = subject.parse(fmt);
+		Map<String, String> def = parseResult.get(opt);
 
 		// Assert
 		//
-		assertSimpleItemForm(item, opt, OptionType.STRING_LIST);
+		assertSimpleItemForm(def, opt, OptionType.STRING_LIST);
 	}
 
 	@Test
@@ -104,12 +103,12 @@ public class ParserShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.parse(fmt);
-		Item<Boolean> item = schema.getItem(opt);
+		Map<String, Map<String, String>> parseResult = subject.parse(fmt);
+		Map<String, String> def = parseResult.get(opt);
 
 		// Assert
 		//
-		assertSimpleItemForm(item, opt, OptionType.INTEGER);
+		assertSimpleItemForm(def, opt, OptionType.INTEGER);
 	}
 
 	@Test
@@ -121,16 +120,16 @@ public class ParserShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.parse(fmt);
-		Item<Boolean> i1 = schema.getItem("b");
-		Item<String>  i2 = schema.getItem("s");
-		Item<Integer> i3 = schema.getItem("i");
+		Map<String, Map<String, String>> parseResult = subject.parse(fmt);
+		Map<String, String> def1 = parseResult.get("b");
+		Map<String, String> def2 = parseResult.get("s");
+		Map<String, String> def3 = parseResult.get("i");
 
 		// Assert
 		//
-		assertSimpleItemForm(i1, "b", OptionType.BOOLEAN);
-		assertSimpleItemForm(i2, "s", OptionType.STRING);
-		assertSimpleItemForm(i3, "i", OptionType.INTEGER);
+		assertSimpleItemForm(def1, "b", OptionType.BOOLEAN);
+		assertSimpleItemForm(def2, "s", OptionType.STRING);
+		assertSimpleItemForm(def3, "i", OptionType.INTEGER);
 	}
 
 	@Test
@@ -142,33 +141,31 @@ public class ParserShortFormTest
 
 		// Act
 		//
-		Schema schema = subject.parse(fmt);
-		Item<Boolean> i1 = schema.getItem("b");
-		Item<Boolean> i2 = schema.getItem("i");
-		Item<Boolean> i3 = schema.getItem("x");
+		Map<String, Map<String, String>> parseResult = subject.parse(fmt);
+		Map<String, String> def1 = parseResult.get("b");
+		Map<String, String> def2 = parseResult.get("i");
+		Map<String, String> def3 = parseResult.get("x");
 
 		// Assert
 		//
-		assertSimpleItemForm(i1, "b", OptionType.BOOLEAN);
-		assertSimpleItemForm(i2, "i", OptionType.INTEGER);
-		assertSimpleItemForm(i3, "x", OptionType.BOOLEAN);
+		assertSimpleItemForm(def1, "b", OptionType.BOOLEAN);
+		assertSimpleItemForm(def2, "i", OptionType.INTEGER);
+		assertSimpleItemForm(def3, "x", OptionType.BOOLEAN);
 	}
 
 	///////////////////////////////
 	// Helper Methods            //
 	///////////////////////////////
 
-	private void assertSimpleItemForm(Item<?> item, String name, OptionType type)
+	private void assertSimpleItemForm(Map<String, String> def, String name, OptionType type)
 	{
-		assertNotNull(item);
-		assertEquals(name, item.getName());
-		assertNull(item.getRequired());
-		assertNull(item.getDv());
-		assertEquals(type, item.getType());
+		assertNotNull(def);
+		assertEquals(name, def.get(Item.NAME));
+		assertEquals(type.name(), def.get(Item.TYPE));
 
-		OptEvaluator<?> eval = item.getEval();
-		assertNotNull(eval);
-		assertEquals(0, eval.count());
-		assertNull(eval.getValue());
+		assertNull(def.get(Item.REQUIRED));
+		assertNull(def.get(Item.DESCRIPTION));
+		assertNull(def.get(Item.DEFAULT));
+		assertNull(def.get(Item.ENV_VAR));
 	}
 }

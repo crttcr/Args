@@ -25,7 +25,6 @@ public class LongFormData
 			throw new ArgsException(ErrorCode.INVALID_ARGUMENT_FORMAT);
 		}
 
-
 		String key = parts[0].substring(0, pos);
 		String field = parts[0].substring(pos + 1);
 		String value = parts[1];
@@ -36,7 +35,7 @@ public class LongFormData
 
 	private static String[] splitString(String line) throws ArgsException
 	{
-		String[] parts = line.split(SchemaBuilder.EXTENDED_FORMAT_SEPARATOR, 2);
+		String[] parts = line.split(Text2Schema.EXTENDED_FORMAT_SEPARATOR, 2);
 		if (parts.length != 2 || parts[0] == null || parts[1] == null)
 		{
 			log.error("Schema definition line {} did not split into 2 parts.", line);

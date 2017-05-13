@@ -19,17 +19,17 @@ import com.xivvic.args.error.ErrorStrategy;
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.OptionType;
 import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilderRevised;
+import com.xivvic.args.schema.SchemaBuilder;
 import com.xivvic.args.schema.item.Item;
 
 public class SchemaBuilderSimpleFormTest
 {
-	private SchemaBuilderRevised subject;
+	private SchemaBuilder subject;
 
 	@Before
 	public void setUp() throws Exception
 	{
-		subject = new SchemaBuilderRevised();
+		subject = new SchemaBuilder();
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class SchemaBuilderSimpleFormTest
 		for (InputTuple it : inputs)
 		{
 			Map<String, String> defs = getSimpleDefs(it.option, it.type);
-			subject = new SchemaBuilderRevised(ErrorStrategy.FAIL_FAST);
+			subject = new SchemaBuilder(ErrorStrategy.FAIL_FAST);
 			Schema schema = subject.def(defs).build();
 			Item<?> item = schema.getItem(it.option);
 

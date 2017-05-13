@@ -14,9 +14,10 @@ import java.util.Set;
 
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.error.ErrorCode;
+import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilder;
+import com.xivvic.args.schema.Text2Schema;
 import com.xivvic.args.schema.item.Item;
 
 
@@ -38,26 +39,46 @@ public class Args
 	private final List<String> arguments = new ArrayList<>();
 	private final Schema schema;
 
+	public Args(String[] args)
+	throws ArgsException
+	{
+		// FIXME: This constructor needs to look for a specific property file
+		// and read it.
+
+		// LOAD PROPERTY FILE
+		//
+		schema = new Schema(null);
+		if (args == null)
+		{
+			throw new SchemaException(NO_SCHEMA);
+		}
+
+		initialize(args);
+	}
+
 	public Args(Schema schema, String[] args)
-		throws ArgsException
+	throws ArgsException
 	{
 		if (schema == null)
 		{
-			throw new ArgsException(NO_SCHEMA);
+			throw new SchemaException(NO_SCHEMA);
 		}
 		this.schema = schema;
 		initialize(args);
 	}
 
 	public Args(String defs, String[] args)
-		throws ArgsException
+	throws ArgsException
 	{
 		if (defs == null)
 		{
-			throw new ArgsException(NO_SCHEMA);
+			throw new SchemaException(NO_SCHEMA);
 		}
 
-		this.schema = new SchemaBuilder().build(defs);
+		Text2Schema t2s = new Text2Schema();
+
+		schema = t2s.createSchema(defs);
+
 		initialize(args);
 	}
 
@@ -99,7 +120,7 @@ public class Args
 
 
 	private void parseCommandLine(String[] args)
-		throws ArgsException
+	throws ArgsException
 	{
 		if (args == null)
 		{
@@ -158,7 +179,7 @@ public class Args
 
 
 	private void handleShortFormOption(String stripped, ListIterator<String> args)
-		throws ArgsException
+	throws ArgsException
 	{
 		if (stripped.length() < 1)
 		{
