@@ -21,6 +21,10 @@ repositories
 
 dependencies 
 {
+	// Antlr
+	//
+	compile 'org.antlr:antlr4:4.7+'
+	
 	// Commons Lang
 	//
 	compile 'org.apache.commons:commons-lang3:3+'

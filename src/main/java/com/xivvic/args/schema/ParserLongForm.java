@@ -7,8 +7,14 @@ import static com.xivvic.args.error.ErrorStrategy.WARN_AND_IGNORE;
 import java.util.Collections;
 import java.util.Map;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+
 import com.xivvic.args.error.ErrorStrategy;
 import com.xivvic.args.error.SchemaException;
+import com.xivvic.args.schema.antlr.ArgsSpecLexer;
+import com.xivvic.args.schema.antlr.ArgsSpecParser;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,21 +48,24 @@ extends SchemaParser
 			handleException(ex);
 		}
 
-		Map<String, Map<String, String>> defs = createDefinitions(spec.trim());
+		String trim = spec.trim();
+		Map<String, Map<String, String>> defs = createDefinitions(trim);
 
 		return defs;
 	}
 
 
-	private Map<String, Map<String, String>> createDefinitions(String trim)
+	private Map<String, Map<String, String>> createDefinitions(String spec)
 	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+		CharStream input = CharStreams.fromString(spec);
+		ArgsSpecLexer lexer = new ArgsSpecLexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		ArgsSpecParser parser = new ArgsSpecParser(tokens);
+		LongFormListener listener = new LongFormListener(es);
+		parser.addParseListener(listener);
+		parser.spec();
 
-	private String getPropertyListener()
-	{
-		return "FIXME";
-
+		//		System.out.println("Context post spec() call: " + context);
+		return listener.result();
 	}
 }

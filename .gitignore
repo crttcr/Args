@@ -39,6 +39,9 @@ gradle-app.setting
 *.swp
 *.lock
 
+## Eclipse
+.settings/
+
 ## Allow UML Diagram
 ##
 !OptionParsing.png
