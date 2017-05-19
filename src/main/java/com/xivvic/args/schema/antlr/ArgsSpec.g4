@@ -4,31 +4,12 @@ grammar ArgsSpec;
 package com.xivvic.args.schema.antlr;
 } 
 
-start: 
-		item+ EOF 
-	;
-
-item: 
-		item_header name_value* 
-	;
-
-item_header: 
-		LBRACK name RBRACK 
-	;
-	
-name:
-		NAME
-	;
-
-name_value:
-		name COLON value?
-	|	name EQUAL value? 
-	;
-
-value: 
-		NAME 
-	|	STRING 
-	;
+start: item+ EOF ;
+item: item_header name_value* ;
+item_header: LBRACK name RBRACK ;
+name: NAME ;
+name_value: name (COLON | EQUAL)  value? ;
+value: NAME | STRING ;
 
 
 // Lexical Items
