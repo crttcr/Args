@@ -1,5 +1,0 @@
-## Date option
-##
-birthday.name=birthday
-birthday.description=Date of the person's birth
-birthday.type=DATE

@@ -1,19 +1,20 @@
 package com.xivvic.args.schema;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.xivvic.args.error.ErrorCode;
+import org.antlr.v4.runtime.tree.ParseTree;
+
 import com.xivvic.args.error.ErrorStrategy;
 import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.schema.antlr.ArgsSpecBaseListener;
 import com.xivvic.args.schema.antlr.ArgsSpecParser;
 import com.xivvic.args.schema.item.Item;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -21,10 +22,14 @@ public class LongFormListener
 extends ArgsSpecBaseListener
 {
 	private Map<String, Map<String, String>> result = new HashMap<>();
+
 	private Map<String, String> current = null;
-	private String name = null;
+	private String itemName = null;
 	private List<SchemaException> errors = new LinkedList<>();
 	private final ErrorStrategy es;
+
+	@Setter
+	private boolean trace = false;
 
 	public LongFormListener(ErrorStrategy es)
 	{
@@ -34,7 +39,10 @@ extends ArgsSpecBaseListener
 	@Override
 	public void enterItem(ArgsSpecParser.ItemContext ctx)
 	{
-		System.out.println("Entered item: " + ctx.getText());
+		if (trace)
+		{
+			System.out.println("Enter item: " + ctx.getText());
+		}
 		current = new HashMap<String, String>();
 	}
 
@@ -47,66 +55,90 @@ extends ArgsSpecBaseListener
 			current.put(Item.TYPE, OptionType.BOOLEAN.name());
 		}
 
-		current.put(Item.NAME, name);
-		result.put(name, current);
+		current.put(Item.NAME, itemName);
+		result.put(itemName, current);
 
 		current = null;
-		name = null;
+		itemName = null;
 
-		System.out.println("Exited item: " + ctx.getText());
+		if (trace)
+		{
+			System.out.println("Exited item: " + ctx.getText());
+		}
 	}
 
 	@Override
 	public void exitItem_header(ArgsSpecParser.Item_headerContext ctx)
 	{
-		name = ctx.item_name().getText();
+		itemName = ctx.name().getText();
+		if (trace)
+		{
+			System.out.println("Exit item header: " + ctx.getText());
+		}
 	}
 
 	@Override
-	public void exitKey_value(ArgsSpecParser.Key_valueContext ctx)
+	public void exitName_value(ArgsSpecParser.Name_valueContext ctx)
 	{
-		String key = ctx.key().getText();
-		String value = ctx.value() == null ? null : ctx.value().getText();
+		ParseTree keyTree = ctx.getChild(0);
+		ParseTree valueTree = ctx.getChild(2);
+		String key = keyTree.getText();
+		String value = valueTree == null ? null : ctx.value().getText();
 
-		switch (key)
+		if (value != null && value.startsWith("\"") && value.endsWith("\""))
 		{
-		case Item.DEFAULT:
-		case Item.DESCRIPTION:
-		case Item.ENV_VAR:
-		case Item.REQUIRED:
-		case Item.TYPE:
-			current.put(key, value);
-			break;
-		default:
-			String msg = "Unexpected configuration value [" + key + "] in specification";
-			SchemaException ex = new SchemaException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
-			handleException(ex);
-			break;
+			value = value.substring(1, value.length() - 1);
+		}
+
+		current.put(key, value);
+		if (trace)
+		{
+			System.out.println("Exit NameValue: " + ctx.getText());
+		}
+
+	}
+
+	@Override
+	public void exitName(ArgsSpecParser.NameContext ctx)
+	{
+		if (trace)
+		{
+			System.out.println("Exit name: " + ctx.getText());
 		}
 	}
+
+	@Override
+	public void enterName_value(ArgsSpecParser.Name_valueContext ctx)
+	{
+		if (trace)
+		{
+			System.out.println("Enter name value: " + ctx.getText());
+		}
+	}
+
 
 	public Map<String, Map<String, String>> result()
 	{
 		return Collections.unmodifiableMap(result);
 	}
 
-	private void handleException(SchemaException e)
-	{
-		switch (es)
-		{
-		case FAIL_FAST:
-			throw new RuntimeException(e);
-		case FAIL_SLOW:
-			errors = errors == null ? new ArrayList<>() : errors;
-			errors.add(e);
-		case WARN_AND_IGNORE:
-			String msg = String.format("Ignoring schema definition error:  %s", e.getMessage());
-			log.warn(msg);
-			break;
-		default:
-			String err = String.format("Program error: ErrorStrategy (%s) not supported. Continuing.", es);
-			log.warn(err);
-			break;
-		}
-	}
+	//	private void handleException(SchemaException e)
+	//	{
+	//		switch (es)
+	//		{
+	//		case FAIL_FAST:
+	//			throw new RuntimeException(e);
+	//		case FAIL_SLOW:
+	//			errors = errors == null ? new ArrayList<>() : errors;
+	//			errors.add(e);
+	//		case WARN_AND_IGNORE:
+	//			String msg = String.format("Ignoring schema definition error:  %s", e.getMessage());
+	//			log.warn(msg);
+	//			break;
+	//		default:
+	//			String err = String.format("Program error: ErrorStrategy (%s) not supported. Continuing.", es);
+	//			log.warn(err);
+	//			break;
+	//		}
+	//	}
 }

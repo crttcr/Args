@@ -18,7 +18,7 @@ public class EnvironmentVariableTest
 		// Arrange
 		//
 		String[] arguments = {"a", "b"};
-		String defs = TestUtil.readFromTestResourceFile("s.envvar.txt");
+		String defs = TestUtil.readFromTestResourceFile("string.envvar.argspec");
 		Schema schema = new Text2Schema().createSchema(defs);
 
 		// Act

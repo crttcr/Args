@@ -21,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TestUtil
 {
+	public static final String TEST_SPECIFICATION_LOCATION = "src/test/resources/definitions";
+
 	public static ListIterator<String> getListIterator(String... strings)
 	{
 		List<String> list = Arrays.asList(strings);
@@ -30,7 +32,12 @@ public class TestUtil
 
 	public static String readFromTestResourceFile(String file)
 	{
-		Path path = Paths.get("src/test/resources/defs", file);
+		return readFromTestResourceFile(TEST_SPECIFICATION_LOCATION, file);
+	}
+
+	public static String readFromTestResourceFile(String location, String file)
+	{
+		Path path = Paths.get(location, file);
 
 		System.out.println(path.toAbsolutePath().toString());
 
@@ -62,31 +69,31 @@ public class TestUtil
 		switch (t)
 		{
 		case BOOLEAN:
-			s = readFromTestResourceFile("boolean.long.txt");
+			s = readFromTestResourceFile("boolean.argspec");
 			break;
 		case STRING:
-			s = readFromTestResourceFile("string.long.txt");
+			s = readFromTestResourceFile("string.argspec");
 			break;
 		case STRING_LIST:
-			s = readFromTestResourceFile("string.list.long.txt");
+			s = readFromTestResourceFile("string.list.argspec");
 			break;
 		case INTEGER:
-			s = readFromTestResourceFile("integer.long.txt");
+			s = readFromTestResourceFile("integer.all.argspec");
 			break;
 		case DOUBLE:
-			s = readFromTestResourceFile("double.long.txt");
+			s = readFromTestResourceFile("double.argspec");
 			break;
 		case DATE:
-			s = readFromTestResourceFile("date.long.txt");
+			s = readFromTestResourceFile("date.argspec");
 			break;
 		case TIME:
-			s = readFromTestResourceFile("time.long.txt");
+			s = readFromTestResourceFile("time.argspec");
 			break;
 		case PATH:
-			s = readFromTestResourceFile("path.long.txt");
+			s = readFromTestResourceFile("path.argspec");
 			break;
 		case FILE:
-			s = readFromTestResourceFile("file.long.txt");
+			s = readFromTestResourceFile("file.argspec");
 			break;
 
 		default:

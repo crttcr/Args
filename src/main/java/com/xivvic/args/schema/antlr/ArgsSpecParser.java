@@ -19,21 +19,21 @@ public class ArgsSpecParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		COLON=1, EQUALS=2, OPEN_BRACKET=3, CLOSE_BRACKET=4, TEXT=5, WS=6, LINE_COMMENT=7;
+		NAME=1, STRING=2, LINE_COMMENT=3, LINE_ESCAPE=4, WS=5, NL=6, LBRACK=7, 
+		RBRACK=8, COLON=9, EQUAL=10;
 	public static final int
-		RULE_spec = 0, RULE_item = 1, RULE_item_header = 2, RULE_item_name = 3, 
-		RULE_key_value = 4, RULE_key = 5, RULE_value = 6, RULE_text = 7;
+		RULE_start = 0, RULE_item = 1, RULE_item_header = 2, RULE_name = 3, RULE_name_value = 4, 
+		RULE_value = 5;
 	public static final String[] ruleNames = {
-		"spec", "item", "item_header", "item_name", "key_value", "key", "value", 
-		"text"
+		"start", "item", "item_header", "name", "name_value", "value"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "':'", "'='", "'['", "']'"
+		null, null, null, null, null, null, null, "'['", "']'", "':'", "'='"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, "COLON", "EQUALS", "OPEN_BRACKET", "CLOSE_BRACKET", "TEXT", "WS", 
-		"LINE_COMMENT"
+		null, "NAME", "STRING", "LINE_COMMENT", "LINE_ESCAPE", "WS", "NL", "LBRACK", 
+		"RBRACK", "COLON", "EQUAL"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -84,68 +84,50 @@ public class ArgsSpecParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
-	public static class SpecContext extends ParserRuleContext {
+	public static class StartContext extends ParserRuleContext {
 		public TerminalNode EOF() { return getToken(ArgsSpecParser.EOF, 0); }
-		public List<TerminalNode> LINE_COMMENT() { return getTokens(ArgsSpecParser.LINE_COMMENT); }
-		public TerminalNode LINE_COMMENT(int i) {
-			return getToken(ArgsSpecParser.LINE_COMMENT, i);
-		}
 		public List<ItemContext> item() {
 			return getRuleContexts(ItemContext.class);
 		}
 		public ItemContext item(int i) {
 			return getRuleContext(ItemContext.class,i);
 		}
-		public SpecContext(ParserRuleContext parent, int invokingState) {
+		public StartContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_spec; }
+		@Override public int getRuleIndex() { return RULE_start; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).enterSpec(this);
+			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).enterStart(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).exitSpec(this);
+			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).exitStart(this);
 		}
 	}
 
-	public final SpecContext spec() throws RecognitionException {
-		SpecContext _localctx = new SpecContext(_ctx, getState());
-		enterRule(_localctx, 0, RULE_spec);
+	public final StartContext start() throws RecognitionException {
+		StartContext _localctx = new StartContext(_ctx, getState());
+		enterRule(_localctx, 0, RULE_start);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(20);
+			setState(13); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==OPEN_BRACKET || _la==LINE_COMMENT) {
+			do {
 				{
-				setState(18);
-				_errHandler.sync(this);
-				switch (_input.LA(1)) {
-				case LINE_COMMENT:
-					{
-					setState(16);
-					match(LINE_COMMENT);
-					}
-					break;
-				case OPEN_BRACKET:
-					{
-					setState(17);
-					item();
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
+				{
+				setState(12);
+				item();
 				}
 				}
-				setState(22);
+				setState(15); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			}
-			setState(23);
+			} while ( _la==LBRACK );
+			setState(17);
 			match(EOF);
 			}
 		}
@@ -164,15 +146,11 @@ public class ArgsSpecParser extends Parser {
 		public Item_headerContext item_header() {
 			return getRuleContext(Item_headerContext.class,0);
 		}
-		public List<TerminalNode> LINE_COMMENT() { return getTokens(ArgsSpecParser.LINE_COMMENT); }
-		public TerminalNode LINE_COMMENT(int i) {
-			return getToken(ArgsSpecParser.LINE_COMMENT, i);
+		public List<Name_valueContext> name_value() {
+			return getRuleContexts(Name_valueContext.class);
 		}
-		public List<Key_valueContext> key_value() {
-			return getRuleContexts(Key_valueContext.class);
-		}
-		public Key_valueContext key_value(int i) {
-			return getRuleContext(Key_valueContext.class,i);
+		public Name_valueContext name_value(int i) {
+			return getRuleContext(Name_valueContext.class,i);
 		}
 		public ItemContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -191,41 +169,25 @@ public class ArgsSpecParser extends Parser {
 	public final ItemContext item() throws RecognitionException {
 		ItemContext _localctx = new ItemContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_item);
+		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(25);
+			setState(19);
 			item_header();
-			setState(30);
+			setState(23);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
-			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					{
-					setState(28);
-					_errHandler.sync(this);
-					switch (_input.LA(1)) {
-					case LINE_COMMENT:
-						{
-						setState(26);
-						match(LINE_COMMENT);
-						}
-						break;
-					case TEXT:
-						{
-						setState(27);
-						key_value();
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
-					}
-					} 
+			_la = _input.LA(1);
+			while (_la==NAME) {
+				{
+				{
+				setState(20);
+				name_value();
 				}
-				setState(32);
+				}
+				setState(25);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
+				_la = _input.LA(1);
 			}
 			}
 		}
@@ -241,11 +203,11 @@ public class ArgsSpecParser extends Parser {
 	}
 
 	public static class Item_headerContext extends ParserRuleContext {
-		public TerminalNode OPEN_BRACKET() { return getToken(ArgsSpecParser.OPEN_BRACKET, 0); }
-		public Item_nameContext item_name() {
-			return getRuleContext(Item_nameContext.class,0);
+		public TerminalNode LBRACK() { return getToken(ArgsSpecParser.LBRACK, 0); }
+		public NameContext name() {
+			return getRuleContext(NameContext.class,0);
 		}
-		public TerminalNode CLOSE_BRACKET() { return getToken(ArgsSpecParser.CLOSE_BRACKET, 0); }
+		public TerminalNode RBRACK() { return getToken(ArgsSpecParser.RBRACK, 0); }
 		public Item_headerContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -266,12 +228,12 @@ public class ArgsSpecParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(33);
-			match(OPEN_BRACKET);
-			setState(34);
-			item_name();
-			setState(35);
-			match(CLOSE_BRACKET);
+			setState(26);
+			match(LBRACK);
+			setState(27);
+			name();
+			setState(28);
+			match(RBRACK);
 			}
 		}
 		catch (RecognitionException re) {
@@ -285,32 +247,30 @@ public class ArgsSpecParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Item_nameContext extends ParserRuleContext {
-		public TextContext text() {
-			return getRuleContext(TextContext.class,0);
-		}
-		public Item_nameContext(ParserRuleContext parent, int invokingState) {
+	public static class NameContext extends ParserRuleContext {
+		public TerminalNode NAME() { return getToken(ArgsSpecParser.NAME, 0); }
+		public NameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_item_name; }
+		@Override public int getRuleIndex() { return RULE_name; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).enterItem_name(this);
+			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).enterName(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).exitItem_name(this);
+			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).exitName(this);
 		}
 	}
 
-	public final Item_nameContext item_name() throws RecognitionException {
-		Item_nameContext _localctx = new Item_nameContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_item_name);
+	public final NameContext name() throws RecognitionException {
+		NameContext _localctx = new NameContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_name);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(37);
-			text();
+			setState(30);
+			match(NAME);
 			}
 		}
 		catch (RecognitionException re) {
@@ -324,97 +284,74 @@ public class ArgsSpecParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Key_valueContext extends ParserRuleContext {
-		public KeyContext key() {
-			return getRuleContext(KeyContext.class,0);
+	public static class Name_valueContext extends ParserRuleContext {
+		public NameContext name() {
+			return getRuleContext(NameContext.class,0);
 		}
 		public TerminalNode COLON() { return getToken(ArgsSpecParser.COLON, 0); }
-		public TerminalNode EQUALS() { return getToken(ArgsSpecParser.EQUALS, 0); }
 		public ValueContext value() {
 			return getRuleContext(ValueContext.class,0);
 		}
-		public Key_valueContext(ParserRuleContext parent, int invokingState) {
+		public TerminalNode EQUAL() { return getToken(ArgsSpecParser.EQUAL, 0); }
+		public Name_valueContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_key_value; }
+		@Override public int getRuleIndex() { return RULE_name_value; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).enterKey_value(this);
+			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).enterName_value(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).exitKey_value(this);
+			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).exitName_value(this);
 		}
 	}
 
-	public final Key_valueContext key_value() throws RecognitionException {
-		Key_valueContext _localctx = new Key_valueContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_key_value);
-		int _la;
+	public final Name_valueContext name_value() throws RecognitionException {
+		Name_valueContext _localctx = new Name_valueContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_name_value);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(39);
-			key();
-			setState(40);
-			_la = _input.LA(1);
-			if ( !(_la==COLON || _la==EQUALS) ) {
-			_errHandler.recoverInline(this);
-			}
-			else {
-				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-				_errHandler.reportMatch(this);
-				consume();
-			}
 			setState(42);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
+				enterOuterAlt(_localctx, 1);
 				{
-				setState(41);
-				value();
+				setState(32);
+				name();
+				setState(33);
+				match(COLON);
+				setState(35);
+				_errHandler.sync(this);
+				switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+				case 1:
+					{
+					setState(34);
+					value();
+					}
+					break;
+				}
 				}
 				break;
-			}
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class KeyContext extends ParserRuleContext {
-		public TextContext text() {
-			return getRuleContext(TextContext.class,0);
-		}
-		public KeyContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_key; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).enterKey(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).exitKey(this);
-		}
-	}
-
-	public final KeyContext key() throws RecognitionException {
-		KeyContext _localctx = new KeyContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_key);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(44);
-			text();
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(37);
+				name();
+				setState(38);
+				match(EQUAL);
+				setState(40);
+				_errHandler.sync(this);
+				switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+				case 1:
+					{
+					setState(39);
+					value();
+					}
+					break;
+				}
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -429,9 +366,8 @@ public class ArgsSpecParser extends Parser {
 	}
 
 	public static class ValueContext extends ParserRuleContext {
-		public TextContext text() {
-			return getRuleContext(TextContext.class,0);
-		}
+		public TerminalNode NAME() { return getToken(ArgsSpecParser.NAME, 0); }
+		public TerminalNode STRING() { return getToken(ArgsSpecParser.STRING, 0); }
 		public ValueContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -448,49 +384,21 @@ public class ArgsSpecParser extends Parser {
 
 	public final ValueContext value() throws RecognitionException {
 		ValueContext _localctx = new ValueContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_value);
+		enterRule(_localctx, 10, RULE_value);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(46);
-			text();
+			setState(44);
+			_la = _input.LA(1);
+			if ( !(_la==NAME || _la==STRING) ) {
+			_errHandler.recoverInline(this);
 			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class TextContext extends ParserRuleContext {
-		public TerminalNode TEXT() { return getToken(ArgsSpecParser.TEXT, 0); }
-		public TextContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_text; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).enterText(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ArgsSpecListener ) ((ArgsSpecListener)listener).exitText(this);
-		}
-	}
-
-	public final TextContext text() throws RecognitionException {
-		TextContext _localctx = new TextContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_text);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(48);
-			match(TEXT);
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -505,20 +413,19 @@ public class ArgsSpecParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\t\65\4\2\t\2\4\3"+
-		"\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\7\2\25\n"+
-		"\2\f\2\16\2\30\13\2\3\2\3\2\3\3\3\3\3\3\7\3\37\n\3\f\3\16\3\"\13\3\3\4"+
-		"\3\4\3\4\3\4\3\5\3\5\3\6\3\6\3\6\5\6-\n\6\3\7\3\7\3\b\3\b\3\t\3\t\3\t"+
-		"\2\2\n\2\4\6\b\n\f\16\20\2\3\3\2\3\4\2\61\2\26\3\2\2\2\4\33\3\2\2\2\6"+
-		"#\3\2\2\2\b\'\3\2\2\2\n)\3\2\2\2\f.\3\2\2\2\16\60\3\2\2\2\20\62\3\2\2"+
-		"\2\22\25\7\t\2\2\23\25\5\4\3\2\24\22\3\2\2\2\24\23\3\2\2\2\25\30\3\2\2"+
-		"\2\26\24\3\2\2\2\26\27\3\2\2\2\27\31\3\2\2\2\30\26\3\2\2\2\31\32\7\2\2"+
-		"\3\32\3\3\2\2\2\33 \5\6\4\2\34\37\7\t\2\2\35\37\5\n\6\2\36\34\3\2\2\2"+
-		"\36\35\3\2\2\2\37\"\3\2\2\2 \36\3\2\2\2 !\3\2\2\2!\5\3\2\2\2\" \3\2\2"+
-		"\2#$\7\5\2\2$%\5\b\5\2%&\7\6\2\2&\7\3\2\2\2\'(\5\20\t\2(\t\3\2\2\2)*\5"+
-		"\f\7\2*,\t\2\2\2+-\5\16\b\2,+\3\2\2\2,-\3\2\2\2-\13\3\2\2\2./\5\20\t\2"+
-		"/\r\3\2\2\2\60\61\5\20\t\2\61\17\3\2\2\2\62\63\7\7\2\2\63\21\3\2\2\2\7"+
-		"\24\26\36 ,";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\f\61\4\2\t\2\4\3"+
+		"\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\6\2\20\n\2\r\2\16\2\21\3\2\3"+
+		"\2\3\3\3\3\7\3\30\n\3\f\3\16\3\33\13\3\3\4\3\4\3\4\3\4\3\5\3\5\3\6\3\6"+
+		"\3\6\5\6&\n\6\3\6\3\6\3\6\5\6+\n\6\5\6-\n\6\3\7\3\7\3\7\2\2\b\2\4\6\b"+
+		"\n\f\2\3\3\2\3\4\2/\2\17\3\2\2\2\4\25\3\2\2\2\6\34\3\2\2\2\b \3\2\2\2"+
+		"\n,\3\2\2\2\f.\3\2\2\2\16\20\5\4\3\2\17\16\3\2\2\2\20\21\3\2\2\2\21\17"+
+		"\3\2\2\2\21\22\3\2\2\2\22\23\3\2\2\2\23\24\7\2\2\3\24\3\3\2\2\2\25\31"+
+		"\5\6\4\2\26\30\5\n\6\2\27\26\3\2\2\2\30\33\3\2\2\2\31\27\3\2\2\2\31\32"+
+		"\3\2\2\2\32\5\3\2\2\2\33\31\3\2\2\2\34\35\7\t\2\2\35\36\5\b\5\2\36\37"+
+		"\7\n\2\2\37\7\3\2\2\2 !\7\3\2\2!\t\3\2\2\2\"#\5\b\5\2#%\7\13\2\2$&\5\f"+
+		"\7\2%$\3\2\2\2%&\3\2\2\2&-\3\2\2\2\'(\5\b\5\2(*\7\f\2\2)+\5\f\7\2*)\3"+
+		"\2\2\2*+\3\2\2\2+-\3\2\2\2,\"\3\2\2\2,\'\3\2\2\2-\13\3\2\2\2./\t\2\2\2"+
+		"/\r\3\2\2\2\7\21\31%*,";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

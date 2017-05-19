@@ -1,0 +1,12 @@
+## Example with DOUBLE
+##
+[latitude]
+description="Longitude coordinate"
+type=DOUBLE
+dv=100.04
+
+[longitude]
+description="Longitude coordinate"
+type=DOUBLE
+required=true
+dv=10.5

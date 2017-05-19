@@ -13,6 +13,7 @@ public enum ErrorCode
 	//
 	NO_SCHEMA("Argument processing requires a schema, but none was provided."),
 	EMPTY_SCHEMA("Argument processing requires a schema, however an empty one was provided."),
+	INVALID_SCHEMA("Schema definition not valid"),
 	INVALID_SCHEMA_ELEMENT("Schema element [%s] not valid: [%s]."),
 	SCHEMA_MISSING_OPTION_NAME("Options require a name. One was not provided."),
 	SCHEMA_MISSING_OPTION_TYPE("Options require a type. One was not provided for %s"),
@@ -55,10 +56,11 @@ public enum ErrorCode
 		{
 		case OK:
 		case COMPOSITE_ERROR:
-		case EMPTY_SCHEMA:
-		case NO_SCHEMA:
 		case NULL_ARGUMENT_ARRAY:
 		case MISSING_OPTION_NAME:
+		case NO_SCHEMA:
+		case EMPTY_SCHEMA:
+		case INVALID_SCHEMA:
 		case SCHEMA_MISSING_OPTION_NAME:
 			return format();
 		case SCHEMA_MISSING_OPTION_TYPE:

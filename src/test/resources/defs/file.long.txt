@@ -1,5 +1,0 @@
-## File option
-##
-file.name=file
-file.description=The name of the file
-file.type=FILE

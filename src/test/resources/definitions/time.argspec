@@ -1,0 +1,5 @@
+## Time option
+##
+[departure]
+description="Time of the flight's departure"
+type=TIME

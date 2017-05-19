@@ -1,0 +1,8 @@
+## A String option that has an environment variable defined
+## where a value can be obtained if not provided on the command line.
+##
+[home]
+type=STRING
+description="The user's home directory"
+required=true
+ev=HOME

@@ -1,0 +1,6 @@
+## Double Option
+##
+[velocity]
+type=DOUBLE
+description="Velocity expressed in meters/second"
+dv=299792458

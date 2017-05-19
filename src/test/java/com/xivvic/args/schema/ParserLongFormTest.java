@@ -9,11 +9,13 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.TestUtil;
 import com.xivvic.args.schema.item.Item;
 
 public class ParserLongFormTest
 {
+	public static String TEST_FILE_LOCATION = "src/test/resources/definitions";
+
 	private ParserLongForm subject;
 
 	@Before
@@ -39,8 +41,8 @@ public class ParserLongFormTest
 		assertTrue(map.isEmpty());
 	}
 
-	@Test(expected = ArgsException.class)
-	public void testUnclosedPropertyNameCausesException() throws Exception
+	@Test
+	public void testUnclosedPropertyNameGetsErrorRecovery() throws Exception
 	{
 		// Arrange
 		//
@@ -48,7 +50,14 @@ public class ParserLongFormTest
 
 		// Act
 		//
-		subject.parse(spec);
+		Map<String, Map<String, String>> result = subject.parse(spec);
+		Map<String, String> def = result.get("x");
+
+		// Assert
+		//
+		assertNotNull(def);
+		assertEquals("x", def.get(Item.NAME));
+		assertEquals(OptionType.BOOLEAN.name(), def.get(Item.TYPE));
 	}
 
 	@Test
@@ -77,13 +86,7 @@ public class ParserLongFormTest
 		// Arrange
 		//
 		String option = "port";
-		String spec = "#Starting comment\n[" + option + "]\n";
-		spec = spec + "## This is a comment\n";
-		spec = spec + "type=INTEGER\n";
-		spec = spec + "dv=80\n";
-		spec = spec + "description=The server port to listen on\n";
-		spec = spec + "ev=APPLICATION_SERVER_PORT\n";
-		spec = spec + "required=true\n";
+		String spec = TestUtil.readFromTestResourceFile(TEST_FILE_LOCATION, "integer.all.argspec");
 
 		// Act
 		//
@@ -96,9 +99,35 @@ public class ParserLongFormTest
 		assertEquals(option, def.get(Item.NAME));
 		assertEquals(OptionType.INTEGER.name(), def.get(Item.TYPE));
 		assertEquals("80", def.get(Item.DEFAULT));
-		assertEquals("The server port to listen on", def.get(Item.DESCRIPTION));
-		assertEquals("APPLICATION_SERVER_PORT", def.get(Item.ENV_VAR));
+		assertEquals("The port on which the server accepts connections", def.get(Item.DESCRIPTION));
+		assertEquals("MYAPP_SERVER_PORT", def.get(Item.ENV_VAR));
 		assertEquals("true", def.get(Item.REQUIRED));
 	}
+
+	@Test
+	public void testMultipleProperties() throws Exception
+	{
+		// Arrange
+		//
+		String spec = TestUtil.readFromTestResourceFile(TEST_FILE_LOCATION, "multiple.argspec");
+
+		// Act
+		//
+		Map<String, Map<String, String>> result = subject.parse(spec);
+		Map<String, String> verbose = result.get("verbose");
+		Map<String, String> silent = result.get("silent");
+		Map<String, String> brands = result.get("brands");
+		Map<String, String> host = result.get("host");
+		Map<String, String> port = result.get("port");
+
+		// Assert
+		//
+		assertNotNull(verbose);
+		assertNotNull(silent);
+		assertNotNull(brands);
+		assertNotNull(host);
+		assertNotNull(port);
+	}
+
 
 }

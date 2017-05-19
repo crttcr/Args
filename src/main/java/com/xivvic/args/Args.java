@@ -244,4 +244,18 @@ public class Args
 
 		return arguments.get(i);
 	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder("Args");
+		sb.append("\n\t");
+		int argCount = arguments.size();
+		sb.append("Arguments provided: ");
+		sb.append(argCount);
+		sb.append("\n\t");
+		sb.append(schema.toString());
+
+		return sb.toString();
+	}
 }

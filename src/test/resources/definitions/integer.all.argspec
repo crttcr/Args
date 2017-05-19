@@ -1,0 +1,7 @@
+## Integer option with all values defined
+[port]
+type=INTEGER
+dv=80
+description="The port on which the server accepts connections"
+ev=MYAPP_SERVER_PORT
+required=true

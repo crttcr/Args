@@ -1,5 +1,0 @@
-## Time option
-##
-departure.name=departure
-departure.description=Time of the flight's departure
-departure.type=TIME

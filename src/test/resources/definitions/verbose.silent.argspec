@@ -1,0 +1,12 @@
+## Boolean options
+##
+[verbose]
+type=BOOLEAN
+description="Displays additional information on standard output"
+dv=false
+
+[silent]
+description="Eliminates all output from standard out"
+type=BOOLEAN
+required=false
+dv=false

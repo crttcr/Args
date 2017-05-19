@@ -1,0 +1,6 @@
+## Boolean option
+##
+[verbose]
+verbose.type=BOOLEAN
+description="Display additional information on standard output"
+dv=true

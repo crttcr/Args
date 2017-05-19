@@ -10,15 +10,15 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface ArgsSpecListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link ArgsSpecParser#spec}.
+	 * Enter a parse tree produced by {@link ArgsSpecParser#start}.
 	 * @param ctx the parse tree
 	 */
-	void enterSpec(ArgsSpecParser.SpecContext ctx);
+	void enterStart(ArgsSpecParser.StartContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ArgsSpecParser#spec}.
+	 * Exit a parse tree produced by {@link ArgsSpecParser#start}.
 	 * @param ctx the parse tree
 	 */
-	void exitSpec(ArgsSpecParser.SpecContext ctx);
+	void exitStart(ArgsSpecParser.StartContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ArgsSpecParser#item}.
 	 * @param ctx the parse tree
@@ -40,35 +40,25 @@ public interface ArgsSpecListener extends ParseTreeListener {
 	 */
 	void exitItem_header(ArgsSpecParser.Item_headerContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ArgsSpecParser#item_name}.
+	 * Enter a parse tree produced by {@link ArgsSpecParser#name}.
 	 * @param ctx the parse tree
 	 */
-	void enterItem_name(ArgsSpecParser.Item_nameContext ctx);
+	void enterName(ArgsSpecParser.NameContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ArgsSpecParser#item_name}.
+	 * Exit a parse tree produced by {@link ArgsSpecParser#name}.
 	 * @param ctx the parse tree
 	 */
-	void exitItem_name(ArgsSpecParser.Item_nameContext ctx);
+	void exitName(ArgsSpecParser.NameContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ArgsSpecParser#key_value}.
+	 * Enter a parse tree produced by {@link ArgsSpecParser#name_value}.
 	 * @param ctx the parse tree
 	 */
-	void enterKey_value(ArgsSpecParser.Key_valueContext ctx);
+	void enterName_value(ArgsSpecParser.Name_valueContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ArgsSpecParser#key_value}.
+	 * Exit a parse tree produced by {@link ArgsSpecParser#name_value}.
 	 * @param ctx the parse tree
 	 */
-	void exitKey_value(ArgsSpecParser.Key_valueContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ArgsSpecParser#key}.
-	 * @param ctx the parse tree
-	 */
-	void enterKey(ArgsSpecParser.KeyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ArgsSpecParser#key}.
-	 * @param ctx the parse tree
-	 */
-	void exitKey(ArgsSpecParser.KeyContext ctx);
+	void exitName_value(ArgsSpecParser.Name_valueContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ArgsSpecParser#value}.
 	 * @param ctx the parse tree
@@ -79,14 +69,4 @@ public interface ArgsSpecListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitValue(ArgsSpecParser.ValueContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ArgsSpecParser#text}.
-	 * @param ctx the parse tree
-	 */
-	void enterText(ArgsSpecParser.TextContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ArgsSpecParser#text}.
-	 * @param ctx the parse tree
-	 */
-	void exitText(ArgsSpecParser.TextContext ctx);
 }

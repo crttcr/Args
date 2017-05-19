@@ -1,0 +1,21 @@
+[host]
+type=HOST
+dv=localhost
+description="Name or IP address of the host machine."
+ev=MYAPP_HOST
+required=true
+
+[port]
+type=INTEGER
+dv=80
+description="The port on which the server accepts connections"
+ev=MYAPP_SERVER_PORT
+required=true
+
+[verbose]
+[silent]
+
+[brands]
+type=STRING_LIST
+dv="Audi BMW Chevrolet Datsun"
+description="A list of brands to analyze."

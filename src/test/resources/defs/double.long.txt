@@ -1,6 +1,0 @@
-## Double Option
-##
-velocity.name=velocity
-velocity.description=Velocity expressed in meters/second
-velocity.type=DOUBLE
-velocity.dv=299792458

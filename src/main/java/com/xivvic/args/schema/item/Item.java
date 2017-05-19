@@ -104,6 +104,12 @@ public class Item<T>
 		for (Entry<String, String> e: args.entrySet())
 		{
 			String k = e.getKey();
+
+			if (! isItemProperty(k))
+			{
+				continue;
+			}
+
 			String v = e.getValue();
 			Builder.callBuilderMethod(rv, k, v);
 		}
@@ -115,6 +121,26 @@ public class Item<T>
 		}
 
 		return rv;
+	}
+
+	private static boolean isItemProperty(String prop)
+	{
+		if (prop == null)
+		{
+			return false;
+		}
+
+		switch (prop)
+		{
+		case NAME:
+		case TYPE:
+		case DESCRIPTION:
+		case DEFAULT:
+		case REQUIRED:
+		case ENV_VAR:
+			return true;
+		}
+		return false;
 	}
 
 	public static class Builder<T>

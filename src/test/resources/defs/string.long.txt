@@ -1,6 +1,0 @@
-## String option
-##
-host.name=host
-host.description=The name of the host machine
-host.type=STRING
-host.dv=localhost

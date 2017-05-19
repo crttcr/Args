@@ -1,5 +1,6 @@
 package com.xivvic.args.schema;
 
+import static com.xivvic.args.error.ErrorCode.INVALID_SCHEMA;
 import static com.xivvic.args.error.ErrorCode.NO_SCHEMA;
 import static com.xivvic.args.error.ErrorStrategy.FAIL_FAST;
 import static com.xivvic.args.error.ErrorStrategy.WARN_AND_IGNORE;
@@ -55,17 +56,28 @@ extends SchemaParser
 	}
 
 
-	private Map<String, Map<String, String>> createDefinitions(String spec)
+	private Map<String, Map<String, String>> createDefinitions(String spec) throws SchemaException
 	{
-		CharStream input = CharStreams.fromString(spec);
-		ArgsSpecLexer lexer = new ArgsSpecLexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		ArgsSpecParser parser = new ArgsSpecParser(tokens);
-		LongFormListener listener = new LongFormListener(es);
-		parser.addParseListener(listener);
-		parser.spec();
-
-		//		System.out.println("Context post spec() call: " + context);
-		return listener.result();
+		try
+		{
+			CharStream input = CharStreams.fromString(spec);
+			ArgsSpecLexer lexer = new ArgsSpecLexer(input);
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
+			ArgsSpecParser parser = new ArgsSpecParser(tokens);
+			LongFormListener listener = new LongFormListener(es);
+			listener.setTrace(true);
+			parser.addParseListener(listener);
+			parser.start();
+			return listener.result();
+		}
+		catch (Exception e)
+		{
+			log.warn("Failure processing argument specification: " + e.getLocalizedMessage());
+			if (es != WARN_AND_IGNORE)
+			{
+				throw new SchemaException(INVALID_SCHEMA);
+			}
+		}
+		return Collections.emptyMap();
 	}
 }

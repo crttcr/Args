@@ -1,0 +1,5 @@
+## Option for a list of strings
+##
+[serials]
+type=STRING_LIST
+description="List of serial numbers to process"

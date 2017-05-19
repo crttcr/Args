@@ -1,5 +1,0 @@
-## Boolean option
-##
-verbose.name=verbose
-verbose.description=Displays additional information on standard output
-verbose.type=BOOLEAN

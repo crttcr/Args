@@ -1,0 +1,5 @@
+## PATH option
+##
+[path]
+type=PATH
+description="The path to search"

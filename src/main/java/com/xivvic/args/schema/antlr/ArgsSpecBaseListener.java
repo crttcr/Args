@@ -18,13 +18,13 @@ public class ArgsSpecBaseListener implements ArgsSpecListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSpec(ArgsSpecParser.SpecContext ctx) { }
+	@Override public void enterStart(ArgsSpecParser.StartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSpec(ArgsSpecParser.SpecContext ctx) { }
+	@Override public void exitStart(ArgsSpecParser.StartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -54,37 +54,25 @@ public class ArgsSpecBaseListener implements ArgsSpecListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterItem_name(ArgsSpecParser.Item_nameContext ctx) { }
+	@Override public void enterName(ArgsSpecParser.NameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitItem_name(ArgsSpecParser.Item_nameContext ctx) { }
+	@Override public void exitName(ArgsSpecParser.NameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterKey_value(ArgsSpecParser.Key_valueContext ctx) { }
+	@Override public void enterName_value(ArgsSpecParser.Name_valueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitKey_value(ArgsSpecParser.Key_valueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterKey(ArgsSpecParser.KeyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitKey(ArgsSpecParser.KeyContext ctx) { }
+	@Override public void exitName_value(ArgsSpecParser.Name_valueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -97,18 +85,6 @@ public class ArgsSpecBaseListener implements ArgsSpecListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitValue(ArgsSpecParser.ValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterText(ArgsSpecParser.TextContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitText(ArgsSpecParser.TextContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

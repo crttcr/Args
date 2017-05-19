@@ -4,27 +4,43 @@ grammar ArgsSpec;
 package com.xivvic.args.schema.antlr;
 } 
 
-spec: (LINE_COMMENT | item | key_value)* EOF;
-item: item_header (LINE_COMMENT | key_value)*;
-item_header: OPEN_BRACKET item_name CLOSE_BRACKET;
-item_name: text;
-key_value: key (COLON | EQUALS) value?;
-key: text;
-value: text;
-text: TEXT;
+start: 
+		item+ EOF 
+	;
+
+item: 
+		item_header name_value* 
+	;
+
+item_header: 
+		LBRACK name RBRACK 
+	;
+	
+name:
+		NAME
+	;
+
+name_value:
+		name COLON value?
+	|	name EQUAL value? 
+	;
+
+value: 
+		NAME 
+	|	STRING 
+	;
+
 
 // Lexical Items
 //
-COLON	         : ':' ;
-EQUALS	      : '=' ;
-OPEN_BRACKET	: '[' ;
-CLOSE_BRACKET	: ']' ;
+NAME: [a-zA-Z0-9._+-]+ ;
+STRING: '"' ('\\"' | '\\\\' | ~[\\"])* '"' ;
+LINE_COMMENT : ('#'|'//') .*? '\r'? '\n' -> skip ;
+LINE_ESCAPE: '\\' '\r'? '\n' -> skip ;
+WS: [ \t]+ -> skip ;
+NL: '\r'? '\n' -> skip;
 
-TEXT: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' | '/' | '\\' | ':' | '*' | '.' | ',' | '@' | ' ')+;
-WS  :   (('\r')? '\n' |  ' ' | '\t')+  -> skip;
-LINE_COMMENT : '#' ~('\n'|'\r')*  ->  channel(HIDDEN);
-
-/*
-//TEXT : ( ~('='|'\n') )*;
-*/
-
+LBRACK: '[' ;
+RBRACK: ']' ;
+COLON: ':' ;
+EQUAL: '=' ;
