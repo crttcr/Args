@@ -54,7 +54,6 @@ the Schema [README](src/main/java/com/xivvic/args/schema/README.md)
 
 ```
 [latitude]
-name=latitude
 description="Longitude coordinate"
 type=DOUBLE
 default=100.04
