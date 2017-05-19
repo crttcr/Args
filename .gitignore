@@ -40,6 +40,7 @@ gradle-app.setting
 *.lock
 
 ## Eclipse
+.settings
 .settings/
 
 ## Allow UML Diagram
