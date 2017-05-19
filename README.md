@@ -53,11 +53,14 @@ definition is shown below and described in more detail in
 the Schema [README](src/main/java/com/xivvic/args/schema/README.md)
 
 ```
-latitude.name=latitude
-latitude.description=Longitude coordinate
-latitude.type=DOUBLE
-latitude.default=100.04
+[latitude]
+name=latitude
+description="Longitude coordinate"
+type=DOUBLE
+default=100.04
 ```
+
+Note, that the schema parser currently requires values containing whitespace to be enclosed within quotes.
 
 
 ## Error Strategy
