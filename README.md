@@ -53,13 +53,29 @@ definition is shown below and described in more detail in
 the Schema [README](src/main/java/com/xivvic/args/schema/README.md)
 
 ```
+[help]
+[verbose]
 [latitude]
 description="Longitude coordinate"
 type=DOUBLE
 default=100.04
 ```
 
-Note, that the schema parser currently requires values containing whitespace to be enclosed within quotes.
+The following character class represents legal characters for option names [0-9a-zA-Z-_.+].
+This restriction applies to the key component of the key = value properties definitions.
+Note, the schema parser currently requires values containing whitespace to be enclosed within quotes.
+
+With the above schema defintion in a file named `default.argspec`, a program's command line arguments 
+can be processed by the following code:
+
+```
+Args arg = Args.createDefaultInstance(args);
+
+Boolean  verbose = arg.getValue("verbose");
+Double  latitude = arg.getValue("latitude");
+Boolean     help = arg.getValue("help");
+```
+
 
 
 ## Error Strategy
