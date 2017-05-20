@@ -4,6 +4,7 @@ import static com.xivvic.args.error.ErrorCode.NO_SCHEMA;
 import static com.xivvic.args.error.ErrorCode.NULL_ARGUMENT_ARRAY;
 import static com.xivvic.args.error.ErrorCode.UNEXPECTED_OPTION;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.Schema;
 import com.xivvic.args.schema.Text2Schema;
 import com.xivvic.args.schema.item.Item;
+import com.xivvic.args.util.FileUtil;
 
 
 /**
@@ -34,26 +36,32 @@ import com.xivvic.args.schema.item.Item;
  */
 public class Args
 {
+	public static final String DEFAULT_SPECIFICATION_FILE = "default.argsspec";
+
 	private Set<String> optionsFound = new HashSet<String>();
 	private ListIterator<String> argumentIterator;
 	private final List<String> arguments = new ArrayList<>();
 	private final Schema schema;
 
-	public Args(String[] args)
+	public static Args createDefaultInstance(String[] args)
 	throws ArgsException
 	{
-		// FIXME: This constructor needs to look for a specific property file
-		// and read it.
-
-		// LOAD PROPERTY FILE
-		//
-		schema = new Schema(null);
-		if (args == null)
+		String defs = null;
+		try ( InputStream stream = Args.class.getResourceAsStream(DEFAULT_SPECIFICATION_FILE))
 		{
-			throw new SchemaException(NO_SCHEMA);
+			defs = FileUtil.inputStreamToString(stream);
+			if (defs == null)
+			{
+				throw new SchemaException(NO_SCHEMA);
+			}
+		}
+		catch (Exception e)
+		{
+
 		}
 
-		initialize(args);
+		Args rv = new Args(defs, args);
+		return rv;
 	}
 
 	public Args(Schema schema, String[] args)

@@ -1,5 +1,5 @@
 ## Boolean option
 ##
 [verbose]
-verbose.type=BOOLEAN
+type=BOOLEAN
 description="Displays additional information on standard output"

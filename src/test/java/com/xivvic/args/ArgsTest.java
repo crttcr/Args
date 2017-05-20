@@ -15,6 +15,27 @@ import com.xivvic.args.schema.Text2Schema;
 public class ArgsTest
 {
 	@Test(expected=ArgsException.class)
+	public void testDefaultFacotryMethod() throws Exception
+	{
+		//
+		String[] args = {"--silent", "-help"};
+		Args arg = Args.createDefaultInstance(args);
+
+		// Act
+		//
+		Boolean verbose = arg.getValue("verbose");
+		Boolean silent = arg.getValue("silent");
+		Boolean help = arg.getValue("help");
+
+		// Assert
+		//
+		assertFalse(verbose);
+		assertTrue(silent);
+		assertFalse(help);
+
+	}
+
+	@Test(expected=ArgsException.class)
 	public void testConstructWithNullStringDefs() throws Exception
 	{
 		String[] args = {"-x", "radio"};

@@ -1,0 +1,6 @@
+This is a list of features that remain to be implemented.
+
+1. Implement default values
+2. Implement constraints
+3. Implement single character shortcuts when there are no collisions
+4. Implement help text (i.e. USAGE: ... ) that mines information from the schema
