@@ -2,6 +2,8 @@ package com.xivvic.args.schema.item;
 
 import java.util.Objects;
 
+import com.xivvic.args.marshall.OptEvaluator;
+
 public class ItemPredicateHasDefaultValue<T>
 implements ItemPredicate<T>
 {
@@ -10,8 +12,8 @@ implements ItemPredicate<T>
 	public boolean test(Item<T> item)
 	{
 		Objects.requireNonNull(item);
-		T t = item.getDv();
+		OptEvaluator<?> eval = item.getEval();
 
-		return t == null;
+		return eval.getDefault() != null;
 	}
 }

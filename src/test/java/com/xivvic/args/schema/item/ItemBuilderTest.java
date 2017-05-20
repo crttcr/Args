@@ -2,14 +2,12 @@ package com.xivvic.args.schema.item;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
 import com.xivvic.args.error.ArgsException;
-import com.xivvic.args.marshall.OptEvaluator;
-import com.xivvic.args.marshall.StringOptEvaluator;
 import com.xivvic.args.schema.OptionType;
-import com.xivvic.args.schema.item.Item;
 
 public class ItemBuilderTest
 {
@@ -24,11 +22,10 @@ public class ItemBuilderTest
 	{
 		// Arrange
 		//
-		OptionType type = OptionType.STRING;
-		OptEvaluator<String> eval = new StringOptEvaluator();
+		String type = OptionType.STRING.toString();
 		String dv = "default value";
 		Item.Builder<String> builder = Item.builder();
-		builder.type(type).eval(eval).dv(dv);
+		builder.type(type).dv(dv);
 
 		// Act
 		//
@@ -41,26 +38,9 @@ public class ItemBuilderTest
 		// Arrange
 		//
 		String name = "message";
-		OptEvaluator<String> eval = new StringOptEvaluator();
 		String dv = "default value";
 		Item.Builder<String> builder = Item.builder();
-		builder.name(name).eval(eval).dv(dv);
-
-		// Act
-		//
-		builder.build();
-	}
-
-	@Test(expected=ArgsException.class)
-	public void testBuildWithoutEval() throws ArgsException
-	{
-		// Arrange
-		//
-		String name = "message";
-		OptionType type = OptionType.STRING;
-		String dv = "default value";
-		Item.Builder<String> builder = Item.builder();
-		builder.name(name).type(type).dv(dv);
+		builder.name(name).dv(dv);
 
 		// Act
 		//
@@ -73,10 +53,9 @@ public class ItemBuilderTest
 		// Arrange
 		//
 		String name = "message";
-		OptionType type = OptionType.STRING;
-		OptEvaluator<String> eval = new StringOptEvaluator();
+		String type = OptionType.STRING.toString();
 		Item.Builder<String> builder = Item.builder();
-		builder.name(name).type(type).eval(eval);
+		builder.name(name).type(type);
 
 		// Act
 		//
@@ -84,7 +63,7 @@ public class ItemBuilderTest
 
 		// Assert
 		//
-		assertComplexItem(item, name, type, eval, null);
+		assertComplexItem(item, name, type, null);
 	}
 
 
@@ -93,14 +72,22 @@ public class ItemBuilderTest
 	// Helper Methods            //
 	///////////////////////////////
 
-	private <T> void assertComplexItem(Item<T> item, String name, OptionType type, OptEvaluator<T> eval, T dv)
+	private <T> void assertComplexItem(Item<T> item, String name, String type, String dv)
 	{
 		assertNotNull(item);
 		assertEquals(name, item.getName());
-		assertEquals(type, item.getType());
-		//  assertEquals(eval, item.getEval());
-		//		assertFalse(item.getRequired());
-		assertEquals(dv, item.getDv());
+		assertEquals(type, item.getType().name());
+
+		T defaultValue = item.getEval().getDefault();
+
+		if (dv == null)
+		{
+			assertNull(defaultValue);
+		}
+		else
+		{
+			assertNotNull(defaultValue);
+		}
 	}
 
 }

@@ -41,7 +41,7 @@ extends ArgsSpecBaseListener
 	{
 		if (trace)
 		{
-			System.out.println("Enter item: " + ctx.getText());
+			log.info("Enter item: " + ctx.getText());
 		}
 		current = new HashMap<String, String>();
 	}
@@ -63,7 +63,7 @@ extends ArgsSpecBaseListener
 
 		if (trace)
 		{
-			System.out.println("Exited item: " + ctx.getText());
+			log.info("Exited item: " + ctx.getText());
 		}
 	}
 
@@ -73,7 +73,7 @@ extends ArgsSpecBaseListener
 		itemName = ctx.name().getText();
 		if (trace)
 		{
-			System.out.println("Exit item header: " + ctx.getText());
+			log.info("Exit item header: " + ctx.getText());
 		}
 	}
 
@@ -93,7 +93,7 @@ extends ArgsSpecBaseListener
 		current.put(key, value);
 		if (trace)
 		{
-			System.out.println("Exit NameValue: " + ctx.getText());
+			log.info("Exit NameValue: " + ctx.getText());
 		}
 
 	}
@@ -103,7 +103,7 @@ extends ArgsSpecBaseListener
 	{
 		if (trace)
 		{
-			System.out.println("Exit name: " + ctx.getText());
+			log.info("Exit name: " + ctx.getText());
 		}
 	}
 
@@ -112,7 +112,7 @@ extends ArgsSpecBaseListener
 	{
 		if (trace)
 		{
-			System.out.println("Enter name value: " + ctx.getText());
+			log.info("Enter name value: " + ctx.getText());
 		}
 	}
 

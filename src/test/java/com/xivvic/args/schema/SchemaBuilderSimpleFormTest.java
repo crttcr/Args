@@ -17,9 +17,6 @@ import org.junit.Test;
 
 import com.xivvic.args.error.ErrorStrategy;
 import com.xivvic.args.marshall.OptEvaluator;
-import com.xivvic.args.schema.OptionType;
-import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.SchemaBuilder;
 import com.xivvic.args.schema.item.Item;
 
 public class SchemaBuilderSimpleFormTest
@@ -140,14 +137,16 @@ public class SchemaBuilderSimpleFormTest
 	private void assertSimpleItemForm(Item<?> item, String name, OptionType type)
 	{
 		assertNotNull(item);
-		assertEquals(name, item.getName());
-		assertNull(item.getRequired());
-		assertNull(item.getDv());
-		assertEquals(type, item.getType());
-
 		OptEvaluator<?> eval = item.getEval();
 		assertNotNull(eval);
 		assertEquals(0, eval.count());
 		assertNull(eval.getValue());
+		assertNull(eval.getDefault());
+
+		assertEquals(name, item.getName());
+		assertEquals(type, item.getType());
+		assertNull(item.getRequired());
+
+
 	}
 }

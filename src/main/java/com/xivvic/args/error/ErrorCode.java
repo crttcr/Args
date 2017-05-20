@@ -17,6 +17,7 @@ public enum ErrorCode
 	INVALID_SCHEMA_ELEMENT("Schema element [%s] not valid: [%s]."),
 	SCHEMA_MISSING_OPTION_NAME("Options require a name. One was not provided."),
 	SCHEMA_MISSING_OPTION_TYPE("Options require a type. One was not provided for %s"),
+	INVALID_DEFAULT_VALUE("Default value [%s] not valid for option"),
 
 
 	// Argument Processing Codes
@@ -84,6 +85,7 @@ public enum ErrorCode
 		case INVALID_SCHEMA_ELEMENT:
 			return format(option, param);
 		case INVALID_ARGUMENT_FORMAT:
+		case INVALID_DEFAULT_VALUE:
 			return format(param);
 		case MISSING_ENVIRONMENT_VARIABLE:
 			return format(param, option);

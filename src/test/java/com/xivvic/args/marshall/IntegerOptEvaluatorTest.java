@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import com.xivvic.args.TestUtil;
 import com.xivvic.args.error.ArgsException;
-import com.xivvic.args.marshall.IntegerOptEvaluator;
 
 public class IntegerOptEvaluatorTest
 {
@@ -27,7 +26,7 @@ public class IntegerOptEvaluatorTest
 	public void testToString()
 	{
 		System.out.println(subject.toString());
-		assertTrue(subject.toString().contains("called = 0"));
+		assertTrue(subject.toString().contains("count=0"));
 	}
 
 	@Test

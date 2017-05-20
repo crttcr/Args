@@ -2,13 +2,13 @@ package com.xivvic.args.schema;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.xivvic.args.TestUtil;
+import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.item.Item;
 
 public class SchemaBuilderLongFormTest
@@ -38,7 +38,7 @@ public class SchemaBuilderLongFormTest
 
 		// Assert
 		//
-		assertItemForm(latitude,  "latitude",  OptionType.DOUBLE, null, null);
+		assertItemForm(latitude,  "latitude",  OptionType.DOUBLE, null, 100.04);
 		assertItemForm(longitude, "longitude", OptionType.DOUBLE, true, 10.5);
 	}
 
@@ -57,7 +57,7 @@ public class SchemaBuilderLongFormTest
 
 		// Assert
 		//
-		assertItemForm(v, "verbose", OptionType.BOOLEAN, null, null);
+		assertItemForm(v, "verbose", OptionType.BOOLEAN, null, true);
 		assertItemForm(q, "silent",  OptionType.BOOLEAN, false, false);
 	}
 
@@ -106,11 +106,13 @@ public class SchemaBuilderLongFormTest
 	private void assertItemForm(Item<?> item, String name, OptionType type, Boolean required, Object dv)
 	{
 		assertNotNull(item);
+		OptEvaluator<?> eval = item.getEval();
+		assertNotNull(eval);
+
 		assertEquals(name, item.getName());
 		assertEquals(required, item.getRequired());
-		assertNull(item.getDv());
 		assertEquals(type, item.getType());
-		assertNotNull(item.getEval());
+		assertEquals(dv, eval.getDefault());
 	}
 
 }

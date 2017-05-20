@@ -5,17 +5,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
+import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.item.Item;
 import com.xivvic.args.schema.item.ItemPredicate;
 import com.xivvic.args.schema.item.ItemPredicateAnd;
 import com.xivvic.args.schema.item.ItemPredicateHasEnvironmentVariable;
 import com.xivvic.args.schema.item.ItemPredicateRequired;
-
-import java.util.Objects;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 public class Schema
 {
@@ -36,15 +36,23 @@ public class Schema
 
 	}
 
-	public boolean allRequiredOptionsHaveValues() {
+	public boolean allRequiredOptionsHaveValuesOrDefaults() {
 
 		for (Item<?> item:  opts.values()) {
-			if (! item.getRequired())
+			Boolean required = item.getRequired();
+			if (required == null || required == Boolean.FALSE)
 			{
 				continue;
 			}
 
-			if (item.getEval().getValue() == null)
+			OptEvaluator<?> eval = item.getEval();
+
+			if (eval.getValue() != null)
+			{
+				continue;
+			}
+
+			if (eval.getDefault() == null)
 			{
 				return false;
 			}

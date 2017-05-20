@@ -17,6 +17,8 @@ public class StringOptEvaluator extends OptEvaluatorBase<String>
 	@Getter
 	private String value = null;
 
+	private String dv = null;
+
 	@Override
 	protected void doSet(Iterator<String> currentArgument) throws ArgsException
 	{
@@ -39,6 +41,18 @@ public class StringOptEvaluator extends OptEvaluatorBase<String>
 	@Override
 	public String toString()
 	{
-		return "String[called = " + count() + ", value = " + value + "]";
+		return "String[value=" + value + ", dv= " + dv + ", count="  + count() + "]";
+	}
+
+	@Override
+	public String getDefault()
+	{
+		return dv;
+	}
+
+	@Override
+	public void setDefaultValue(String dv)
+	{
+		this.dv = dv;
 	}
 }

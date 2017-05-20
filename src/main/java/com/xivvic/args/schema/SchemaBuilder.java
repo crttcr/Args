@@ -43,13 +43,16 @@ public class SchemaBuilder
 
 	public SchemaBuilder def(Map<String, String> def) throws SchemaException
 	{
-		SchemaException ex = processDefinition(def);
+		SchemaException ex = buildDefinition(def);
 
 		if (ex == null)
 		{
 			return this;
 		}
 
+		// At this point, the construction of the schema caused an error, so
+		// handle it according to the error strategy.
+		//
 		if (es == FAIL_FAST)
 		{
 			throw ex;
@@ -61,7 +64,7 @@ public class SchemaBuilder
 		return this;
 	}
 
-	private SchemaException processDefinition(Map<String, String> def)
+	private SchemaException buildDefinition(Map<String, String> def)
 	{
 		if (def == null)
 		{

@@ -1,22 +1,13 @@
 package com.xivvic.args.schema.item;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.xivvic.args.error.ErrorCode;
 import com.xivvic.args.error.SchemaException;
-import com.xivvic.args.marshall.BooleanOptEvaluator;
-import com.xivvic.args.marshall.DateOptEvaluator;
-import com.xivvic.args.marshall.DoubleOptEvaluator;
-import com.xivvic.args.marshall.FileOptEvaluator;
-import com.xivvic.args.marshall.IntegerOptEvaluator;
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.marshall.OptEvaluatorBase;
-import com.xivvic.args.marshall.PathOptEvaluator;
-import com.xivvic.args.marshall.StringListOptEvaluator;
-import com.xivvic.args.marshall.StringOptEvaluator;
-import com.xivvic.args.marshall.TimeOptEvaluator;
 import com.xivvic.args.schema.OptionType;
+import com.xivvic.args.util.BooleanUtil;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -38,52 +29,41 @@ public class Item<T>
 	private Boolean				required;
 	private String					description;
 	private String					ev;
-	private T						dv;
 
 	private Item()
 	{
 	}
 
-	public Item(String name, OptionType type, OptEvaluator<T> eval)
-	{
-		this.name = name;
-		this.type = type;
-		this.eval = eval;
-		this.required = Boolean.FALSE;
-		this.description = null;
-		this.ev = null;
-		this.dv = null;
-	}
+	//	private Item(String name, OptionType type, OptEvaluator<T> eval)
+	//	{
+	//		this(name, type, eval, Boolean.FALSE, null, null, null);
+	//	}
+	//
+	//	private Item(String name, OptionType type, OptEvaluator<T> eval, String description, String ev, String dv)
+	//	{
+	//		this(name, type, eval, Boolean.FALSE, description, ev, dv);
+	//	}
+	//
+	//	private Item(String name, OptionType type, OptEvaluator<T> eval, Boolean required, String description, String ev, String dv)
+	//	{
+	//		this.name = name;
+	//		this.type = type;
+	//		this.eval = eval;
+	//		this.required = required;
+	//		this.description = description;
+	//		this.ev = ev;
+	//	}
+	//
 
-	public Item(String name, OptionType type, OptEvaluator<T> eval, T defaultValue, String description, String ev)
+	public Boolean getRequired()
 	{
-		this.name = name;
-		this.type = type;
-		this.eval = eval;
-		this.required = Boolean.FALSE;
-		this.description = description;
-		this.ev = ev;
-		this.dv = defaultValue;
-	}
+		if (required == null)
+		{
+			return null;
+		}
 
-	public Item(String name, OptionType type, OptEvaluator<T> eval, boolean required, String description, String ev)
-	{
-		this.name = name;
-		this.type = type;
-		this.eval = eval;
-		this.required = required;
-		this.description = description;
-		this.ev = ev;
-		this.dv = null;
-	}
+		return required;
 
-	public Item(String name, OptionType type, boolean required, OptEvaluator<T> eval, T dv)
-	{
-		this.name = name;
-		this.type = type;
-		this.eval = eval;
-		this.required = required;
-		this.dv = null;
 	}
 
 	public static <U> Builder<U> builder()
@@ -101,65 +81,33 @@ public class Item<T>
 			return rv;
 		}
 
-		for (Entry<String, String> e: args.entrySet())
-		{
-			String k = e.getKey();
+		String name = args.get(NAME);
+		String type = args.get(TYPE);
+		String desc = args.get(DESCRIPTION);
+		String reqd = args.get(REQUIRED);
+		String   ev = args.get(ENV_VAR);
+		String   dv = args.get(DEFAULT);
 
-			if (! isItemProperty(k))
-			{
-				continue;
-			}
-
-			String v = e.getValue();
-			Builder.callBuilderMethod(rv, k, v);
-		}
-
-		OptionType type = rv.type();
-		if (type != null)
-		{
-			rv.eval(OptEvaluatorBase.getEvaluatorForType(type));
-		}
+		if (name != null) { rv.name(name);        }
+		if (type != null) { rv.type(type);        }
+		if (desc != null) { rv.description(desc); }
+		if (reqd != null) { rv.required(reqd);    }
+		if (ev   != null) { rv.ev(ev);            }
+		if (dv   != null) { rv.dv(dv);            }   // Occurs after type() is set.
 
 		return rv;
 	}
 
-	private static boolean isItemProperty(String prop)
-	{
-		if (prop == null)
-		{
-			return false;
-		}
-
-		switch (prop)
-		{
-		case NAME:
-		case TYPE:
-		case DESCRIPTION:
-		case DEFAULT:
-		case REQUIRED:
-		case ENV_VAR:
-			return true;
-		}
-		return false;
-	}
-
 	public static class Builder<T>
 	{
-		// If you were to make this field final, you can't reuse the builder with a new object.
-		// That would permit you to potentially leak changes to the object if the caller holds on
-		// to your builder.
+		// If you were to make this field final, you can't reuse the builder to create a different object.
 		//
-		private final Item<T> instance;
+		// Reuse would permit you to potentially leak changes to the object if the caller holds on
+		// to your builder, so each builder can only build a single instance.
+		//
+		private final Item<T> instance = new Item<T>();
 
-		public Builder()
-		{
-			instance = new Item<T>();
-		}
-
-		public OptionType type()
-		{
-			return this.instance.getType();
-		}
+		private String dv;
 
 		public Builder<T> name(String name)
 		{
@@ -167,15 +115,27 @@ public class Item<T>
 			return this;
 		}
 
-		public Builder<T> type(OptionType type)
+		public Builder<T> type(String type) throws SchemaException
 		{
-			this.instance.type = type;
-			return this;
-		}
+			if (type == null)
+			{
+				this.instance.type = null;
+				this.instance.eval = null;
+				return this;
+			}
 
-		public Builder<T> eval(OptEvaluator<T> eval)
-		{
-			this.instance.eval = eval;
+			try
+			{
+				OptionType ot = OptionType.valueOf(type);
+				this.instance.type = ot;
+				OptEvaluator<T> oe = OptEvaluatorBase.getEvaluatorForType(ot);
+				this.instance.eval = oe;
+			}
+			catch (Exception e)
+			{
+				throw new SchemaException(ErrorCode.INVALID_SCHEMA_ELEMENT, instance.name, type);
+			}
+
 			return this;
 		}
 
@@ -191,15 +151,15 @@ public class Item<T>
 			return this;
 		}
 
-		public Builder<T> dv(T dv)
+		public Builder<T> dv(String dv)
 		{
-			this.instance.dv = dv;
+			this.dv = dv;
 			return this;
 		}
 
-		public Builder<T> required(boolean b)
+		public Builder<T> required(String required)
 		{
-			this.instance.required = b;
+			this.instance.required = BooleanUtil.parseBoolean(required);
 			return this;
 		}
 
@@ -208,39 +168,9 @@ public class Item<T>
 		{
 			assertValid();
 
-			switch (instance.type)
+			if (dv != null)
 			{
-			case BOOLEAN:
-				instance.eval = (OptEvaluator<T>) new BooleanOptEvaluator();
-				break;
-			case INTEGER:
-				instance.eval = (OptEvaluator<T>) new IntegerOptEvaluator();
-				break;
-			case DOUBLE:
-				instance.eval = (OptEvaluator<T>) new DoubleOptEvaluator();
-				break;
-			case STRING:
-				instance.eval = (OptEvaluator<T>) new StringOptEvaluator();
-				break;
-			case STRING_LIST:
-				instance.eval = (OptEvaluator<T>) new StringListOptEvaluator();
-				break;
-			case DATE:
-				instance.eval = (OptEvaluator<T>) new DateOptEvaluator();
-				break;
-			case TIME:
-				instance.eval = (OptEvaluator<T>) new TimeOptEvaluator();
-				break;
-			case PATH:
-				instance.eval = (OptEvaluator<T>) new PathOptEvaluator();
-				break;
-			case FILE:
-				instance.eval = (OptEvaluator<T>) new FileOptEvaluator();
-				break;
-
-			default:
-				String msg = String.format("Unable to handle OptionType [%s] in item builder", instance.type);
-				throw new SchemaException(ErrorCode.INVALID_SCHEMA_ELEMENT, msg);
+				instance.eval.setDefaultValue(dv);
 			}
 
 			Item<T> result = instance;
@@ -266,37 +196,5 @@ public class Item<T>
 			}
 		}
 
-		public static void callBuilderMethod(Item.Builder<?> builder, String field, String value) throws SchemaException
-		{
-			switch (field)
-			{
-			case NAME:
-				builder.name(value);
-				break;
-			case TYPE:
-				OptionType type = OptionType.valueOf(value.toUpperCase());
-				builder.type(type);
-				break;
-			case ENV_VAR:
-				builder.ev(value);
-				break;
-			case DESCRIPTION:
-				builder.description(value);
-				break;
-			case DEFAULT:
-				Object dv = null;
-				//
-				// FIXME: builder.dv(dv);
-				// Turn this into template method and leverage OptEvaluator conversions from String to Object?
-				//
-				break;
-			case REQUIRED:
-				boolean required = Boolean.valueOf(value);
-				builder.required(required);
-				break;
-			default:
-				throw new SchemaException(ErrorCode.INVALID_ARGUMENT_FORMAT);
-			}
-		}
 	}
 }

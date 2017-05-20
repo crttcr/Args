@@ -3,7 +3,7 @@
 [verbose]
 type=BOOLEAN
 description="Displays additional information on standard output"
-dv=false
+dv=true
 
 [silent]
 description="Eliminates all output from standard out"

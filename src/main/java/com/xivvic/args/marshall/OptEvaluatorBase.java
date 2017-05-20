@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Objects;
 
 import com.xivvic.args.error.ArgsException;
+import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.schema.OptionType;
 
 public abstract class OptEvaluatorBase<T>
@@ -14,11 +15,15 @@ implements OptEvaluator<T>
 	protected abstract void doSet(Iterator<String> currentArgument) throws ArgsException;
 
 	@Override
+	public abstract void setDefaultValue(String dv) throws SchemaException;
+
+	@Override
 	public final void set(Iterator<String> currentArgument) throws ArgsException
 	{
 		count++;
 		doSet(currentArgument);
 	}
+
 
 	@Override
 	public int count() { return count; }
@@ -45,4 +50,3 @@ implements OptEvaluator<T>
 	}
 
 }
-

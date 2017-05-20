@@ -15,11 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.xivvic.args.TestUtil;
-import com.xivvic.args.marshall.IntegerOptEvaluator;
-import com.xivvic.args.marshall.OptEvaluator;
-import com.xivvic.args.marshall.StringOptEvaluator;
-import com.xivvic.args.schema.OptionType;
-import com.xivvic.args.schema.Schema;
+import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.schema.item.Item;
 
 public class SchemaTest
@@ -81,7 +77,7 @@ public class SchemaTest
 
 		// Act
 		//
-		boolean ok = subject.allRequiredOptionsHaveValues();
+		boolean ok = subject.allRequiredOptionsHaveValuesOrDefaults();
 
 		// Assert
 		//
@@ -102,41 +98,57 @@ public class SchemaTest
 
 		// Act
 		//
-		boolean ok = subject.allRequiredOptionsHaveValues();
+		boolean ok = subject.allRequiredOptionsHaveValuesOrDefaults();
 
 		// Assert
 		//
 		assertFalse(ok);
 	}
 
-	///////////////////////////////
-	// Helper Methods            //
-	///////////////////////////////
-
 	@Test
 	public void testAllRequiredOptionsHaveValuesOneOptionFalse()
 	{
 		// Act
 		//
-		boolean ok = subject.allRequiredOptionsHaveValues();
+		boolean ok = subject.allRequiredOptionsHaveValuesOrDefaults();
 
 		// Assert
 		//
 		assertTrue(ok);
 	}
 
+	///////////////////////////////
+	// Helper Methods            //
+	///////////////////////////////
+
 	private Item<?> createItem(String name, OptionType type)
 	{
-		OptEvaluator<String> eval = new StringOptEvaluator();
-		Item<String> item = new Item<>(name, type, eval);
-		return item;
+		try
+		{
+			Item.Builder<?> builder = Item.builder();
+			builder.name(name).type(type.name());
+			return builder.build();
+		}
+		catch (SchemaException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private Item<Integer> createRequiredIntegerItem(String name)
 	{
-		OptEvaluator<Integer> eval = new IntegerOptEvaluator();
-		Item<Integer> item = new Item<>(name, OptionType.INTEGER, eval, true, null, null);
-		return item;
+		try
+		{
+			Item.Builder<Integer> builder = Item.builder();
+			builder.name(name).type(OptionType.INTEGER.name()).required("true");
+			return builder.build();
+		}
+		catch (SchemaException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 
