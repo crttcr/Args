@@ -1,0 +1,5 @@
+// Default Option Schema
+//
+[verbose]
+[silent]
+[help]
