@@ -117,9 +117,30 @@ public class SchemaTest
 		assertTrue(ok);
 	}
 
+	@Test
+	public void testGetItemsWithEnvironmentVar() throws Exception
+	{
+		// Arrange
+		//
+		// Note the '\n' in the definition string forces long form option parsing
+		//
+		String defs = "[p] dv=/tmp type=PATH \n[s] ev=MY_SERVER type=STRING dv=localhost";
+		Schema schema = new Text2Schema().createSchema(defs);
+
+		// Act
+		//
+		List<Item<?>> items = schema.itemsWithEnvironmentVariables();
+
+		// Assert
+		//
+		assertNotNull(items);
+		assertEquals(1, items.size());
+	}
+
 	///////////////////////////////
 	// Helper Methods            //
 	///////////////////////////////
+
 
 	private Item<?> createItem(String name, OptionType type)
 	{

@@ -10,9 +10,7 @@ import java.util.Set;
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.item.Item;
 import com.xivvic.args.schema.item.ItemPredicate;
-import com.xivvic.args.schema.item.ItemPredicateAnd;
 import com.xivvic.args.schema.item.ItemPredicateHasEnvironmentVariable;
-import com.xivvic.args.schema.item.ItemPredicateRequired;
 import com.xivvic.args.util.trie.Trie;
 
 public class Schema
@@ -82,13 +80,11 @@ public class Schema
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<Item<?>> requiredWithEnvironments()
+	public List<Item<?>> itemsWithEnvironmentVariables()
 	{
-		ItemPredicate<?> r = new ItemPredicateRequired<>();
 		ItemPredicate<?> e = new ItemPredicateHasEnvironmentVariable<>();
-		ItemPredicate<?> p = new ItemPredicateAnd(r, e);
 
-		List<Item<?>> rv = find(p);
+		List<Item<?>> rv = find(e);
 
 		return rv;
 	}
@@ -104,7 +100,7 @@ public class Schema
 	public List<Item<?>> find(ItemPredicate<?> predicate) {
 
 		List<Item<?>> rv = new ArrayList<>();
-		Set<Item<?>> items = trie.valueSet();
+		Set<Item<?>> items = trie.valueSet();;
 
 		for (Item item:  items)
 		{

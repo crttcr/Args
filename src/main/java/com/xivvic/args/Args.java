@@ -104,7 +104,7 @@ public class Args
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void addMissingEnvironmentVariables() throws ArgsException
 	{
-		List<Item<?>> items = schema.requiredWithEnvironments();
+		List<Item<?>> items = schema.itemsWithEnvironmentVariables();
 
 		for (Item<?> i : items)
 		{
@@ -112,7 +112,7 @@ public class Args
 			Object o = eval.getValue();
 			if (o != null)
 			{
-				continue;
+				continue; // Already has a value, ignore
 			}
 
 			String opt = i.getName();

@@ -170,10 +170,11 @@ public class Trie<V>
 	public Set<V> valueSet()
 	{
 		Set<V> rv = new HashSet<>();
-		Set<String> keys = new HashSet<>();
+		Iterator<String> it = keys().iterator();
 
-		for (String k : keys)
+		while (it.hasNext())
 		{
+			String k = it.next();
 			V v = get(k);
 			rv.add(v);
 		}
