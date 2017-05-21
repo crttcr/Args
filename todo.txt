@@ -2,5 +2,7 @@ This is a list of features that remain to be implemented.
 
 1. [DONE] Implement default values
 2. Implement constraints
-3. Implement single character shortcuts when there are no collisions
+3. Implement option name shortcuts for unique prefixes
+	[DONE] Schema storages option definitions in trie not map
+	[TODO] Args uses prefix search when exact name not found
 4. Implement help text (i.e. USAGE: ... ) that mines information from the schema
