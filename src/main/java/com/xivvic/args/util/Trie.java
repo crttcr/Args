@@ -1,8 +1,11 @@
 package com.xivvic.args.util;
 
 import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  * String -> T
@@ -177,6 +180,15 @@ public class Trie<Value>
 	public Iterable<String> keys()
 	{
 		return keysWithPrefix("");
+	}
+
+	public Set<String> keySet()
+	{
+		Set<String> set = new HashSet<>();
+		Iterator<String> it = keys().iterator();
+		it.forEachRemaining(set::add);
+
+		return set;
 	}
 
 	public Iterable<String> keysWithPrefix(String prefix)

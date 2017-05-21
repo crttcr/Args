@@ -16,10 +16,12 @@ import com.xivvic.args.schema.item.ItemPredicate;
 import com.xivvic.args.schema.item.ItemPredicateAnd;
 import com.xivvic.args.schema.item.ItemPredicateHasEnvironmentVariable;
 import com.xivvic.args.schema.item.ItemPredicateRequired;
+import com.xivvic.args.util.Trie;
 
 public class Schema
 {
 	private SortedMap<String, Item<?>> opts = new TreeMap<>();
+	private Trie<Item<?>> trie = new Trie<>();
 
 	public Schema(Map<String, Item<?>> defs )
 	{
@@ -32,6 +34,7 @@ public class Schema
 			String k = e.getKey();
 			Item<?> v = e.getValue();
 			opts.put(k, v);
+			trie.put(k, v);
 		}
 
 	}
@@ -64,13 +67,31 @@ public class Schema
 	@SuppressWarnings("unchecked")
 	public <T> Item<T> getItem(String option)
 	{
-		return (Item<T>) opts.get(option);
+		Item<T> i1 = (Item<T>) trie.get(option);
+		Item<T> i2 = (Item<T>) opts.get(option);
+
+		if (i1 != i2)
+		{
+			throw new IllegalArgumentException("FAIL! Trie != map");
+		}
+
+		return i1;
 	}
 
 	public List<String> getOptions()
 	{
 		List<String> rv = new ArrayList<>();
 		Set<String> keys = opts.keySet();
+
+
+		// CHECK!
+		Set<String> set =  trie.keySet();
+		if (set.size() != keys.size())
+		{
+			throw new IllegalArgumentException("FAIL! Trie != map");
+		}
+
+
 		Iterator<String> it = keys.iterator();
 
 		while (it.hasNext())
