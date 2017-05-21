@@ -4,6 +4,7 @@ import static com.xivvic.args.error.ErrorCode.NO_SCHEMA;
 import static com.xivvic.args.error.ErrorCode.NULL_ARGUMENT_ARRAY;
 import static com.xivvic.args.error.ErrorCode.UNEXPECTED_OPTION;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,9 +56,11 @@ public class Args
 				throw new SchemaException(NO_SCHEMA);
 			}
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
-
+			String msg = String.format("Exception opening [%s] : %s", DEFAULT_SPECIFICATION_FILE, e);
+			System.err.println(msg);
+			throw new SchemaException(NO_SCHEMA);
 		}
 
 		Args rv = new Args(defs, args);
@@ -101,9 +104,9 @@ public class Args
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void addMissingEnvironmentVariables() throws ArgsException
 	{
-		List<Item> items = schema.requiredWithEnvironments();
+		List<Item<?>> items = schema.requiredWithEnvironments();
 
-		for (Item i : items)
+		for (Item<?> i : items)
 		{
 			OptEvaluator eval =  i.getEval();
 			Object o = eval.getValue();
@@ -125,7 +128,6 @@ public class Args
 			eval.set(it);
 		}
 	}
-
 
 	private void parseCommandLine(String[] args)
 	throws ArgsException

@@ -1,14 +1,11 @@
 package com.xivvic.args.schema;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.item.Item;
@@ -20,7 +17,6 @@ import com.xivvic.args.util.trie.Trie;
 
 public class Schema
 {
-	private SortedMap<String, Item<?>> opts = new TreeMap<>();
 	private Trie<Item<?>> trie = new Trie<>();
 
 	public Schema(Map<String, Item<?>> defs )
@@ -33,7 +29,6 @@ public class Schema
 		{
 			String k = e.getKey();
 			Item<?> v = e.getValue();
-			opts.put(k, v);
 			trie.put(k, v);
 		}
 
@@ -41,7 +36,11 @@ public class Schema
 
 	public boolean allRequiredOptionsHaveValuesOrDefaults() {
 
-		for (Item<?> item:  opts.values()) {
+		Set<String> keys = trie.keySet();
+
+		for (String key : keys)
+		{
+			Item<?> item = trie.get(key);
 			Boolean required = item.getRequired();
 			if (required == null || required == Boolean.FALSE)
 			{
@@ -67,49 +66,29 @@ public class Schema
 	@SuppressWarnings("unchecked")
 	public <T> Item<T> getItem(String option)
 	{
-		Item<T> i1 = (Item<T>) trie.get(option);
-		Item<T> i2 = (Item<T>) opts.get(option);
+		Item<T> item = (Item<T>) trie.get(option);
 
-		if (i1 != i2)
-		{
-			throw new IllegalArgumentException("FAIL! Trie != map");
-		}
-
-		return i1;
+		return item;
 	}
 
 	public List<String> getOptions()
 	{
 		List<String> rv = new ArrayList<>();
-		Set<String> keys = opts.keySet();
+		Set<String> keys = trie.keySet();
 
-
-		// CHECK!
-		Set<String> set =  trie.keySet();
-		if (set.size() != keys.size())
-		{
-			throw new IllegalArgumentException("FAIL! Trie != map");
-		}
-
-
-		Iterator<String> it = keys.iterator();
-
-		while (it.hasNext())
-		{
-			rv.add(it.next());
-		}
+		keys.forEach(rv::add);
 
 		return rv;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<Item> requiredWithEnvironments()
+	public List<Item<?>> requiredWithEnvironments()
 	{
 		ItemPredicate<?> r = new ItemPredicateRequired<>();
 		ItemPredicate<?> e = new ItemPredicateHasEnvironmentVariable<>();
 		ItemPredicate<?> p = new ItemPredicateAnd(r, e);
 
-		List<Item> rv = find(p);
+		List<Item<?>> rv = find(p);
 
 		return rv;
 	}
@@ -117,22 +96,24 @@ public class Schema
 	@Override
 	public String toString()
 	{
-		return "Schema [opts=" + opts + "]";
+		Set<String> keys = trie.keySet();
+		return "Schema [opts=" + keys + "]";
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<Item> find(ItemPredicate<?> predicate) {
+	public List<Item<?>> find(ItemPredicate<?> predicate) {
 
-		List<Item> list = new ArrayList<>();
+		List<Item<?>> rv = new ArrayList<>();
+		Set<Item<?>> items = trie.valueSet();
 
-		for (Item item:  opts.values())
+		for (Item item:  items)
 		{
 			if (predicate == null || predicate.test(item))
 			{
-				list.add(item);
+				rv.add(item);
 			}
 		}
 
-		return list;
+		return rv;
 	}
 }

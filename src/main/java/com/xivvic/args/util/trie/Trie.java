@@ -109,7 +109,7 @@ public class Trie<V>
 	public void delete(String key)
 	{
 		Objects.requireNonNull(key);
-	
+
 		root = delete(root, key, 0);
 	}
 
@@ -119,7 +119,7 @@ public class Trie<V>
 		{
 			return null;
 		}
-	
+
 		if (d == key.length())
 		{
 			if (x.val != null)
@@ -134,12 +134,12 @@ public class Trie<V>
 			int index = indexOfCharacter(c);
 			x.next[index] = delete(x.next[index], key, d + 1);
 		}
-	
+
 		if (x.val != null)
 		{
 			return x;
 		}
-	
+
 		// remove subtrie rooted at x if it is completely empty
 		//
 		for (int c = 0; c < R; c++)
@@ -149,7 +149,7 @@ public class Trie<V>
 				return x;
 			}
 		}
-	
+
 		return null;
 	}
 
@@ -165,6 +165,20 @@ public class Trie<V>
 		it.forEachRemaining(set::add);
 
 		return set;
+	}
+
+	public Set<V> valueSet()
+	{
+		Set<V> rv = new HashSet<>();
+		Set<String> keys = new HashSet<>();
+
+		for (String k : keys)
+		{
+			V v = get(k);
+			rv.add(v);
+		}
+
+		return rv;
 	}
 
 	public Iterable<String> keysWithPrefix(String prefix)
