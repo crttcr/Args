@@ -34,27 +34,6 @@ public class Item<T>
 	{
 	}
 
-	//	private Item(String name, OptionType type, OptEvaluator<T> eval)
-	//	{
-	//		this(name, type, eval, Boolean.FALSE, null, null, null);
-	//	}
-	//
-	//	private Item(String name, OptionType type, OptEvaluator<T> eval, String description, String ev, String dv)
-	//	{
-	//		this(name, type, eval, Boolean.FALSE, description, ev, dv);
-	//	}
-	//
-	//	private Item(String name, OptionType type, OptEvaluator<T> eval, Boolean required, String description, String ev, String dv)
-	//	{
-	//		this.name = name;
-	//		this.type = type;
-	//		this.eval = eval;
-	//		this.required = required;
-	//		this.description = description;
-	//		this.ev = ev;
-	//	}
-	//
-
 	public Boolean getRequired()
 	{
 		if (required == null)
