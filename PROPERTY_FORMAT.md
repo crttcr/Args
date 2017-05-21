@@ -62,6 +62,7 @@ Whitespace around the separator is not significant and is ignored.
 type=INTEGER
 required = true
 dv=8080
+ev=MY_SERVICE_PORT
 description="The port on which the server listens for incoming connections"
 ```
 
