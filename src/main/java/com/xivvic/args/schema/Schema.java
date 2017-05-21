@@ -16,7 +16,7 @@ import com.xivvic.args.schema.item.ItemPredicate;
 import com.xivvic.args.schema.item.ItemPredicateAnd;
 import com.xivvic.args.schema.item.ItemPredicateHasEnvironmentVariable;
 import com.xivvic.args.schema.item.ItemPredicateRequired;
-import com.xivvic.args.util.Trie;
+import com.xivvic.args.util.trie.Trie;
 
 public class Schema
 {

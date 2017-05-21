@@ -12,6 +12,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.xivvic.args.util.trie.Trie;
+
 public class TrieTest
 {
 	Trie<String> subject;
