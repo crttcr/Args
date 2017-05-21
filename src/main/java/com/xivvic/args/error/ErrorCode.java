@@ -23,7 +23,8 @@ public enum ErrorCode
 	// Argument Processing Codes
 	//
 	NULL_ARGUMENT_ARRAY("Argument processing failed because a null value was provided as the argument list instead of an empty array."),
-	UNEXPECTED_OPTION("Argument -%s unexpected. Not in schema definition."),
+	UNEXPECTED_OPTION("Argument [%s] unexpected. Not in schema definition."),
+	AMBIGUOUS_OPTION_NAME("The option name provided [%s] match these options: [%s]"),
 	MISSING_STRING("Could not find string parameter for option %s."),
 	MISSING_STRING_LIST("Could not find string parameters for option %s."),
 	MISSING_INTEGER("Could not find integer parameter for option %s"),
@@ -37,12 +38,12 @@ public enum ErrorCode
 
 	INVALID_ARGUMENT_FORMAT("'%s' is not a valid argument format."),
 	INVALID_ARGUMENT_NAME("'%s' is not a valid argument name."),
-	INVALID_INTEGER("Argument -%s expects an integer, but was '%s'."),
-	INVALID_DOUBLE("Argument -%s expects a double, but was '%s'."),
-	INVALID_DATE("Argument -%s expects a date, but '%s' failed to parse."),
-	INVALID_TIME("Argument -%s expects a time, but '%s' failed to parse."),
-	INVALID_PATH("Argument -%s expects a path, but '%s' is not valid."),
-	INVALID_FILE("Argument -%s expects a file, but '%s' was empty."),
+	INVALID_INTEGER("Option [%s] expects an integer, but was '%s'."),
+	INVALID_DOUBLE("Option %s] expects a double, but was '%s'."),
+	INVALID_DATE("Option [%s] expects a date, but '%s' failed to parse."),
+	INVALID_TIME("Option [%s] expects a time, but '%s' failed to parse."),
+	INVALID_PATH("Option [%s] expects a path, but '%s' is not valid."),
+	INVALID_FILE("Option [%s] expects a file, but '%s' was empty."),
 	;
 
 
@@ -83,6 +84,7 @@ public enum ErrorCode
 		case INVALID_PATH:
 		case INVALID_FILE:
 		case INVALID_SCHEMA_ELEMENT:
+		case AMBIGUOUS_OPTION_NAME:
 			return format(option, param);
 		case INVALID_ARGUMENT_FORMAT:
 		case INVALID_DEFAULT_VALUE:

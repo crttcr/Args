@@ -1,6 +1,7 @@
 package com.xivvic.args.schema;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -108,6 +109,23 @@ public class Schema
 			{
 				rv.add(item);
 			}
+		}
+
+		return rv;
+	}
+
+	public List<Item<?>> itemsWithPrefix(String prefix)
+	{
+		Objects.requireNonNull(prefix);
+
+		List<Item<?>> rv = new ArrayList<>();
+		Iterator<String> it = trie.keysWithPrefix(prefix).iterator();
+
+		while (it.hasNext())
+		{
+			String k = it.next();
+			Item<?> item = trie.get(k);
+			rv.add(item);
 		}
 
 		return rv;

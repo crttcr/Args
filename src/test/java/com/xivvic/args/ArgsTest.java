@@ -14,8 +14,8 @@ import com.xivvic.args.schema.Text2Schema;
 
 public class ArgsTest
 {
-	@Test(expected=ArgsException.class)
-	public void testDefaultFacotryMethod() throws Exception
+	@Test
+	public void testDefaultFactoryMethod() throws Exception
 	{
 		//
 		String[] args = {"--silent", "-help"};
@@ -29,9 +29,9 @@ public class ArgsTest
 
 		// Assert
 		//
-		assertFalse(verbose);
+		assertNull(verbose);
 		assertTrue(silent);
-		assertFalse(help);
+		assertTrue(help);
 
 	}
 
@@ -42,7 +42,7 @@ public class ArgsTest
 		String defs = null;
 		@SuppressWarnings("unused")
 
-		Args arg = new Args(defs, args);
+		Args arg = Args.getInstance(defs, args);
 	}
 
 	@Test(expected=ArgsException.class)

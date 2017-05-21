@@ -1,5 +1,6 @@
 package com.xivvic.args;
 
+import static com.xivvic.args.error.ErrorCode.AMBIGUOUS_OPTION_NAME;
 import static com.xivvic.args.error.ErrorCode.NO_SCHEMA;
 import static com.xivvic.args.error.ErrorCode.NULL_ARGUMENT_ARRAY;
 import static com.xivvic.args.error.ErrorCode.UNEXPECTED_OPTION;
@@ -13,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.error.ErrorCode;
@@ -44,6 +46,20 @@ public class Args
 	private final List<String> arguments = new ArrayList<>();
 	private final Schema schema;
 
+	public Args(Schema schema, String[] args)
+	throws ArgsException
+	{
+		if (schema == null)
+		{
+			throw new SchemaException(NO_SCHEMA);
+		}
+		this.schema = schema;
+
+		parseCommandLine(args);
+		addMissingEnvironmentVariables();
+		validateCommandLine();
+	}
+
 	public static Args createDefaultInstance(String[] args)
 	throws ArgsException
 	{
@@ -63,22 +79,11 @@ public class Args
 			throw new SchemaException(NO_SCHEMA);
 		}
 
-		Args rv = new Args(defs, args);
+		Args rv = Args.getInstance(defs, args);
 		return rv;
 	}
 
-	public Args(Schema schema, String[] args)
-	throws ArgsException
-	{
-		if (schema == null)
-		{
-			throw new SchemaException(NO_SCHEMA);
-		}
-		this.schema = schema;
-		initialize(args);
-	}
-
-	public Args(String defs, String[] args)
+	public static Args getInstance(String defs, String[] args)
 	throws ArgsException
 	{
 		if (defs == null)
@@ -88,18 +93,10 @@ public class Args
 
 		Text2Schema t2s = new Text2Schema();
 
-		schema = t2s.createSchema(defs);
+		Schema schema = t2s.createSchema(defs);
 
-		initialize(args);
+		return new Args(schema, args);
 	}
-
-	private void initialize(String[] args) throws ArgsException
-	{
-		parseCommandLine(args);
-		addMissingEnvironmentVariables();
-		validateCommandLine();
-	}
-
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void addMissingEnvironmentVariables() throws ArgsException
@@ -149,15 +146,21 @@ public class Args
 					arguments.add(argString);
 				}
 			}
+			else if (argString.equals("-"))
+			{
+				// Currently not handling - with a common unix meaning to read input from STDIN
+				//
+				throw new ArgsException(ErrorCode.MISSING_OPTION_NAME);
+			}
 			else if (argString.startsWith("--"))
 			{
 				String rest = argString.substring(2);
-				handleLongFormOption(rest, argumentIterator);
+				handleOption(rest, argumentIterator);
 			}
 			else if (argString.startsWith("-"))
 			{
-				String rest = argString.substring(1);
-				handleShortFormOption(rest, argumentIterator);
+				String rest = argString.substring(1, 2);
+				handleOption(rest, argumentIterator);
 			}
 			else
 			{
@@ -166,54 +169,41 @@ public class Args
 		}
 	}
 
-	private void handleLongFormOption(String option, ListIterator<String> args) throws ArgsException
+	private void handleOption(String option, ListIterator<String> args) throws ArgsException
 	{
 		if (option.length() < 1)
 		{
 			throw new ArgsException(ErrorCode.MISSING_OPTION_NAME);
 		}
 
+		// First look for the exact name.
+		// If it's not found, treat it as a prefix and look for
+		// a single option definition with that prefix.
+		// Failing that, throw an error.
+		//
 		Item<?> item = schema.getItem(option);
 
 		if (item == null)
 		{
-			throw new ArgsException(UNEXPECTED_OPTION, option, null);
+			List<Item<?>> itemList = schema.itemsWithPrefix(option);
+
+			int count = itemList.size();
+			switch (count)
+			{
+			case 1:
+				item = itemList.get(0);
+				break;
+			case 0:
+				throw new ArgsException(UNEXPECTED_OPTION, option, null);
+			default:
+				String msg = itemList.stream().map(i -> { return i.getName(); }).collect(Collectors.joining(", "));
+				throw new ArgsException(AMBIGUOUS_OPTION_NAME, option, msg);
+			}
 		}
 
 		OptEvaluator<?> eval = item.getEval();
 		optionsFound.add(option);
 
-		try
-		{
-			eval.set(argumentIterator);
-		}
-		catch (ArgsException e)
-		{
-			e.setOption(option);
-			throw e;
-		}
-	}
-
-
-	private void handleShortFormOption(String stripped, ListIterator<String> args)
-	throws ArgsException
-	{
-		if (stripped.length() < 1)
-		{
-			throw new ArgsException(ErrorCode.MISSING_OPTION_NAME);
-		}
-
-		String option = stripped.substring(0, 1);
-
-		Item<?> item = schema.getItem(option);
-
-		if (item == null)
-		{
-			throw new ArgsException(UNEXPECTED_OPTION, option, null);
-		}
-
-		OptEvaluator<?> eval = item.getEval();
-		optionsFound.add(option);
 		try
 		{
 			eval.set(argumentIterator);
