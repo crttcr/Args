@@ -13,7 +13,16 @@ import java.util.Queue;
  */
 public class Trie<Value>
 {
-	private static final String VALID_CHARS = "_.-+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+	// NOTE: Based on the way indices are calculated, this will fail if the NUMBERS, UPPER, and LOWER
+	// character sets are not comprehensive. You can change the SYMBOLS without compromising the approach,
+	// but the not the other constituents of VALID_CHARS.
+	//
+	private static final String VALID_CHAR_SYMBOLS = "_.-+";
+	private static final String VALID_CHAR_NUMBERS = "0123456789";
+	private static final String   VALID_CHAR_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	private static final String   VALID_CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+	private static final String        VALID_CHARS = VALID_CHAR_SYMBOLS + VALID_CHAR_NUMBERS + VALID_CHAR_UPPER + VALID_CHAR_LOWER;
 
 	private static final int R = VALID_CHARS.length();
 
@@ -142,16 +151,16 @@ public class Trie<Value>
 
 		if (c <= '9')
 		{
-			return c - '0' + 4;
+			return c - '0' + VALID_CHAR_SYMBOLS.length();
 		}
 
 		if (c <= 'Z')
 		{
-			int pos = c - 'A' + 4 + 10;
+			int pos = c - 'A' + VALID_CHAR_SYMBOLS.length() + VALID_CHAR_NUMBERS.length();
 			return pos;
 		}
 
-		int pos = c - 'a' + 4 + 10 + 26;
+		int pos = c - 'a' + VALID_CHAR_SYMBOLS.length() + VALID_CHAR_NUMBERS.length() + VALID_CHAR_UPPER.length();
 		return pos;
 	}
 
