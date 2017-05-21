@@ -53,25 +53,27 @@ Option names as well as property names follow these rules:
 * They can consist of these characters `_.-+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`
 
 
-Once an option name is established, its field names and values are generally expected to be a 
-single line of the form, one of the following:
-
-```
-propertyName=propertyValue
-propertyName:propertyValue
-```
-Individual property definitions are a sequence of name value pairs following
+After the option name, individual property definitions are a sequence of name value pairs following
 the option name. Property names are separated from values by either `'='` or `':'`.
 Whitespace around the separator is not significant and is ignored.
 
+```
+[port]
+type=INTEGER
+required = true
+dv=8080
+description="The port on which the server listens for incoming connections"
+```
+
+Property values with spaces need to be quoted.
 White space at the beginning of the line is ignored as is any whitespace
 appearing between property name and property value, so the following are equivalent,
 
 ```
-name=Stephen
-name = Stephen
-  name :Stephen
+required=true
+required =true
+required = true
+required      :    true
 ```
 
-Lines that start with the comment characters ! or # are ignored. 
-Blank lines are also ignored.
+Line comments start with `//` or `'#'` and are ignored.
