@@ -49,12 +49,12 @@ option specification as if it does not exist.
 ## Long Form Definition
 The long form schema definition provides more control at the cost of more detailed specification.
 This specification format is a sequence of properties presented to the schema builder 
-defining the option characteristics and semantics. The property keys are structured with
-the property name prepended with the specific property. So for example
+defining the option characteristics and semantics. Options are specified in INI-style format
+document [HERE](PROPERTY_FORMAT.md).
 
 ```
-verbose.name=verbose
-verbose.description=When set, this option increases the program's output to STDOUT
-verbose.type=BOOLEAN
-verbose.default=false
+[verbose]
+type=BOOLEAN
+default=false
+description=When set, this option increases the program's output to STDOUT
 ```
