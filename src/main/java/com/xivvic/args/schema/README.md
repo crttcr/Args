@@ -50,7 +50,7 @@ option specification as if it does not exist.
 The long form schema definition provides more control at the cost of more detailed specification.
 This specification format is a sequence of properties presented to the schema builder 
 defining the option characteristics and semantics. Options are specified in INI-style format
-document [HERE](PROPERTY_FORMAT.md).
+document [HERE](../../../../../../../../PROPERTY_FORMAT.md).
 
 ```
 [verbose]
