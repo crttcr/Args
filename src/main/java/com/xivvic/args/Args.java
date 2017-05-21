@@ -37,7 +37,7 @@ import com.xivvic.args.util.FileUtil;
  */
 public class Args
 {
-	public static final String DEFAULT_SPECIFICATION_FILE = "default.argsspec";
+	public static final String DEFAULT_SPECIFICATION_FILE = "default.argspec";
 
 	private Set<String> optionsFound = new HashSet<String>();
 	private ListIterator<String> argumentIterator;
@@ -48,7 +48,7 @@ public class Args
 	throws ArgsException
 	{
 		String defs = null;
-		try ( InputStream stream = Args.class.getResourceAsStream(DEFAULT_SPECIFICATION_FILE))
+		try (InputStream stream = Args.class.getClassLoader().getResourceAsStream(DEFAULT_SPECIFICATION_FILE))
 		{
 			defs = FileUtil.inputStreamToString(stream);
 			if (defs == null)
@@ -142,7 +142,14 @@ public class Args
 		for (argumentIterator = argList.listIterator(); argumentIterator.hasNext(); )
 		{
 			String argString = argumentIterator.next();
-			if (argString.startsWith("--"))
+			if (argString.equals("--"))
+			{
+				while (argumentIterator.hasNext())
+				{
+					arguments.add(argString);
+				}
+			}
+			else if (argString.startsWith("--"))
 			{
 				String rest = argString.substring(2);
 				handleLongFormOption(rest, argumentIterator);
