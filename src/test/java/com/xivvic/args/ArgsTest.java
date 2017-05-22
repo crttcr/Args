@@ -282,5 +282,56 @@ public class ArgsTest
 		assertNull(u);
 	}
 
+	@Test(expected = ArgsException.class)
+	public void testAmbiguousArgsCauseException() throws Exception
+	{
+		String defs = "[verbose] \n [verb] dv=RUN type=STRING";
+		Schema schema = new Text2Schema().createSchema(defs);
+		String[] args = {"-v"};
+		@SuppressWarnings("unused")
+		Args arg = new Args(schema, args);
+	}
+
+	@Test
+	public void testExactOptionNameSuccceedsWhenPrefixOfAnotherOption() throws Exception
+	{
+		// Arrange
+		//
+		String defs = "[v] \n [verb] dv=RUN type=STRING";
+		Schema schema = new Text2Schema().createSchema(defs);
+		String[] args = {"-v"};
+
+		// Act
+		//
+		Args arg = new Args(schema, args);
+		Boolean v = arg.getValue("v");
+
+		// Assert
+		//
+		assertNotNull(v);
+		assertTrue(v);
+	}
+
+	@Test
+	public void testPrefixWorksWhenExtendingBeyondOtherOptionName() throws Exception
+	{
+		// Arrange
+		//
+		String defs = "[v] \n [verb] dv=RUN type=STRING";
+		Schema schema = new Text2Schema().createSchema(defs);
+		String[] args = {"--ve", "JUMP"};
+
+		// Act
+		//
+		Args arg = new Args(schema, args);
+		Boolean v = arg.getValue("v");
+		String verb = arg.getValue("verb");
+
+		// Assert
+		//
+		assertNotNull(verb);
+		assertNull(v);
+		assertEquals("JUMP", verb);
+	}
 
 }
