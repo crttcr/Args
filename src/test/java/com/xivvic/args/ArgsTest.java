@@ -17,22 +17,22 @@ public class ArgsTest
 	@Test
 	public void testDefaultFactoryMethod() throws Exception
 	{
+		// Arrange
 		//
 		String[] args = {"--silent", "-help"};
 		Args arg = Args.createDefaultInstance(args);
 
 		// Act
 		//
-		Boolean verbose = arg.getValue("verbose");
-		Boolean silent = arg.getValue("silent");
 		Boolean help = arg.getValue("help");
+		Boolean silent = arg.getValue("silent");
+		Boolean verbose = arg.getValue("verbose");
 
 		// Assert
 		//
-		assertNull(verbose);
-		assertTrue(silent);
 		assertTrue(help);
-
+		assertTrue(silent);
+		assertNull(verbose);
 	}
 
 	@Test(expected=ArgsException.class)
