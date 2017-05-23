@@ -19,7 +19,7 @@ public abstract class Constants
 	VALID_CHAR_UPPER +
 	VALID_CHAR_LOWER;
 
-	public static final int R = VALID_CHARS.length();
+	public static final int DIM = VALID_CHARS.length();
 
 	public static int indexOfCharacter(char c)
 	{

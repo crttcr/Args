@@ -1,6 +1,6 @@
 package com.xivvic.args.util;
 
-import static com.xivvic.args.util.trie.Constants.R;
+import static com.xivvic.args.util.trie.Constants.DIM;
 import static com.xivvic.args.util.trie.Constants.VALID_CHARS;
 import static com.xivvic.args.util.trie.Constants.indexOfCharacter;
 import static org.junit.Assert.assertEquals;
@@ -39,7 +39,7 @@ public class ConstantsTest
 	public void testR()
 	{
 		int count = VALID_CHARS.length();
-		assertEquals(count, R);
+		assertEquals(count, DIM);
 	}
 
 	@Test

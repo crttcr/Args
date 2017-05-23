@@ -1,11 +1,11 @@
 package com.xivvic.args.util.trie;
 
-import static com.xivvic.args.util.trie.Constants.R;
+import static com.xivvic.args.util.trie.Constants.DIM;
 
 class Node
 {
 	Object val;
-	Node[] next = new Node[R];
+	Node[] next = new Node[DIM];
 
 	@Override
 	public String toString()
@@ -14,7 +14,7 @@ class Node
 		sb.append("Node -> ");
 		sb.append(val);
 		sb.append("\n");
-		for (int i = 0; i < R; i++)
+		for (int i = 0; i < DIM; i++)
 		{
 			Node child = next[i];
 			if (child == null)
