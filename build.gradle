@@ -45,5 +45,11 @@ dependencies
 	// Mockito
 	//
 	testCompile 'org.mockito:mockito-all:2.0+'
+
+	// Validation
+	//
+	compile 'org.hibernate:hibernate-validator:6.0.0.Beta1'
+	compile 'org.hibernate:hibernate-validator-cdi:6.0.0.Beta1'
+
 }
 
