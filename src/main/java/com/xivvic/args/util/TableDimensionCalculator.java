@@ -49,7 +49,6 @@ public class TableDimensionCalculator
 	private int[] greatestLengths()
 	{
 		int cols = headers.length;
-
 		int[] rv = new int[cols];
 
 		// Max of headers
