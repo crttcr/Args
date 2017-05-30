@@ -16,7 +16,7 @@ public class ApplicationShortForm
 		{
 			String[] defs = { "-d", "/tmp/foo", "-l", "-p", "8080" };
 			Schema schema = new Text2Schema().createSchema("l,p#,d*");
-			Args      arg = new Args(schema, args.length == 0 ? defs : args);
+			Args      arg = Args.processOrThrowException(schema, args.length == 0 ? defs : args);
 
 			String     path = arg.getValue("d");
 			Integer    port = arg.getValue("p");

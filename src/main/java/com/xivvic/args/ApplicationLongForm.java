@@ -1,13 +1,14 @@
 package com.xivvic.args;
 
+import java.io.File;
+import java.nio.file.Path;
+
 import com.xivvic.args.error.ArgsException;
-import com.xivvic.args.schema.Schema;
-import com.xivvic.args.schema.Text2Schema;
 import com.xivvic.args.util.FileUtil;
 
 /**
  * Example application to run the Args command line processor
- * inspired by Robert C. Martin's Clean Code, chapter 14.
+ * initially inspired by Robert C. Martin's Clean Code, chapter 14.
  */
 public class ApplicationLongForm
 {
@@ -15,14 +16,13 @@ public class ApplicationLongForm
 	{
 		try
 		{
-			String[] ersatzArgs = {"--path", "/tmp", "--file" , "out.txt", "--server", "localhost", "--port", "8080"};
+			String[] ersatzArgs = {"-h", "--path", "/tmp", "--file" , "out.txt", "--server", "localhost", "--port", "8080"};
 			args = args.length == 0 ? ersatzArgs : args;
 			String defs = getOptionDefinitions();
-			Schema schema = new Text2Schema().createSchema(defs);
-			Args arg = new Args(schema, args);
+			Args arg = Args.processOrExit(defs, args);
 
-			String path = arg.getValue("path");
-			String file = arg.getValue("file");
+			Path path = arg.getValue("path");
+			File file = arg.getValue("file");
 			Integer port = arg.getValue("port");
 			String server = arg.getValue("server");
 
@@ -38,17 +38,17 @@ public class ApplicationLongForm
 	//
 	private static String getOptionDefinitions()
 	{
-		String path = "src/main/resources/argdefs";
-		String file = "Option.definitions.example.txt";
+		String path = "src/main/resources/argsdefs";
+		String file = "Option.definitions.example.argsdef";
 		String defs = FileUtil.readFromResourceFile(path, file);
 
 		return defs;
 	}
 
-	private static void run(String directory, String file, String server, int port)
+	private static void run(Path path, File file, String server, int port)
 	{
-		String fmt = "ApplicationLongForm running with dir=%s/%s, %s:%d\n";
-		String msg = String.format(fmt, directory, file, server, port);
+		String fmt = "ApplicationLongForm running with File+Path=%s/%s, Server+Port=%s:%d\n";
+		String msg = String.format(fmt, path, file, server, port);
 		System.out.printf(msg);
 	}
 

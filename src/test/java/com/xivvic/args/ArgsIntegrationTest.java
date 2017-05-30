@@ -49,7 +49,7 @@ public class ArgsIntegrationTest
 
 		// Act
 		//
-		Args arg = new Args(schema, args);
+		Args arg = Args.processOrThrowException(schema, args);
 		Boolean b = arg.getValue(name);
 
 		// Assert
@@ -69,7 +69,7 @@ public class ArgsIntegrationTest
 
 		// Act
 		//
-		Args arg = new Args(schema, args);
+		Args arg = Args.processOrThrowException(schema, args);
 		String s = arg.getValue(name);
 
 		// Assert
@@ -89,7 +89,7 @@ public class ArgsIntegrationTest
 
 		// Act
 		//
-		Args arg = new Args(schema, args);
+		Args arg = Args.processOrThrowException(schema, args);
 		List<String> list = arg.getValue(name);
 
 		// Assert
@@ -111,7 +111,7 @@ public class ArgsIntegrationTest
 
 		// Act
 		//
-		Args  arg = new Args(schema, args);
+		Args arg = Args.processOrThrowException(schema, args);
 		Integer i = arg.getValue(name);
 
 		// Assert
@@ -131,7 +131,7 @@ public class ArgsIntegrationTest
 
 		// Act
 		//
-		Args arg = new Args(schema, args);
+		Args arg = Args.processOrThrowException(schema, args);
 		Double d = arg.getValue(name);
 
 		// Assert
@@ -151,7 +151,7 @@ public class ArgsIntegrationTest
 
 		// Act
 		//
-		Args arg = new Args(schema, args);
+		Args arg = Args.processOrThrowException(schema, args);
 		LocalDate d = arg.getValue(name);
 
 		// Assert
@@ -171,7 +171,7 @@ public class ArgsIntegrationTest
 
 		// Act
 		//
-		Args arg = new Args(schema, args);
+		Args arg = Args.processOrThrowException(schema, args);
 		LocalTime t = arg.getValue(name);
 
 		// Assert
@@ -191,7 +191,7 @@ public class ArgsIntegrationTest
 
 		// Act
 		//
-		Args arg = new Args(schema, args);
+		Args arg = Args.processOrThrowException(schema, args);
 		Path p = arg.getValue(name);
 
 		// Assert
@@ -211,7 +211,7 @@ public class ArgsIntegrationTest
 
 		// Act
 		//
-		Args arg = new Args(schema, args);
+		Args arg = Args.processOrThrowException(schema, args);
 		File f = arg.getValue(name);
 
 		// Assert

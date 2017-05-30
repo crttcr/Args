@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.error.ErrorCode;
+import com.xivvic.args.error.ExceptionHandler;
 import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.Schema;
@@ -27,7 +28,7 @@ import com.xivvic.args.util.FileUtil;
 
 
 /**
- * Argument and options command line processor inspired by
+ * Argument and options command line processor with some initial inspiration from
  * Robert C. Martin's Clean Code, chapter 14.
  *
  * However, this class no longer is responsible for parsing
@@ -35,7 +36,7 @@ import com.xivvic.args.util.FileUtil;
  * Seems like two different things.
  *
  * Parsing and maintaining option definitions is the responsibility
- * of the Schema and SchemaBuilder objects.
+ * of the {@see Schema} and related resources in the schema package.
  */
 public class Args
 {
@@ -46,7 +47,7 @@ public class Args
 	private final List<String> arguments = new ArrayList<>();
 	private final Schema schema;
 
-	public Args(Schema schema, String[] args)
+	private Args(Schema schema, String[] args)
 	throws ArgsException
 	{
 		if (schema == null)
@@ -79,11 +80,35 @@ public class Args
 			throw new SchemaException(NO_SCHEMA);
 		}
 
-		Args rv = Args.getInstance(defs, args);
+		Args rv = Args.processOrThrowException(defs, args);
 		return rv;
 	}
 
-	public static Args getInstance(String defs, String[] args)
+	public static Args processOrExit(Schema schema, String[] args)
+	{
+		if (schema == null)
+		{
+			SchemaException ex = new SchemaException(NO_SCHEMA);
+			ExceptionHandler handler = ExceptionHandler.terminatingHandler(ex);
+			handler.handle();
+		}
+
+		Args rv = null;
+		try
+		{
+			rv = new Args(schema, args);
+			provideHelpIfRequested(schema, rv);
+		}
+		catch (ArgsException e)
+		{
+			ExceptionHandler handler = ExceptionHandler.terminatingHandler(e);
+			handler.handle();
+		}
+
+		return rv;
+	}
+
+	public static Args processOrExit(String defs, String[] args)
 	throws ArgsException
 	{
 		if (defs == null)
@@ -92,10 +117,102 @@ public class Args
 		}
 
 		Text2Schema t2s = new Text2Schema();
-
 		Schema schema = t2s.createSchema(defs);
 
-		return new Args(schema, args);
+		return Args.processOrExit(schema, args);
+	}
+
+
+	public static Args processOrThrowException(Schema schema, String[] args)
+	throws ArgsException
+	{
+		if (schema == null)
+		{
+			throw new SchemaException(NO_SCHEMA);
+		}
+
+		Args rv = null;
+		try
+		{
+			rv = new Args(schema, args);
+			provideHelpIfRequested(schema, rv);
+		}
+		catch (ArgsException e)
+		{
+			ExceptionHandler handler = ExceptionHandler.throwingHandler(e);
+			handler.handle();
+		}
+		return rv;
+	}
+
+	public static Args processOrThrowException(String defs, String[] args)
+	throws ArgsException
+	{
+		if (defs == null)
+		{
+			throw new SchemaException(NO_SCHEMA);
+		}
+
+		Text2Schema t2s = new Text2Schema();
+		Schema schema = t2s.createSchema(defs);
+
+		return Args.processOrThrowException(schema, args);
+	}
+
+	public boolean optionProvidedOnCommandLine(String opt)
+	{
+		if (opt == null)
+		{
+			return false;
+		}
+
+		return optionsFound.contains(opt);
+	}
+
+	public boolean optionHasValue(String opt)
+	{
+		if (opt == null)
+		{
+			return false;
+		}
+
+		return getValue(opt) == null;
+	}
+
+	public <T> T getValue(String option) {
+		Item<T> item = schema.getItem(option);
+		OptEvaluator<T> eval = item.getEval();
+		T rv = eval.getValue();
+		return rv;
+	}
+
+	public int argumentCount()
+	{
+		return argumentIterator.nextIndex();
+	}
+
+	public String getArgument(int i)
+	{
+		if (i < 0 || i >= arguments.size())
+		{
+			return null;
+		}
+
+		return arguments.get(i);
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder("Args");
+		sb.append("\n\t");
+		int argCount = arguments.size();
+		sb.append("Arguments provided: ");
+		sb.append(argCount);
+		sb.append("\n\t");
+		sb.append(schema.toString());
+
+		return sb.toString();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -202,7 +319,7 @@ public class Args
 		}
 
 		OptEvaluator<?> eval = item.getEval();
-		optionsFound.add(option);
+		optionsFound.add(item.getName());
 
 		try
 		{
@@ -215,54 +332,24 @@ public class Args
 		}
 	}
 
+	private static void provideHelpIfRequested(Schema schema, Args args)
+	{
+		if (! args.optionProvidedOnCommandLine(StandardOptions.HELP))
+		{
+			return;
+		}
+
+		StatusReporter reporter = new StatusReporter(schema, args);
+
+		String output = reporter.getCommandLineStatusReport();
+
+		System.out.println(output);
+		System.exit(0);
+	}
+
+
 	private void validateCommandLine()
 	{
 		// TODO Auto-generated method stub
-	}
-
-	public <T> T getValue(String option) {
-		Item<T> item = schema.getItem(option);
-		OptEvaluator<T> eval = item.getEval();
-		T rv = eval.getValue();
-		return rv;
-	}
-
-	public boolean has(String opt)
-	{
-		if (opt == null)
-		{
-			return false;
-		}
-
-		return optionsFound.contains(opt);
-	}
-
-	public int argumentCount()
-	{
-		return argumentIterator.nextIndex();
-	}
-
-	public String getArgument(int i)
-	{
-		if (i < 0 || i >= arguments.size())
-		{
-			return null;
-		}
-
-		return arguments.get(i);
-	}
-
-	@Override
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder("Args");
-		sb.append("\n\t");
-		int argCount = arguments.size();
-		sb.append("Arguments provided: ");
-		sb.append(argCount);
-		sb.append("\n\t");
-		sb.append(schema.toString());
-
-		return sb.toString();
 	}
 }

@@ -17,14 +17,14 @@ public class EnvironmentVariableTest
 	{
 		// Arrange
 		//
-		String[] arguments = {"a", "b"};
+		String[] args = {"a", "b"};
 		String defs = TestUtil.readFromTestResourceFile("string.envvar.argspec");
 		Schema schema = new Text2Schema().createSchema(defs);
 
 		// Act
 		//
-		Args args = new Args(schema, arguments);
-		String home = args.getValue("home");
+		Args arg = Args.processOrThrowException(schema, args);
+		String home = arg.getValue("home");
 
 		// Assert
 		//

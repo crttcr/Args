@@ -40,6 +40,7 @@ gradle-app.setting
 *.lock
 
 ## Eclipse
+.classpath
 .settings
 .settings/
 
