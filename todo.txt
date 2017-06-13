@@ -1,4 +1,4 @@
-This is a list of features that remain to be implemented.
+Features that remain to be implemented.
 
 1. [DONE] Implement default values
 2. Implement constraints
@@ -6,3 +6,10 @@ This is a list of features that remain to be implemented.
 	[DONE] Schema storages option definitions in trie not map
 	[DONE] Args uses prefix search when exact name not found
 4. Implement help text (i.e. USAGE: ... ) that mines information from the schema
+	[IN PROGRESS] Create output format for display
+	[TODO] Help option displays option/argument details
+	[TODO] Command line errors display option/argument details
+5. Create standard option [e.g. help, loglevel, ...]
+
+Testing
+Test that data rows with fewer columns than header.length work
