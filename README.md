@@ -40,8 +40,7 @@ name. Here is the simple usage example that does not use advanced the features.
 
 None, other than adding the source or jar to your project.
 
-<a name="AdvancedUsage"></a>
-## Advanced Usage
+## <a name="AdvancedUsage"></a> Advanced Usage
 
 This library supports a second form of specifying the options that are available to a
 program, referred to as the 'long form.'  To use the long form, provide a string containing
