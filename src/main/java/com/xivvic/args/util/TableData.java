@@ -16,7 +16,6 @@ public class TableData
 	{
 		Objects.requireNonNull(headers);
 		this.headers = headers.clone();
-
 	}
 
 	public void row(String[] values)
