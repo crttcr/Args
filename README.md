@@ -62,6 +62,7 @@ the [PROPERTY_FORMAT](PROPERTY_FORMAT.md) documentation.
 description="Latitude coordinate"
 type=DOUBLE
 default=100.04
+
 [longitude]
 description="Longitude coordinate"
 type=DOUBLE
