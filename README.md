@@ -3,7 +3,7 @@
 This is yet another library for processing program arguments. Inspired by Robert C. Martin's 
 [Clean Code](http://www.amazon.com/Clean-Code-Handbook-Software-Craftmanship/dp/0132350882"),
 chapter 14, this library keeps the simple **one-character \[+ optional modifier]** specification for cases
-where advanced capabilities are overkill. Additionally, by providing a more detailed specification,
+where advanced capabilities are overkill. Additionally, by providing a more detailed [specification](#AdvancedUsage),
 it's possible to provide descriptions, default values, environment variable lookup, and validation
 to ensure programs are started in a consistent state.
 
@@ -40,6 +40,7 @@ name. Here is the simple usage example that does not use advanced the features.
 
 None, other than adding the source or jar to your project.
 
+<a name="AdvancedUsage"></a>
 ## Advanced Usage
 
 This library supports a second form of specifying the options that are available to a
@@ -58,9 +59,13 @@ the [PROPERTY_FORMAT](PROPERTY_FORMAT.md) documentation.
 [help]
 [verbose]
 [latitude]
-description="Longitude coordinate"
+description="Latitude coordinate"
 type=DOUBLE
 default=100.04
+[longitude]
+description="Longitude coordinate"
+type=DOUBLE
+default=-52.18
 ```
 
 The following character class represents legal characters for option names [0-9a-zA-Z-_.+].
