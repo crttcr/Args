@@ -41,6 +41,7 @@ gradle-app.setting
 
 ## Eclipse
 .classpath
+.project
 .settings
 .settings/
 
