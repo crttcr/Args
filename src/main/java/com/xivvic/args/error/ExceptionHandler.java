@@ -38,17 +38,23 @@ public class ExceptionHandler
 		return handler;
 	}
 
-	public void handle()
+	public void exit()
+	{
+		System.out.println("Handler with exception: " + ex.errorMessage());
+		System.out.println("Exiting ...");
+		System.exit(0);
+	}
+
+	public void handle() throws ArgsException
 	{
 		switch (ts)
 		{
 		case TERMINATE:
-			System.out.println("Exiting ...");
-			System.exit(0);
+			exit();
 			break;
 		case THROW_EXCEPTION:
 			System.out.println("Throwing exception ...");
-			throw new RuntimeException(ex);
+			throw ex;
 		case IGNORE:
 			System.out.println("Ignoring exception ...");
 			break;

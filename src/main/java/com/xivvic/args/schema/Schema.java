@@ -30,7 +30,6 @@ public class Schema
 			Item<?> v = e.getValue();
 			trie.put(k, v);
 		}
-
 	}
 
 	public boolean allRequiredOptionsHaveValuesOrDefaults() {
@@ -80,7 +79,6 @@ public class Schema
 		return rv;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<Item<?>> itemsWithEnvironmentVariables()
 	{
 		ItemPredicate<?> e = new ItemPredicateHasEnvironmentVariable<>();

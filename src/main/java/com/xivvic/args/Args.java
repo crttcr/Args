@@ -42,7 +42,7 @@ public class Args
 {
 	public static final String DEFAULT_SPECIFICATION_FILE = "default.argspec";
 
-	private Set<String> optionsFound = new HashSet<String>();
+	private Set<String> optionsFound = new HashSet<>();
 	private ListIterator<String> argumentIterator;
 	private final List<String> arguments = new ArrayList<>();
 	private final Schema schema;
@@ -90,7 +90,7 @@ public class Args
 		{
 			SchemaException ex = new SchemaException(NO_SCHEMA);
 			ExceptionHandler handler = ExceptionHandler.terminatingHandler(ex);
-			handler.handle();
+			handler.exit();
 		}
 
 		Args rv = null;
@@ -102,7 +102,7 @@ public class Args
 		catch (ArgsException e)
 		{
 			ExceptionHandler handler = ExceptionHandler.terminatingHandler(e);
-			handler.handle();
+			handler.exit();
 		}
 
 		return rv;
@@ -166,7 +166,8 @@ public class Args
 			return false;
 		}
 
-		return optionsFound.contains(opt);
+		boolean found = optionsFound.contains(opt);
+		return found;
 	}
 
 	public boolean optionHasValue(String opt)
@@ -205,6 +206,10 @@ public class Args
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder("Args");
+		sb.append("\n\t");
+		sb.append("Options provided: ");
+		int optCount = optionsFound.size();
+		sb.append(optCount);
 		sb.append("\n\t");
 		int argCount = arguments.size();
 		sb.append("Arguments provided: ");
@@ -344,7 +349,7 @@ public class Args
 		String output = reporter.getCommandLineStatusReport();
 
 		System.out.println(output);
-		System.exit(0);
+		// System.exit(0);
 	}
 
 

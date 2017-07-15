@@ -15,7 +15,7 @@ import com.xivvic.args.schema.Text2Schema;
 public class ArgsTest
 {
 	@Test
-	public void testDefaultFactoryMethod() throws Exception
+	public void onCreate_withDefaultConfig_thenHelpAndSilentAreSetNotVerbose() throws Exception
 	{
 		// Arrange
 		//
@@ -36,44 +36,38 @@ public class ArgsTest
 	}
 
 	@Test(expected=ArgsException.class)
-	public void testConstructWithNullStringDefs() throws Exception
+	public void onCreateOrThrow_withNullString_thenThrowException() throws Exception
 	{
 		String[] args = {"-x", "radio"};
 		String defs = null;
-		@SuppressWarnings("unused")
-
-		Args arg = Args.processOrThrowException(defs, args);
+		Args.processOrThrowException(defs, args);
 	}
 
 	@Test(expected=ArgsException.class)
-	public void testConstructWithNullSchema() throws Exception
+	public void onCreateOrThrow_withNullSchema_thenThrowException() throws Exception
 	{
 		String[] args = {"-x", "radio"};
 		Schema schema = null;
-		@SuppressWarnings("unused")
-
-		Args arg = Args.processOrThrowException(schema, args);
+		Args.processOrThrowException(schema, args);
 	}
 
 	@Test(expected=ArgsException.class)
-	public void testConstructWithEmptySchema() throws Exception
+	public void onCreateOrThrow_withEmptySchema_thenThrowException() throws Exception
 	{
 		Schema schema = new Text2Schema().createSchema("");
 		String[] args = {"-x", "radio"};
-		@SuppressWarnings("unused")
-		Args arg = Args.processOrThrowException(schema, args);
+		Args.processOrThrowException(schema, args);
 	}
 
 	@Test(expected=ArgsException.class)
-	public void testConstructWithNullArgList() throws Exception
+	public void onCreateOrThrow_withNullArgList_thenThrowException() throws Exception
 	{
 		Schema schema = new Text2Schema().createSchema("x");
-		@SuppressWarnings("unused")
-		Args arg = Args.processOrThrowException(schema, null);
+		Args.processOrThrowException(schema, null);
 	}
 
 	@Test
-	public void testConstructionWhenArgumentListIsEmpty() throws Exception
+	public void onCreateOrThrow_withEmptyArgList_thenReturnValidArgs() throws Exception
 	{
 		// Arrange & Act
 		//
@@ -87,15 +81,15 @@ public class ArgsTest
 	}
 
 	@Test(expected=ArgsException.class)
-	public void testNakedDashThrows() throws Exception
+	public void onCreateOrThrow_withNakedDash_thenThrowException() throws Exception
 	{
 		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {"-", "radio"};
-		Args arg = Args.processOrThrowException(schema, args);
+		Args.processOrThrowException(schema, args);
 	}
 
 	@Test
-	public void testGetBooleanSuccessWhenSet() throws Exception
+	public void onGetValue_withProvidedBooleanOption_thenReturnTrue() throws Exception
 	{
 		// Arrange
 		//
@@ -113,7 +107,7 @@ public class ArgsTest
 	}
 
 	@Test
-	public void testGetBooleanSuccessWhenNotSet() throws Exception
+	public void onGetValue_withBooleanOptionNotProvided_thenNull() throws Exception
 	{
 		// Arrange
 		//
@@ -131,7 +125,7 @@ public class ArgsTest
 	}
 
 	@Test
-	public void testGetStringSuccess() throws Exception
+	public void onGetValue_withProvidedStringOption_thenReturnTheOptionFollower() throws Exception
 	{
 		// Arrange
 		//
@@ -150,7 +144,7 @@ public class ArgsTest
 	}
 
 	@Test
-	public void testGetIntegerSuccess() throws Exception
+	public void onGetValue_withProvidedIntegerOption_thenReturnTheIntegerValue() throws Exception
 	{
 		// Arrange
 		//
@@ -169,7 +163,7 @@ public class ArgsTest
 	}
 
 	@Test
-	public void testHasWhenSingleBooleanNotProvided() throws Exception
+	public void onOptionProvidedTest_withOptionNotProvided_thenReturnFalse() throws Exception
 	{
 		// Arrange
 		//
@@ -187,7 +181,7 @@ public class ArgsTest
 	}
 
 	@Test
-	public void testHasNull() throws Exception
+	public void onOptionProvidedTest_withNullParameter_thenReturnFalse() throws Exception
 	{
 		// Arrange
 		//
@@ -205,7 +199,7 @@ public class ArgsTest
 	}
 
 	@Test
-	public void testArgCountWhenNoneProvided() throws Exception
+	public void onArgumentCount_withEmptyArguments_thenReturnZero() throws Exception
 	{
 		// Arrange
 		//
@@ -223,7 +217,7 @@ public class ArgsTest
 	}
 
 	@Test
-	public void testArgCountWithOneArgumentNoOptions() throws Exception
+	public void onArgumentCount_withNoOptionsOneArg_thenReturnOne() throws Exception
 	{
 		// Arrange
 		//
@@ -241,7 +235,7 @@ public class ArgsTest
 	}
 
 	@Test
-	public void testGetArgumentWhenNoneProvided() throws Exception
+	public void onGetArgument_withNoProvidedArguments_thenReturnNull() throws Exception
 	{
 		// Arrange
 		//
@@ -261,7 +255,7 @@ public class ArgsTest
 	}
 
 	@Test
-	public void testGetArgumentWithOneArgumentNoOptions() throws Exception
+	public void onGetArgument_withNoProvidedArguments_thenReturnTheArgument() throws Exception
 	{
 		// Arrange
 		//
@@ -283,17 +277,16 @@ public class ArgsTest
 	}
 
 	@Test(expected = ArgsException.class)
-	public void testAmbiguousArgsCauseException() throws Exception
+	public void onCreateOrThrow_withAmbiguousOption_thenThrowException() throws Exception
 	{
 		String defs = "[verbose] \n [verb] dv=RUN type=STRING";
 		Schema schema = new Text2Schema().createSchema(defs);
 		String[] args = {"-v"};
-		@SuppressWarnings("unused")
-		Args arg = Args.processOrThrowException(schema, args);
+		Args.processOrThrowException(schema, args);
 	}
 
 	@Test
-	public void testExactOptionNameSuccceedsWhenPrefixOfAnotherOption() throws Exception
+	public void onGetValue_withExactOptionThatIsAlsoAPrefix_thenReturnTheOption() throws Exception
 	{
 		// Arrange
 		//
@@ -313,7 +306,7 @@ public class ArgsTest
 	}
 
 	@Test
-	public void testPrefixWorksWhenExtendingBeyondOtherOptionName() throws Exception
+	public void onGetValue_withUniquePrefix_thenReturnTheAssociatedOption() throws Exception
 	{
 		// Arrange
 		//

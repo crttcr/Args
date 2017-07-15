@@ -7,8 +7,7 @@ import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.util.FileUtil;
 
 /**
- * Example application to run the Args command line processor
- * initially inspired by Robert C. Martin's Clean Code, chapter 14.
+ * Example application to run the Args command line processor.
  */
 public class ApplicationLongForm
 {
