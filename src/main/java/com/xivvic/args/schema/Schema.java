@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
+import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.item.Item;
 import com.xivvic.args.schema.item.ItemPredicate;
@@ -128,4 +129,102 @@ public class Schema
 
 		return rv;
 	}
+
+	/**
+	 * Returns a schema similar to the existing schema but including the item specified
+	 * by the parameter.
+	 *
+	 * If the target is null, then this method returns a reference to its object.
+	 * If the target already contains an item with the same option name, it is replaced.
+	 *
+	 * @param the item that should be included in the returned schema
+	 * @return a schema that contains the specified option
+	 */
+	public Schema with(Item<?> addition)
+	{
+		if (addition == null)
+		{
+			return this;
+		}
+
+		SchemaBuilder builder = new SchemaBuilder();
+
+		List<String> options = getOptions();
+
+		for (String name : options)
+		{
+			Item<?> found = getItem(name);
+			//			Item<?> clone = found.duplicate();
+			// FIXME:
+			builder.item(found);
+		}
+
+		builder.item(addition);
+		try
+		{
+			Schema rv = builder.build();
+			return rv;
+		}
+		catch (SchemaException e)
+		{
+			// Should not happen.
+			//
+			return null;
+		}
+	}
+
+	/**
+	 * Returns a schema similar to the existing schema but without the option identified
+	 * by the parameter.
+	 *
+	 * If the target is null or is not an option in this schema, then this method
+	 * returns a reference to its object.
+	 *
+	 * @param target the name of the option that should not be in the returned schema
+	 * @return a schema that does not contain the specified option
+	 */
+	public Schema without(String target)
+	{
+		if (target == null)
+		{
+			return this;
+		}
+
+		Item<?> found = getItem(target);
+		if (found == null)
+		{
+			return this;
+		}
+
+		SchemaBuilder builder = new SchemaBuilder();
+
+		List<String> options = getOptions();
+
+		for (String name : options)
+		{
+			if (! name.equals(target))
+			{
+				Item<?> item = getItem(name);
+				builder.item(item);
+			}
+		}
+
+		try
+		{
+			Schema rv = builder.build();
+			return rv;
+		}
+		catch (SchemaException e)
+		{
+			// Should never happen.
+			//
+			return null;
+		}
+	}
+
+	public int optionCount()
+	{
+		return trie.size();
+	}
+
 }

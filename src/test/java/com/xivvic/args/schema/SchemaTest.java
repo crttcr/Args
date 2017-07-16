@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -24,7 +26,7 @@ public class SchemaTest
 	private Schema subject;
 
 	@Before
-	public void setUp() throws Exception
+	public void before() throws Exception
 	{
 		Map<String, Item<?>> args = new HashMap<>();
 		String name = "x";
@@ -34,7 +36,7 @@ public class SchemaTest
 	}
 
 	@Test
-	public void testGetOptionsBaseCase()
+	public void onGetOptions_withOneItem_thenTheListContainsOneItem()
 	{
 		// Act
 		//
@@ -48,7 +50,7 @@ public class SchemaTest
 	}
 
 	@Test
-	public void testGetItemBaseCaseNotSet()
+	public void onGetItem_beforeApplyingArguments_thenTheItemHasNoValue()
 	{
 		// Act
 		//
@@ -62,7 +64,7 @@ public class SchemaTest
 	}
 
 	@Test
-	public void testAllRequiredArgsHaveValuesSingleIntegerSuccess() throws Exception
+	public void onRequiredItemsCheck_withSingleRequiredIntegerBound_thenReturnTrue() throws Exception
 	{
 		// Arrange
 		//
@@ -86,7 +88,7 @@ public class SchemaTest
 
 
 	@Test
-	public void testAllRequiredArgsHaveValuesSingleIntegerFailure() throws Exception
+	public void onRequiredItemsCheck_withSingleRequiredIntegerNotBound_thenReturnFalse() throws Exception
 	{
 		// Arrange
 		//
@@ -106,7 +108,7 @@ public class SchemaTest
 	}
 
 	@Test
-	public void testAllRequiredOptionsHaveValuesOneOptionFalse()
+	public void onRequiredItemsCheck_withNothingRequired_thenReturnTrue()
 	{
 		// Act
 		//
@@ -118,7 +120,7 @@ public class SchemaTest
 	}
 
 	@Test
-	public void testGetItemsWithEnvironmentVar() throws Exception
+	public void onCreate_withEnvironmentVariables_thenItemsHaveEnvironmentVariables() throws Exception
 	{
 		// Arrange
 		//
@@ -135,6 +137,62 @@ public class SchemaTest
 		//
 		assertNotNull(items);
 		assertEquals(1, items.size());
+	}
+
+	@Test
+	public void onWithout_withNullOptionName_thenReturnSameSchema() throws Exception
+	{
+		// Arrange
+		//
+		String defs = "[p] dv=/tmp type=PATH \n[s] ev=MY_SERVER type=STRING dv=localhost";
+		Schema schema = new Text2Schema().createSchema(defs);
+
+		// Act
+		//
+		Schema result = schema.without(null);
+
+		// Assert
+		//
+		assertSame(schema, result);
+	}
+
+	@Test
+	public void onWithout_withMissinOptionName_thenReturnSameSchema() throws Exception
+	{
+		// Arrange
+		//
+		String defs = "[p] dv=/tmp type=PATH \n[s] ev=MY_SERVER type=STRING dv=localhost";
+		Schema schema = new Text2Schema().createSchema(defs);
+
+		// Act
+		//
+		Schema result = schema.without("Flavor");
+
+		// Assert
+		//
+		assertSame(schema, result);
+	}
+
+	@Test
+	public void onWithout_withValidOptionName_thenReturnSchemaWithoutOption() throws Exception
+	{
+		// Arrange
+		//
+		String defs = "[p] dv=/tmp type=PATH \n[s] ev=MY_SERVER type=STRING dv=localhost";
+		Schema schema = new Text2Schema().createSchema(defs);
+
+		// Act
+		//
+		Schema        result = schema.without("s");
+		Item<Path>      path = result.getItem("p");
+		Item<String> missing = result.getItem("s");
+
+		// Assert
+		//
+		assertNull(missing);
+		assertNotNull(path);
+		assertEquals(OptionType.PATH, path.getType());
+		assertEquals(1, result.optionCount());
 	}
 
 	///////////////////////////////

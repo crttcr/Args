@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,14 @@ public class SchemaBuilder
 		errors.put(name, ex);
 
 		return this;
+	}
+
+	public void item(Item<?> item)
+	{
+		Objects.requireNonNull(item);
+
+		String name = item.getName();
+		opts.put(name, item);
 	}
 
 	private SchemaException buildDefinition(Map<String, String> def)

@@ -18,8 +18,8 @@ public class TableDataTest
 	public void testSuccessfulConstruction()
 	{
 		String[] headers = { "Option", "Type", "Description", "Provided" };
-		TableData td = new TableData(headers);
-		assertNotNull(td);
+		subject = new TableData(headers);
+		assertNotNull(subject);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
@@ -35,9 +35,10 @@ public class TableDataTest
 		// Arrange
 		//
 		String[] headers = { "Option", "Type", "Provided", "Description" };
-		String[] d1 = { "help", "BOOLEAN", "NO", "Prints help text" };
-		String[] d2 = { "host", "HOST", "YES", "The server DNS name or IP address" };
-		String[] d3 = { "port", "STRING", "YES", "The port on the server for incoming connections" };
+		String[]      d1 = { "help", "BOOLEAN", "NO", "Prints help text" };
+		String[]      d2 = { "host", "HOST", "YES", "The server DNS name or IP address" };
+		String[]      d3 = { "port", "STRING", "YES", "The port on the server for incoming connections" };
+
 		TableData td = new TableData(headers);
 		td.row(d1);
 		td.row(d2);
