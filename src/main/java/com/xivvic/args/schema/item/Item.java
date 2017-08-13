@@ -23,12 +23,12 @@ public class Item<T>
 	public final static String	REQUIRED		= "required";
 	public final static String	ENV_VAR		= "ev";
 
-	private String					name;
-	private OptionType			type;
-	private OptEvaluator<T>		eval;
-	private Boolean				required;
-	private String					description;
-	private String					ev;
+	private String          name;
+	private OptionType      type;
+	private OptEvaluator<T> eval;
+	private Boolean     required;
+	private String   description;
+	private String            ev;
 
 	private Item()
 	{
@@ -84,7 +84,7 @@ public class Item<T>
 		// Reuse would permit you to potentially leak changes to the object if the caller holds on
 		// to your builder, so each builder can only build a single instance.
 		//
-		private final Item<T> instance = new Item<T>();
+		private final Item<T> instance = new Item<>();
 
 		private String dv;
 
