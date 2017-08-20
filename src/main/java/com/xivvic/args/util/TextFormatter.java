@@ -10,6 +10,7 @@ package com.xivvic.args.util;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntUnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +25,11 @@ public class TextFormatter
 
 	//	Static methods
 	//
+	/**
+	 * This adjusts a TOTAL width to an INTERIOR width for an edged line.
+	 */
+	public static final IntUnaryOperator edgedTotalWidth2InteriorWidth = x -> x - 2;
+
 	/** boundedSubstrings breaks an input string, the text, into an array
 	 * of substrings, each of which have a length less than or equal to the
 	 * length argument.
@@ -53,7 +59,7 @@ public class TextFormatter
 			return array;
 		}
 
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		BreakIterator  it = BreakIterator.getLineInstance();
 		it.setText(text);
 
