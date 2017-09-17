@@ -14,6 +14,8 @@ import com.xivvic.args.schema.Text2Schema;
 
 public class ArgsTest
 {
+	private Args subject;
+
 	@Test
 	public void onCreate_withDefaultConfig_thenHelpAndSilentAreSetNotVerbose() throws Exception
 	{
@@ -160,6 +162,64 @@ public class ArgsTest
 		//
 		assertNotNull(i);
 		assertEquals(239, i.intValue());
+	}
+
+	@Test
+	public void onOptionHasValue_withNoValueAvailable_thenReturnFalse() throws Exception
+	{
+		// Arrange
+		//
+		String name   = "x";
+		Schema schema = new Text2Schema().createSchema("x*");
+		String[] args = {"apple", "239"};
+		subject       = Args.processOrThrowException(schema, args);
+
+		// Act
+		//
+		boolean result = subject.optionHasValue(name);
+
+		// Assert
+		//
+		assertFalse(result);
+	}
+
+	@Test
+	public void onOptionHasValue_withValueFromArguments_thenReturnTrue() throws Exception
+	{
+		// Arrange
+		//
+		String name   = "x";
+		Schema schema = new Text2Schema().createSchema("x*");
+		String[] args = {"-x", "xray"};
+		subject       = Args.processOrThrowException(schema, args);
+
+		// Act
+		//
+		boolean result = subject.optionHasValue(name);
+
+		// Assert
+		//
+		assertTrue(result);
+	}
+
+	@Test
+	public void onOptionHasValue_withValueFromDefault_thenReturnTrue() throws Exception
+	{
+		// Arrange
+		//
+		String defs = "[v] \n [verb] dv=RUN type=STRING";
+		Schema schema = new Text2Schema().createSchema(defs);
+		String[] args = {};
+		String name   = "verb";
+		subject       = Args.processOrThrowException(schema, args);
+
+		// Act
+		//
+		boolean result = subject.optionHasValue(name);
+
+		// Assert
+		//
+		assertTrue(result);
 	}
 
 	@Test

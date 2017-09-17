@@ -60,30 +60,6 @@ public class StatusReporter
 
 		return sb.toString();
 	}
-	public String oldCommandLineStatusReport()
-	{
-		StringBuilder sb = new StringBuilder();
-		@SuppressWarnings("rawtypes")
-		ItemPredicate<?> required = new ItemPredicateRequired();
-		List<Item<?>> required_options = schema.find(required);
-
-		for (Item<?> item : required_options)
-		{
-			String item_status = getStatusForItem(item, args);
-			sb.append(item_status).append("\n");
-		}
-
-		ItemPredicate<?> optional = required.negate();
-		List<Item<?>> not_required = schema.find(optional);
-
-		for (Item<?> item : not_required)
-		{
-			String item_status = getStatusForItem(item, args);
-			sb.append(item_status).append("\n");
-		}
-
-		return sb.toString();
-	}
 
 	private String getStatusForItem(Item<?> item, Args args)
 	{

@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.xivvic.args.util.TableData;
-
 public class TabularDisplayTest
 {
 	private TabularDisplay subject;

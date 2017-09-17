@@ -3,8 +3,6 @@ package com.xivvic.args.display;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-import com.xivvic.args.util.TableData;
-import com.xivvic.args.util.TableDimensionCalculator;
 import com.xivvic.args.util.TextFormatter;
 
 import lombok.extern.slf4j.Slf4j;
@@ -80,18 +78,6 @@ public class TabularDisplay
 		StringBuilder sb = new StringBuilder();
 		sb.append("| ").append(sj.toString()).append("|\n");
 		return sb.toString();
-
-//		for (int i = 0; i < cw.length; i++)
-//		{
-//			int l = cw[i] - 2;
-//			String h = table.headers()[i];
-//			String content = TextFormatter.boundedElipsisSubstring(h, l, '.');
-//			String padded = TextFormatter.pad(content, l, ' ');
-//			sb.append(padded);
-//			sb.append("|");
-//		}
-//		sb.append("\n");
-//		return sb.toString();
 	}
 
 	private String generateRowString(int row, int[] cw)
@@ -184,6 +170,5 @@ public class TabularDisplay
 			log.warn(msg);
 		}
 	}
-
 
 }

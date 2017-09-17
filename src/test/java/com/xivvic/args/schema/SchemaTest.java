@@ -8,11 +8,15 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import com.ibm.icu.text.MessagePattern;
+import com.xivvic.args.StandardOptions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,11 +33,29 @@ public class SchemaTest
 	public void before() throws Exception
 	{
 		Map<String, Item<?>> args = new HashMap<>();
-		String name = "x";
-		Item<?> item = createItem(name, OptionType.STRING);
+		String               name = "x";
+		Item<?>              item = createItem(name, OptionType.STRING);
 		args.put(name, item);
+
 		subject = new Schema(args);
 	}
+
+	@Test
+	public void onSort_withITEM_NAME_COMPARATOR_thenHelpIsLast()
+	{
+		// Arrange
+		//
+		List<String> names = Arrays.asList("port", "server", "help", "verbose", "candy");
+
+		// Act
+		//
+		Collections.sort(names, Item.ITEM_NAME_COMPARATOR);
+
+		// Assert
+		//
+		assertEquals("help", names.get(names.size() - 1).toString());
+	}
+
 
 	@Test
 	public void onGetOptions_withOneItem_thenTheListContainsOneItem()
@@ -50,12 +72,40 @@ public class SchemaTest
 	}
 
 	@Test
+	public void onGetOptions_withHelpIncluded_thenHelpIsLastInList() throws Exception
+	{
+		// Arrange
+		//
+		Map<String, Item<?>> args = new HashMap<>();
+		String        alpha = "alpha";
+		String            h = StandardOptions.HELP.toString();
+		String         zeta = "zeta";
+		Item<Integer> first = createRequiredIntegerItem(alpha);
+		Item<Integer>  last = createRequiredIntegerItem(zeta);
+		Item<?>        help = createItem(h, OptionType.BOOLEAN);
+
+		args.put(alpha, first);
+		args.put(h, help);
+		args.put(zeta, last);
+		subject = new Schema(args);
+
+		// Act
+		//
+		List<String> result = subject.getOptions();
+
+		// Assert
+		//
+		assertNotNull(result);
+		assertEquals(h, result.get(result.size() - 1).toString());
+	}
+
+	@Test
 	public void onGetItem_beforeApplyingArguments_thenTheItemHasNoValue()
 	{
 		// Act
 		//
 		Item<String> item = subject.getItem("x");
-		String value = item.getEval().getValue();
+		String      value = item.getEval().getValue();
 
 		// Assert
 		//

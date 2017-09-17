@@ -1,6 +1,10 @@
 package com.xivvic.args.schema;
 
+import static com.xivvic.args.schema.item.Item.ITEM_NAME_COMPARATOR;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
+import com.xivvic.args.StandardOptions;
 import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.marshall.OptEvaluator;
 import com.xivvic.args.schema.item.Item;
@@ -17,6 +22,7 @@ import com.xivvic.args.util.trie.Trie;
 
 public class Schema
 {
+
 	private Trie<Item<?>> trie = new Trie<>();
 
 	public Schema(Map<String, Item<?>> defs )
@@ -76,7 +82,7 @@ public class Schema
 		Set<String> keys = trie.keySet();
 
 		keys.forEach(rv::add);
-
+		Collections.sort(rv, ITEM_NAME_COMPARATOR);
 		return rv;
 	}
 
@@ -137,7 +143,7 @@ public class Schema
 	 * If the target is null, then this method returns a reference to its object.
 	 * If the target already contains an item with the same option name, it is replaced.
 	 *
-	 * @param the item that should be included in the returned schema
+	 * @param item that should be included in the returned schema
 	 * @return a schema that contains the specified option
 	 */
 	public Schema with(Item<?> addition)
@@ -226,5 +232,6 @@ public class Schema
 	{
 		return trie.size();
 	}
+
 
 }

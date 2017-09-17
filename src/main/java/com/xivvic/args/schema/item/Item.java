@@ -1,7 +1,9 @@
 package com.xivvic.args.schema.item;
 
+import java.util.Comparator;
 import java.util.Map;
 
+import com.xivvic.args.StandardOptions;
 import com.xivvic.args.error.ErrorCode;
 import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.marshall.OptEvaluator;
@@ -16,6 +18,9 @@ import lombok.ToString;
 @ToString
 public class Item<T>
 {
+	public static final Comparator<String> ITEM_NAME_COMPARATOR = getItemNameComparator();
+
+
 	public final static String	NAME			= "name";
 	public final static String	TYPE			= "type";
 	public final static String	DESCRIPTION	= "description";
@@ -175,5 +180,33 @@ public class Item<T>
 			}
 		}
 
+	}
+
+	/**
+	 * Returns a comparator that always sorts "help" to the end
+	 *
+	 */
+	private static Comparator<String> getItemNameComparator()
+	{
+		Comparator<String> c = new Comparator<String>() {
+			public int compare(String a, String b)
+			{
+				String help = StandardOptions.HELP.toString();
+				if (a.equalsIgnoreCase(help))
+				{
+					return b.equalsIgnoreCase(help) ? 0 : 1;
+				}
+				else if (b.equalsIgnoreCase(help)) // Only b is help, so a < b
+				{
+					return -1;
+				}
+				else // neither are help
+				{
+					return a.compareToIgnoreCase(b);
+				}
+			}
+		};
+
+		return c;
 	}
 }

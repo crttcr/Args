@@ -28,7 +28,7 @@ import com.xivvic.args.util.FileUtil;
 
 
 /**
- * Argument and options command line processor with some initial inspiration from
+ * Argument and options command line processor with initial inspiration from
  * Robert C. Martin's Clean Code, chapter 14.
  *
  * However, this class no longer is responsible for parsing
@@ -64,8 +64,10 @@ public class Args
 	public static Args createDefaultInstance(String[] args)
 	throws ArgsException
 	{
-		String defs = null;
-		try (InputStream stream = Args.class.getClassLoader().getResourceAsStream(DEFAULT_SPECIFICATION_FILE))
+		String    defs = null;
+		ClassLoader cl = Args.class.getClassLoader();
+
+		try (InputStream stream = cl.getResourceAsStream(DEFAULT_SPECIFICATION_FILE))
 		{
 			defs = FileUtil.inputStreamToString(stream);
 			if (defs == null)
@@ -177,13 +179,18 @@ public class Args
 			return false;
 		}
 
-		return getValue(opt) == null;
+		return getValue(opt) != null;
 	}
 
 	public <T> T getValue(String option) {
 		Item<T> item = schema.getItem(option);
 		OptEvaluator<T> eval = item.getEval();
 		T rv = eval.getValue();
+		if (rv == null)
+		{
+			rv = eval.getDefault();
+		}
+
 		return rv;
 	}
 
@@ -339,19 +346,18 @@ public class Args
 
 	private static void provideHelpIfRequested(Schema schema, Args args)
 	{
+		// FIXME: This needs to use TabularDisplay
+
 		if (! args.optionProvidedOnCommandLine(StandardOptions.HELP))
 		{
 			return;
 		}
 
 		StatusReporter reporter = new StatusReporter(schema, args);
+		String           report = reporter.getCommandLineStatusReport();
 
-		String output = reporter.getCommandLineStatusReport();
-
-		System.out.println(output);
-		// System.exit(0);
+		System.out.println(report);
 	}
-
 
 	private void validateCommandLine()
 	{

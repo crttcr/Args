@@ -1,4 +1,4 @@
-package com.xivvic.args.util;
+package com.xivvic.args.display;
 
 import java.util.Arrays;
 import java.util.List;

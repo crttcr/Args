@@ -1,8 +1,10 @@
-package com.xivvic.args.util;
+package com.xivvic.args.display;
 
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+
+import com.xivvic.args.display.TableData;
 
 public class TableDataTest
 {
