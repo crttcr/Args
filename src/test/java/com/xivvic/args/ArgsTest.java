@@ -75,7 +75,7 @@ public class ArgsTest
 		//
 		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {};
-		Args arg = Args.processOrThrowException(schema, args);
+		Args      arg = Args.processOrThrowException(schema, args);
 
 		// Assert
 		//
@@ -97,7 +97,7 @@ public class ArgsTest
 		//
 		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {"-x", "radio"};
-		Args arg = Args.processOrThrowException(schema, args);
+		Args      arg = Args.processOrThrowException(schema, args);
 
 		// Act
 		//
@@ -115,7 +115,7 @@ public class ArgsTest
 		//
 		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {"radio"};
-		Args arg = Args.processOrThrowException(schema, args);
+		Args      arg = Args.processOrThrowException(schema, args);
 
 		// Act
 		//
@@ -133,7 +133,7 @@ public class ArgsTest
 		//
 		Schema schema = new Text2Schema().createSchema("x*");
 		String[] args = {"-x", "radio"};
-		Args arg = Args.processOrThrowException(schema, args);
+		Args      arg = Args.processOrThrowException(schema, args);
 
 		// Act
 		//
@@ -152,7 +152,7 @@ public class ArgsTest
 		//
 		Schema schema = new Text2Schema().createSchema("x*,y#");
 		String[] args = {"-y", "239"};
-		Args arg = Args.processOrThrowException(schema, args);
+		Args      arg = Args.processOrThrowException(schema, args);
 
 		// Act
 		//
@@ -229,7 +229,7 @@ public class ArgsTest
 		//
 		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {"radio"};
-		Args arg = Args.processOrThrowException(schema, args);
+		Args      arg = Args.processOrThrowException(schema, args);
 
 		// Act
 		//
@@ -247,7 +247,7 @@ public class ArgsTest
 		//
 		Schema schema = new Text2Schema().createSchema("x");
 		String[] args = {"radio"};
-		Args arg = Args.processOrThrowException(schema, args);
+		Args      arg = Args.processOrThrowException(schema, args);
 
 		// Act
 		//
@@ -283,7 +283,7 @@ public class ArgsTest
 		//
 		Schema schema = new Text2Schema().createSchema("x*,y#");
 		String[] args = {"file.a"};
-		Args arg = Args.processOrThrowException(schema, args);
+		Args      arg = Args.processOrThrowException(schema, args);
 
 		// Act
 		//
@@ -301,7 +301,7 @@ public class ArgsTest
 		//
 		Schema schema = new Text2Schema().createSchema("x*,y#");
 		String[] args = {};
-		Args arg = Args.processOrThrowException(schema, args);
+		Args      arg = Args.processOrThrowException(schema, args);
 
 		// Act
 		//
@@ -339,7 +339,7 @@ public class ArgsTest
 	@Test(expected = ArgsException.class)
 	public void onCreateOrThrow_withAmbiguousOption_thenThrowException() throws Exception
 	{
-		String defs = "[verbose] \n [verb] dv=RUN type=STRING";
+		String   defs = "[verbose] \n [verb] dv=RUN type=STRING";
 		Schema schema = new Text2Schema().createSchema(defs);
 		String[] args = {"-v"};
 		Args.processOrThrowException(schema, args);
@@ -350,13 +350,13 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		String defs = "[v] \n [verb] dv=RUN type=STRING";
+		String   defs = "[v] \n [verb] dv=RUN type=STRING";
 		Schema schema = new Text2Schema().createSchema(defs);
 		String[] args = {"-v"};
 
 		// Act
 		//
-		Args arg = Args.processOrThrowException(schema, args);
+		Args  arg = Args.processOrThrowException(schema, args);
 		Boolean v = arg.getValue("v");
 
 		// Assert
@@ -370,14 +370,14 @@ public class ArgsTest
 	{
 		// Arrange
 		//
-		String defs = "[v] \n [verb] dv=RUN type=STRING";
+		String   defs = "[v] \n [verb] dv=RUN type=STRING";
 		Schema schema = new Text2Schema().createSchema(defs);
 		String[] args = {"--ve", "JUMP"};
 
 		// Act
 		//
-		Args arg = Args.processOrThrowException(schema, args);
-		Boolean v = arg.getValue("v");
+		Args    arg = Args.processOrThrowException(schema, args);
+		Boolean   v = arg.getValue("v");
 		String verb = arg.getValue("verb");
 
 		// Assert
